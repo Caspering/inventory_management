@@ -10,8 +10,6 @@ public interface ProcessedFoodRepo extends CrudRepository<ProcessedFood, Long> {
 
     ProcessedFood findByName(String name);
 
-    ProcessedFood findByExpDate(Date expDate);
-
     ProcessedFood findByBarcode(long barcode);
 
     List<ProcessedFood> findAllProcessedFoodByNameLike(String name);
