@@ -2,7 +2,6 @@ package com.kasperin.inventory_management.bootstrap;
 
 import com.kasperin.inventory_management.model.FruitAndVege;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
-import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
