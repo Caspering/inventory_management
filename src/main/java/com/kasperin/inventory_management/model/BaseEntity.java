@@ -23,13 +23,13 @@ public class BaseEntity implements Serializable {
     private String name;
 
     @Column
-    private long barcode;
+    private String barcode;
 
     @Column
-    private double price;
+    private Double price;
 
     @Column
-    private int InStockQuantity;
+    private Integer InStockQuantity;
 
 
 }

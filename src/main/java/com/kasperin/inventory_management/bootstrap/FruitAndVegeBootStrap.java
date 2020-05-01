@@ -28,7 +28,14 @@ public class FruitAndVegeBootStrap implements ApplicationListener<ContextRefresh
     private List<FruitAndVege> getFruitAndVeges(){
 
         List<FruitAndVege> fruitAndVeges = new ArrayList<>();
-        fruitAndVeges.add(new FruitAndVege());
+        FruitAndVege fav1 = new FruitAndVege();
+        fav1.setName("fav1");
+        fav1.setBarcode("123");
+        fav1.setInStockQuantity(5);
+        fav1.setPrice(2.99);
+
+        fruitAndVeges.add(fav1);
+
         fruitAndVeges.add(new FruitAndVege());
         fruitAndVeges.add(new FruitAndVege());
         return fruitAndVeges;
