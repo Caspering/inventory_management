@@ -2,11 +2,10 @@ package com.kasperin.inventory_management.api.v1.mapper;
 
 import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.domain.FruitAndVege;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class FruitAndVegeMapperTest {
 
@@ -32,5 +31,4 @@ class FruitAndVegeMapperTest {
         assertThat(fruitAndVegeDTO.getInStockQuantity()).isEqualTo(4);
 
     }
-
 }
