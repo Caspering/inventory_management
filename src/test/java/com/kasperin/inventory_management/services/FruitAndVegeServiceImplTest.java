@@ -82,8 +82,4 @@ class FruitAndVegeServiceImplTest {
                 .thenReturn(java.util.Optional.ofNullable(fruitAndVege));
     }
 
-    @Test
-    void updateFruitAndVege() throws Exception{
-
-    }
 }
