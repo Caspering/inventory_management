@@ -28,43 +28,17 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
     }
 
     @Override
-    public FruitAndVege getFruitAndVegeByName(String name) {
+    public FruitAndVege findByName(String name) {
         return fruitAndVegeRepository.findByName(name);
     }
 
     @Override
-    public List<FruitAndVege> getAllFruitAndVeges() {
+    public List<FruitAndVege> findAll() {
         return fruitAndVegeRepository.findAll();
     }
 
     @Override
-    public FruitAndVege updateFruitAndVege(Long id, FruitAndVege fruitAndVege) {
-        return null;
-    }
-
-//    @Override
-//    public FruitAndVege updateFruitAndVege(Long id, FruitAndVege fruitAndVege) {
-//        return fruitAndVegeRepository.findById(id).map(fruitAndVege -> {
-//
-//            if (fruitAndVege.getName() != null){
-//                fruitAndVege.setName(fruitAndVege.getName());
-//            }
-//
-//            if (fruitAndVege.getPrice() !=0){
-//                fruitAndVege.setPrice(fruitAndVege.getPrice());
-//            }
-//
-//            if (fruitAndVege.getBarcode() !=null){
-//                fruitAndVege.setBarcode(fruitAndVege.getBarcode());
-//            }
-//
-//            return fruitAndVege;
-//
-//        } );
-//    }
-
-    @Override
-    public void deleteFruitAndVegeById(Long id) {
+    public void deleteById(Long id) {
         fruitAndVegeRepository.deleteById(id);
     }
 }

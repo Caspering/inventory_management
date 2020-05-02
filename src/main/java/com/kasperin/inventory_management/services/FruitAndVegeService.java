@@ -11,12 +11,10 @@ public interface FruitAndVegeService {
 
     Optional<FruitAndVege> findById(Long id);
 
-    FruitAndVege getFruitAndVegeByName(String name);
+    FruitAndVege findByName(String name);
 
-    List<FruitAndVege> getAllFruitAndVeges();
+    List<FruitAndVege> findAll();
 
-    FruitAndVege updateFruitAndVege(Long id, FruitAndVege fruitAndVege);
-
-    void deleteFruitAndVegeById(Long id);
+    void deleteById(Long id);
 
 }
