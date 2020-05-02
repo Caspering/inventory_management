@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -17,13 +19,9 @@ class FruitAndVegeBootStrapITest {
 
     @Test
     void onApplicationEvent() {
-        FruitAndVege fav = fruitAndVegeRepository.findByName("fav1");
-        assertNotNull(fav);
-        assertEquals("fav1", fav.getName());
-        assertEquals("123", fav.getBarcode());
-        assertEquals(5, fav.getInStockQuantity());
-        assertEquals(2.99, fav.getPrice(), 0.01);
+       List<FruitAndVege> foo = fruitAndVegeRepository.findAll();
 
-        // todo: verify other FruitAndVege objects when they're added
+       assertEquals(3, foo.size());
+
     }
 }

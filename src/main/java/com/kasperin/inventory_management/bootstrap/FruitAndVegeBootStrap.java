@@ -35,12 +35,27 @@ public class FruitAndVegeBootStrap implements ApplicationListener<ContextRefresh
         fav1.setPrice(2.99);
 
         fruitAndVeges.add(fav1);
+        
+        FruitAndVege fruitAndVege2 = new FruitAndVege();
+        fruitAndVege2.setName("Orange");
+        fruitAndVege2.setBarcode("123456");
+        fruitAndVege2.setInStockQuantity(6);
+        fruitAndVege2.setPrice(3.8);
+        
+        fruitAndVeges.add(fruitAndVege2);
 
-//        fruitAndVeges.add(new FruitAndVege(1L,"Banana","454444",1.2,1));
-//        fruitAndVeges.add(new FruitAndVege(2L,"Orange","455544",1,1));
-//        fruitAndVeges.add(new FruitAndVege(3L,"Apple","4566444",0.6,1));
+        FruitAndVege fruitAndVege3 = new FruitAndVege();
+        fruitAndVege3.setName("Pineapple");
+        fruitAndVege3.setBarcode("133006");
+        fruitAndVege3.setInStockQuantity(8);
+        fruitAndVege3.setPrice(3.8);
+
+        fruitAndVeges.add(fruitAndVege3);
+        
         return fruitAndVeges;
     }
+    
+    
 
 
 }
