@@ -1,21 +1,31 @@
 package com.kasperin.inventory_management.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Setter
-@Getter
-@NoArgsConstructor
-//@AllArgsConstructor
+@Data
 @Entity
-@Table
-public class FruitAndVege extends BaseEntity{
-    public FruitAndVege(Long id, String name, String barcode, double price, int InStockQuantity) {
-        super(id, name, barcode, price, InStockQuantity);
+public class FruitAndVege {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    public boolean isNew() {
+        return this.id == null;
     }
+
+    @Column
+    private String name;
+
+    @Column
+    private String barcode;
+
+    @Column
+    private Double price;
+
+    @Column
+    private Integer InStockQuantity;
+
 }

@@ -12,6 +12,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class FruitAndVegeServiceImplTest {
@@ -46,8 +47,15 @@ class FruitAndVegeServiceImplTest {
         savedFruitAndVege.setBarcode(BARCODE);
         savedFruitAndVege.setPrice(PRICE);
 
-        when(fruitAndVegeRepository.save(any(FruitAndVege.class)))
+        when(fruitAndVegeRepository.save(any()))
                 .thenReturn(savedFruitAndVege);
+
+        FruitAndVege result = fruitAndVegeService.save(savedFruitAndVege);
+
+        verify(fruitAndVegeRepository).save(any());
+
+        assertEquals(savedFruitAndVege, result);
+
     }
 
     @Test

@@ -4,10 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
+@Data
 @MappedSuperclass
 public class BaseEntity implements Serializable {
 
