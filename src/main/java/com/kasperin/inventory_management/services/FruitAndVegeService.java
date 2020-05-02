@@ -9,14 +9,16 @@ import java.util.Optional;
 
 public interface FruitAndVegeService {
 
-//    FruitAndVege save(FruitAndVege fruitAndVege);
-//
-//    Optional<FruitAndVegeDTO> findById(Long id);
+    FruitAndVegeDTO createNewFruitAndVege(FruitAndVegeDTO fruitAndVegeDTO);
+
+    FruitAndVegeDTO saveAndReturnDTO(FruitAndVege fruitAndVege);
+
+    FruitAndVegeDTO findById(Long id);
 
     FruitAndVegeDTO findByName(String name);
 
-   List<FruitAndVegeDTO> findAll();
+    FruitAndVegeListDTO findAll();
 
-//    void deleteById(Long id);
+    void deleteById(Long id);
 
 }

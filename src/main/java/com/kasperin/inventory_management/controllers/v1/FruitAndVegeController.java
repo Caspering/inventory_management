@@ -18,17 +18,11 @@ public class FruitAndVegeController {
         this.fruitAndVegeService = fruitAndVegeService;
     }
 
-//    @GetMapping
-//    public ResponseEntity<FruitAndVegeDTO> findAll(){
-//        return new ResponseEntity<FruitAndVegeDTO>
-//                (new List<FruitAndVegeDTO>(fruitAndVegeService.findAll()), HttpStatus.OK);
-//    }
+    private String getCustomerUrl(Long id) {
+        return FruitAndVegeController.BASE_URL + "/" + id;
+    }
 
-//    @GetMapping
-//    public ResponseEntity<FruitAndVegeListDTO> findAll(){
-//        return new ResponseEntity<FruitAndVegeListDTO>
-//                (new FruitAndVegeListDTO(fruitAndVegeService.findAll()), HttpStatus.OK);
-//    }
+
 
     @GetMapping("{name}")
     public ResponseEntity<FruitAndVegeDTO> findByName( @PathVariable String name){
@@ -37,4 +31,39 @@ public class FruitAndVegeController {
         );
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    @GetMapping({"/{id}"})
+//    @ResponseStatus(HttpStatus.OK)
+//    public FruitAndVegeListDTO getFruitAndVegeById(@PathVariable Long id){
+//        return FruitAndVegeService.findById(id);
+//    }
+//    @GetMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    public FruitAndVegeListDTO getListOfFruitAndVeges(){
+//        return new FruitAndVegeListDTO(fruitAndVegeService.findAll());
+//    }
+
+//    @GetMapping
+//    public ResponseEntity<FruitAndVegeListDTO> findAll(){
+//        return new ResponseEntity<FruitAndVegeListDTO>
+//                (new FruitAndVegeListDTO(fruitAndVegeService.findAll()), HttpStatus.OK);
+//    }
 }
