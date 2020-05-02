@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.services;
 
+import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.domain.FruitAndVege;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface FruitAndVegeService {
 
     FruitAndVege save(FruitAndVege fruitAndVege);
 
-    Optional<FruitAndVege> findById(Long id);
+    Optional<FruitAndVegeDTO> findById(Long id);
 
     FruitAndVege findByName(String name);
 

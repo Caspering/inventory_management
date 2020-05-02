@@ -1,5 +1,7 @@
 package com.kasperin.inventory_management.services;
 
+import com.kasperin.inventory_management.api.v1.mapper.FruitAndVegeMapper;
+import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import org.springframework.stereotype.Service;
@@ -10,9 +12,12 @@ import java.util.Optional;
 @Service
 public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
 
+    private final FruitAndVegeMapper fruitAndVegeMapper;
+
     private final FruitAndVegeRepository fruitAndVegeRepository;
 
-    public FruitAndVegeServiceImpl(FruitAndVegeRepository fruitAndVegeRepository) {
+    public FruitAndVegeServiceImpl(FruitAndVegeMapper fruitAndVegeMapper, FruitAndVegeRepository fruitAndVegeRepository) {
+        this.fruitAndVegeMapper = fruitAndVegeMapper;
         this.fruitAndVegeRepository = fruitAndVegeRepository;
     }
 
@@ -22,8 +27,8 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
     }
 
     @Override
-    public Optional<FruitAndVege> findById(Long id) {
-        return fruitAndVegeRepository.findById(id);
+    public Optional<FruitAndVegeDTO> findById(Long id) {
+        return fruitAndVegeRepository.findById(id).map(fruitAndVegeMapper::fruitAndVegeToFruitAndVegeDTO);
     }
 
     @Override
