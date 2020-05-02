@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FruitAndVegeDTO {
 
+    private Long id;
+
     private String Name;
 
     private String barcode;
