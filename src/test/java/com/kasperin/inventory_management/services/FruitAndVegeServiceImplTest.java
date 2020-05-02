@@ -1,5 +1,7 @@
 package com.kasperin.inventory_management.services;
 
+import com.kasperin.inventory_management.api.v1.mapper.FruitAndVegeMapper;
+import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +32,8 @@ class FruitAndVegeServiceImplTest {
 
     FruitAndVegeService fruitAndVegeService;
 
+    FruitAndVegeMapper fruitAndVegeMapper;
+
     @Mock
     FruitAndVegeRepository fruitAndVegeRepository;
 
@@ -37,7 +41,8 @@ class FruitAndVegeServiceImplTest {
     void setUp() throws Exception{
         MockitoAnnotations.initMocks(this);
 
-        fruitAndVegeService = new FruitAndVegeServiceImpl(fruitAndVegeRepository);
+        fruitAndVegeMapper = FruitAndVegeMapper.INSTANCE;
+        fruitAndVegeService = new FruitAndVegeServiceImpl(fruitAndVegeMapper, fruitAndVegeRepository);
     }
 
     @Test
@@ -98,13 +103,16 @@ class FruitAndVegeServiceImplTest {
         when(fruitAndVegeRepository.findById(anyLong()))
                 .thenReturn(java.util.Optional.ofNullable(fruitAndVege));
 
-        Optional<FruitAndVege> result = fruitAndVegeService.findById(ID);
+        Optional<FruitAndVegeDTO> result = fruitAndVegeService.findById(ID);
 
         verify(fruitAndVegeRepository).findById(ID);
 
-        assertEquals(fruitAndVege, result.get());
+        FruitAndVegeDTO dto = result.get();
 
-
+        assertEquals(fruitAndVege.getBarcode(), dto.getBarcode());
+        assertEquals(fruitAndVege.getInStockQuantity(), dto.getInStockQuantity());
+        assertEquals(fruitAndVege.getName(), dto.getName());
+        assertEquals(fruitAndVege.getPrice(), dto.getPrice());
     }
 
     @Test
