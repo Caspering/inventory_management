@@ -9,7 +9,7 @@ public interface FruitAndVegeService {
 
     FruitAndVege save(FruitAndVege fruitAndVege);
 
-    Optional<FruitAndVege> getFruitAndVegeById(Long id);
+    Optional<FruitAndVege> findById(Long id);
 
     FruitAndVege getFruitAndVegeByName(String name);
 

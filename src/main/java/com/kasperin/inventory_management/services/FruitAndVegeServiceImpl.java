@@ -23,7 +23,7 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
     }
 
     @Override
-    public Optional<FruitAndVege> getFruitAndVegeById(Long id) {
+    public Optional<FruitAndVege> findById(Long id) {
         return fruitAndVegeRepository.findById(id);
     }
 
