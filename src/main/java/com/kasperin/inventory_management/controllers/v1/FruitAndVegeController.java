@@ -1,11 +1,7 @@
 package com.kasperin.inventory_management.controllers.v1;
 
-import com.kasperin.inventory_management.model.FruitAndVege;
 import com.kasperin.inventory_management.services.FruitAndVegeService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

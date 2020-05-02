@@ -1,12 +1,11 @@
 package com.kasperin.inventory_management.services;
 
-import com.kasperin.inventory_management.model.FruitAndVege;
+import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class FruitAndVegeServiceImpl implements  FruitAndVegeService{

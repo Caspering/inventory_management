@@ -1,12 +1,13 @@
-package com.kasperin.inventory_management.model;
+package com.kasperin.inventory_management.domain;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
-@Entity
-public class FruitAndVege {
+@MappedSuperclass
+public class BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +28,6 @@ public class FruitAndVege {
 
     @Column
     private Integer InStockQuantity;
+
 
 }

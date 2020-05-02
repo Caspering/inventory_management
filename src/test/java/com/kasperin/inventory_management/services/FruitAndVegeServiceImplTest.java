@@ -1,6 +1,6 @@
 package com.kasperin.inventory_management.services;
 
-import com.kasperin.inventory_management.model.FruitAndVege;
+import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

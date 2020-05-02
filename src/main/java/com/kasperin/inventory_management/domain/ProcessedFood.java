@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.model;
+package com.kasperin.inventory_management.domain;
 
 import lombok.*;
 
