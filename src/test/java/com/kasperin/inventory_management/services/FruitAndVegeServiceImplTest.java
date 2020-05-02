@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -75,6 +76,13 @@ class FruitAndVegeServiceImplTest {
 
         when(fruitAndVegeRepository.findAll())
                 .thenReturn(Arrays.asList(fruitAndVege, fruitAndVege2));
+
+        List<FruitAndVege> result = fruitAndVegeService.findAll();
+
+        verify(fruitAndVegeRepository).findAll();
+
+        assertEquals(Arrays.asList(fruitAndVege, fruitAndVege2), result);
+
     }
 
     @Test
