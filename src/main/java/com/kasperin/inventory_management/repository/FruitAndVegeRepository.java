@@ -1,10 +1,10 @@
 package com.kasperin.inventory_management.repository;
 
 import com.kasperin.inventory_management.model.FruitAndVege;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FruitAndVegeRepository
-        extends CrudRepository<FruitAndVege, Long> {
+        extends JpaRepository<FruitAndVege, Long> {
 
 
     FruitAndVege findByName(String name);
