@@ -18,7 +18,7 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
     }
 
     @Override
-    public FruitAndVege createNewFruitAndVege(FruitAndVege fruitAndVege) {
+    public FruitAndVege save(FruitAndVege fruitAndVege) {
         return fruitAndVegeRepository.save(fruitAndVege);
     }
 

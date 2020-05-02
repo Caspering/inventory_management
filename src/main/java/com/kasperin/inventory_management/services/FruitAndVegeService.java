@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface FruitAndVegeService {
 
-    FruitAndVege createNewFruitAndVege(FruitAndVege fruitAndVege);
+    FruitAndVege save(FruitAndVege fruitAndVege);
 
     Optional<FruitAndVege> getFruitAndVegeById(Long id);
 
