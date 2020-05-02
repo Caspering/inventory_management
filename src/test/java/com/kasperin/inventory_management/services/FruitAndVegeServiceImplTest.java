@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -96,6 +97,22 @@ class FruitAndVegeServiceImplTest {
 
         when(fruitAndVegeRepository.findById(anyLong()))
                 .thenReturn(java.util.Optional.ofNullable(fruitAndVege));
+
+        Optional<FruitAndVege> result = fruitAndVegeService.findById(ID);
+
+        verify(fruitAndVegeRepository).findById(ID);
+
+        assertEquals(fruitAndVege, result.get());
+
+
     }
 
+    @Test
+    void deleteById() {
+
+        fruitAndVegeService.deleteById(ID);
+
+        verify(fruitAndVegeRepository).deleteById(anyLong());
+
+    }
 }
