@@ -4,6 +4,8 @@ import com.kasperin.inventory_management.services.FruitAndVegeService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(FruitAndVegeController.BASE_URL)
 public class FruitAndVegeController {
@@ -17,12 +19,22 @@ public class FruitAndVegeController {
     }
 
 //    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public FruitAndVege getAllFruitAndVegeList(){
-//        return fruitAndVegeService.findAll();
+//    public ResponseEntity<FruitAndVegeDTO> findAll(){
+//        return new ResponseEntity<FruitAndVegeDTO>
+//                (new List<FruitAndVegeDTO>(fruitAndVegeService.findAll()), HttpStatus.OK);
 //    }
 
+//    @GetMapping
+//    public ResponseEntity<FruitAndVegeListDTO> findAll(){
+//        return new ResponseEntity<FruitAndVegeListDTO>
+//                (new FruitAndVegeListDTO(fruitAndVegeService.findAll()), HttpStatus.OK);
+//    }
 
-
+    @GetMapping("{name}")
+    public ResponseEntity<FruitAndVegeDTO> findByName( @PathVariable String name){
+        return new ResponseEntity<FruitAndVegeDTO>(
+                fruitAndVegeService.findByName(name), HttpStatus.OK
+        );
+    }
 
 }
