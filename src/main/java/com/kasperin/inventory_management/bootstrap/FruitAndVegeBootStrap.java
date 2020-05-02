@@ -54,8 +54,4 @@ public class FruitAndVegeBootStrap implements ApplicationListener<ContextRefresh
         
         return fruitAndVeges;
     }
-    
-    
-
-
 }
