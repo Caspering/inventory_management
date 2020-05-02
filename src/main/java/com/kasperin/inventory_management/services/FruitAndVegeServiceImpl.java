@@ -34,9 +34,7 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
 
     @Override
     public List<FruitAndVege> getAllFruitAndVeges() {
-        return fruitAndVegeRepository.findAll()
-                                     .stream()
-                                     .collect(Collectors.toList());
+        return fruitAndVegeRepository.findAll();
     }
 
     @Override
@@ -48,7 +46,7 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
 //    public FruitAndVege updateFruitAndVege(Long id, FruitAndVege fruitAndVege) {
 //        return fruitAndVegeRepository.findById(id).map(fruitAndVege -> {
 //
-//            if (fruitAndVege.getName() !=null){
+//            if (fruitAndVege.getName() != null){
 //                fruitAndVege.setName(fruitAndVege.getName());
 //            }
 //
