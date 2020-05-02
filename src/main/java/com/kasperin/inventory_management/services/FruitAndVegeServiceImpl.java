@@ -64,26 +64,26 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
         return fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(fruitAndVegeRepository.findByName(name));
     }
 
-//    @Override
-//    public FruitAndVegeListDTO findAll() {
-//        return null;
-//    }
-
     @Override
     public FruitAndVegeListDTO findAll() {
-        List<FruitAndVegeDTO> fruitAndVegeDTOS = fruitAndVegeRepository
-                .findAll()
-                .stream()
-                .map(fruitAndVege -> {
-                    FruitAndVegeDTO fruitAndVegeDTO = fruitAndVegeMapper
-                            .fruitAndVegeToFruitAndVegeDTO(fruitAndVege);
-                    fruitAndVegeDTO.setFruitAndVegeUrl(getFruitAndVegeUrl(fruitAndVege.getId()));
-                    return fruitAndVegeDTO;
-                })
-                .collect(Collectors.toList());
-
-        return new FruitAndVegeListDTO(fruitAndVegeDTOS);
+        return null;
     }
+
+//    @Override
+//    public FruitAndVegeListDTO findAll() {
+//        List<FruitAndVegeDTO> fruitAndVegeDTOS = fruitAndVegeRepository
+//                .findAll()
+//                .stream()
+//                .map(fruitAndVege -> {
+//                    FruitAndVegeDTO fruitAndVegeDTO = fruitAndVegeMapper
+//                            .fruitAndVegeToFruitAndVegeDTO(fruitAndVege);
+//                    fruitAndVegeDTO.setFruitAndVegeUrl(getFruitAndVegeUrl(fruitAndVege.getId()));
+//                    return fruitAndVegeDTO;
+//                })
+//                .collect(Collectors.toList());
+//
+//        return new FruitAndVegeListDTO(fruitAndVegeDTOS);
+//    }
 
 //    @Override
 //    public List<FruitAndVegeDTO> findAll() {

@@ -31,9 +31,17 @@ public class FruitAndVegeController {
         );
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public FruitAndVegeDTO createNewVendor(@RequestBody FruitAndVegeDTO fruitAndVegeDTO){
+        return fruitAndVegeService.createNewFruitAndVege(fruitAndVegeDTO);
+    }
 
-
-
+    @DeleteMapping({"/{id}"})
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteFruitAndVege(@PathVariable Long id){
+        fruitAndVegeService.deleteById(id);
+    }
 
 
 
