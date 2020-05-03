@@ -11,7 +11,7 @@ public interface ProcessedFoodRepo
 
     ProcessedFood findByName(String name);
 
-    ProcessedFood findProcessedFoodByFoodType(FoodType foodType);
+    List<ProcessedFood> findAllByFoodType(FoodType foodType);
 
 
 }

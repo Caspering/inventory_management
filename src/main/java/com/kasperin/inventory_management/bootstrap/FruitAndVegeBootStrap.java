@@ -1,7 +1,10 @@
 package com.kasperin.inventory_management.bootstrap;
 
+import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.FruitAndVege;
+import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -14,14 +17,19 @@ public class FruitAndVegeBootStrap implements ApplicationListener<ContextRefresh
 
     private final FruitAndVegeRepository fruitAndVegeRepository;
 
-    public FruitAndVegeBootStrap(FruitAndVegeRepository fruitAndVegeRepository) {
+    private final ProcessedFoodRepo processedFoodRepo;
+
+    public FruitAndVegeBootStrap(FruitAndVegeRepository fruitAndVegeRepository, ProcessedFoodRepo processedFoodRepo) {
         this.fruitAndVegeRepository = fruitAndVegeRepository;
+        this.processedFoodRepo = processedFoodRepo;
     }
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
         fruitAndVegeRepository.saveAll(getFruitAndVeges());
+        processedFoodRepo.saveAll(getProcessedFood());
 
     }
 

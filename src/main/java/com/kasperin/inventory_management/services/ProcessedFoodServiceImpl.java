@@ -21,7 +21,7 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
     }
 
     @Override
-    public ProcessedFood createNewProcessedFood(ProcessedFood processedFood) {
+    public ProcessedFood save(ProcessedFood processedFood) {
         return processedFoodRepo.save(processedFood);
     }
 
@@ -37,9 +37,10 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
     }
 
     @Override
-    public ProcessedFood findByFoodType(FoodType foodType) {
-        return processedFoodRepo.findProcessedFoodByFoodType(foodType);
+    public List<ProcessedFood> findAllByFoodType(FoodType foodType) {
+        return processedFoodRepo.findAllByFoodType(foodType);
     }
+
 
     @Override
     public List<ProcessedFood> findAll() {

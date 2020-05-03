@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface ProcessedFoodService {
 
-    ProcessedFood createNewProcessedFood(ProcessedFood processedFood);
+    ProcessedFood save(ProcessedFood processedFood);
 
     ProcessedFood findById(Long id);
 
     ProcessedFood findByName(String name);
 
-    ProcessedFood findByFoodType(FoodType foodType);
+    List<ProcessedFood> findAllByFoodType (FoodType foodType);
 
     List<ProcessedFood> findAll();
 
