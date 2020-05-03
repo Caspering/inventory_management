@@ -65,9 +65,18 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
     }
 
     @Override
-    public FruitAndVegeListDTO findAll() {
-        return null;
+    public List<FruitAndVege> findAll() {
+        return fruitAndVegeRepository.findAll();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        fruitAndVegeRepository.deleteById(id);
+    }
+
+
+
+
 
 //    @Override
 //    public FruitAndVegeListDTO findAll() {
@@ -93,8 +102,5 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
 //                .collect(Collectors.toList());
 //    }
 
-    @Override
-    public void deleteById(Long id) {
-        fruitAndVegeRepository.deleteById(id);
-    }
+
 }

@@ -22,7 +22,11 @@ public class FruitAndVegeController {
         return FruitAndVegeController.BASE_URL + "/" + id;
     }
 
-
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<FruitAndVege> getAllFruitAndVegeList(){
+        return fruitAndVegeService.findAll();
+    }
 
     @GetMapping("{name}")
     public ResponseEntity<FruitAndVegeDTO> findByName( @PathVariable String name){
@@ -43,35 +47,4 @@ public class FruitAndVegeController {
         fruitAndVegeService.deleteById(id);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    @GetMapping({"/{id}"})
-//    @ResponseStatus(HttpStatus.OK)
-//    public FruitAndVegeListDTO getFruitAndVegeById(@PathVariable Long id){
-//        return FruitAndVegeService.findById(id);
-//    }
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public FruitAndVegeListDTO getListOfFruitAndVeges(){
-//        return new FruitAndVegeListDTO(fruitAndVegeService.findAll());
-//    }
-
-//    @GetMapping
-//    public ResponseEntity<FruitAndVegeListDTO> findAll(){
-//        return new ResponseEntity<FruitAndVegeListDTO>
-//                (new FruitAndVegeListDTO(fruitAndVegeService.findAll()), HttpStatus.OK);
-//    }
 }

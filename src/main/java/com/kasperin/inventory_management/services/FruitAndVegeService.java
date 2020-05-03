@@ -17,7 +17,7 @@ public interface FruitAndVegeService {
 
     FruitAndVegeDTO findByName(String name);
 
-    FruitAndVegeListDTO findAll();
+    List<FruitAndVege> findAll();
 
     void deleteById(Long id);
 
