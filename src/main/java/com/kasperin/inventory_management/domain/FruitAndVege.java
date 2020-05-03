@@ -12,9 +12,9 @@ public class FruitAndVege {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public boolean isNew() {
-        return this.id == null;
-    }
+//    public boolean isNew() {
+//        return this.id == null;
+//    }
 
     @Column
     private String name;
