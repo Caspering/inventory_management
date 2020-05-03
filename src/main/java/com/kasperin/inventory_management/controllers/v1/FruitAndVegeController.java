@@ -18,9 +18,6 @@ public class FruitAndVegeController {
         this.fruitAndVegeService = fruitAndVegeService;
     }
 
-    private String getCustomerUrl(Long id) {
-        return FruitAndVegeController.BASE_URL + "/" + id;
-    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
