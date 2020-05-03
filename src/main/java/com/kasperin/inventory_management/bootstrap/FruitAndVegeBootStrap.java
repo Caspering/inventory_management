@@ -62,4 +62,40 @@ public class FruitAndVegeBootStrap implements ApplicationListener<ContextRefresh
         
         return fruitAndVeges;
     }
+
+    private List<ProcessedFood> getProcessedFood() {
+
+        List<ProcessedFood> proFood = new ArrayList<>();
+            
+        ProcessedFood savedProcessedFood = new ProcessedFood();
+//        savedProcessedFood.setId(1L);
+        savedProcessedFood.setName("Chips");
+        savedProcessedFood.setBarcode("12345");
+        savedProcessedFood.setPrice(1.3);
+        savedProcessedFood.setFoodType(FoodType.VEGAN);
+        
+        proFood.add(savedProcessedFood);
+
+
+        ProcessedFood proFood2 = new ProcessedFood();
+//        proFood2.setId(1L);
+        proFood2.setName("burger");
+        proFood2.setBarcode("12345");
+        proFood2.setPrice(1.3);
+        proFood2.setFoodType(FoodType.VEGAN);
+
+        proFood.add(proFood2);
+
+        ProcessedFood proFood3 = new ProcessedFood();
+//        proFood3.setId(1L);
+        proFood3.setName("fries");
+        proFood3.setBarcode("12345");
+        proFood3.setPrice(1.3);
+        proFood3.setFoodType(FoodType.NONVEGAN);
+
+        proFood.add(proFood3);
+        
+        return proFood;
+
+    }    
 }
