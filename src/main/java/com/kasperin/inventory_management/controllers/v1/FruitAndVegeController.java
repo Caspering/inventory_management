@@ -43,7 +43,7 @@ public class FruitAndVegeController {
         return fruitAndVegeService.createNewFruitAndVege(fruitAndVegeDTO);
     }
 
-    @DeleteMapping({"/{id}"})
+    @DeleteMapping({"{id}"})
     @ResponseStatus(HttpStatus.OK)
     public void deleteFruitAndVege(@PathVariable Long id){
         fruitAndVegeService.deleteById(id);

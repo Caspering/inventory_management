@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping(ProcessedFoodController.BASE_URL)
 public class ProcessedFoodController {
 
-    public static final String BASE_URL = "api/v1/processedFoods/";
+    public static final String BASE_URL = "api/v1/processedFoods";
 
     private final ProcessedFoodService processedFoodService;
 
@@ -31,10 +31,10 @@ public class ProcessedFoodController {
         return processedFoodService.findByName(name);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{ID}")
     @ResponseStatus(HttpStatus.OK)
-    public ProcessedFood findById(@PathVariable Long id){
-        return processedFoodService.findById(id);
+    public ProcessedFood findById(@PathVariable String ID){
+        return processedFoodService.findById(Long.valueOf(ID));
     }
 
     @PostMapping
@@ -43,10 +43,10 @@ public class ProcessedFoodController {
         return processedFoodService.save(processedFood);
     }
 
-    @DeleteMapping({"/{id}"})
+    @DeleteMapping({"{ID}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteById(@PathVariable Long id){
-        processedFoodService.deleteById(id);
+    public void deleteById(@PathVariable String ID){
+        processedFoodService.deleteById(Long.valueOf(ID));
     }
 
 }

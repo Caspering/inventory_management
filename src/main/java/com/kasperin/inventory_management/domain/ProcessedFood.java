@@ -40,5 +40,5 @@ public class ProcessedFood {
     @Enumerated(value = EnumType.STRING)
     private FoodType foodType;
 
-
+    private String processedFoodUrl;
 }

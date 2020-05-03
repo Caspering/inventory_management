@@ -6,12 +6,14 @@ import com.kasperin.inventory_management.api.v1.model.FruitAndVegeListDTO;
 import com.kasperin.inventory_management.controllers.v1.FruitAndVegeController;
 import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
 
@@ -71,7 +73,13 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
 
     @Override
     public void deleteById(Long id) {
-        fruitAndVegeRepository.deleteById(id);
+        if(fruitAndVegeRepository.findById(id).isPresent()) {
+            fruitAndVegeRepository.deleteById(id);
+            log.info("Fruit or Vegetable with id:" + id +  " successfully deleted");
+        } else {
+            log.debug("Fruit or Vegetable with id: " + id + " not found");
+            throw new ResourceNotFoundException("Fruit or Vegetable id: " + id + " not found");
+        }
     }
 
 
