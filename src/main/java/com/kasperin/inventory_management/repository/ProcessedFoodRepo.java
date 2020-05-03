@@ -1,17 +1,17 @@
 package com.kasperin.inventory_management.repository;
 
+import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ProcessedFoodRepo extends JpaRepository<ProcessedFood, Long> {
+public interface ProcessedFoodRepo
+        extends JpaRepository<ProcessedFood, Long> {
 
     ProcessedFood findByName(String name);
 
-    ProcessedFood findByBarcode(long barcode);
-
-    List<ProcessedFood> findAllProcessedFoodByNameLike(String name);
+    List<ProcessedFood> findAllByFoodType(FoodType foodType);
 
 
 }
