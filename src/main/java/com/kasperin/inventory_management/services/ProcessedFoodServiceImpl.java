@@ -1,17 +1,12 @@
 package com.kasperin.inventory_management.services;
 
-import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.controllers.v1.FruitAndVegeController;
 import com.kasperin.inventory_management.domain.FoodType;
-import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,12 +32,7 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     @Override
     public ProcessedFood findById(Long id) {
-        return processedFoodRepo.findById(id)
-                .map(processedFood -> {
-                    //set API URL
-                    processedFood.setProcessedFoodUrl(getProcessedFoodUrl(id));
-                    return processedFood;
-                }).orElseThrow(ResourceNotFoundException::new);
+        return processedFoodRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
