@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.controllers.v1;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kasperin.inventory_management.controllers.RestResponseEntityExceptionHandler;
 import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
@@ -7,6 +8,7 @@ import com.kasperin.inventory_management.services.ProcessedFoodService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
@@ -18,13 +20,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class ProcessedFoodControllerTest {
+
+    ObjectMapper objectMapper;
 
     @Mock
     ProcessedFoodService processedFoodService;
@@ -35,6 +41,7 @@ class ProcessedFoodControllerTest {
 
     @BeforeEach
     void setUp() {
+        objectMapper = new ObjectMapper();
         controller = new ProcessedFoodController(processedFoodService);
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
@@ -97,8 +104,8 @@ class ProcessedFoodControllerTest {
         // when
         mockMvc.perform(get("/api/v1/processedFoods?type=NONVEGAN")
                 .accept(MediaType.APPLICATION_JSON))
-        // then
-        .andExpect(status().isOk())
+                // then
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].foodType").value(FoodType.NONVEGAN.name()));
 
         verify(processedFoodService).findByType(eq(FoodType.NONVEGAN));
@@ -166,7 +173,25 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void createNewProcessedFood() {
+    void createNewProcessedFood() throws Exception {
+        ArgumentCaptor<ProcessedFood> processedFoodCaptor = ArgumentCaptor.forClass(ProcessedFood.class);
+        // given
+        ProcessedFood pf = new ProcessedFood();
+        pf.setId(1L);
+
+        when(processedFoodService.save(any())).thenReturn(pf);
+
+        // when
+        mockMvc.perform(
+                post("/api/v1/processedFoods")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(pf)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L));
+
+        verify(processedFoodService).save(processedFoodCaptor.capture());
+
+        assertEquals(pf.getId(), processedFoodCaptor.getValue().getId());
     }
 
     @Test
