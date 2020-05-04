@@ -80,6 +80,20 @@ class ProcessedFoodServiceImplTest {
 
     @Test
     void findByName() {
+        // given
+        ProcessedFood processedFood = new ProcessedFood();
+        processedFood.setId(ID);
+        processedFood.setName(NAME);
+
+        when(processedFoodRepo.findByName(anyString())).thenReturn(processedFood);
+
+        // when
+        ProcessedFood result = processedFoodService.findByName(NAME);
+
+        // then
+        verify(processedFoodRepo).findByName(eq(NAME));
+
+        assertEquals(processedFood, result);
     }
 
     @Test
