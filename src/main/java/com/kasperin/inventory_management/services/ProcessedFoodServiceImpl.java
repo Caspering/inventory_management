@@ -56,12 +56,6 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
                 .collect(Collectors.toList());
     }
 
-//    @Override
-//    public List<ProcessedFood> findAllByFoodType(FoodType foodType) {
-//        return processedFoodRepo.findAllByFoodType(foodType);
-//    }
-
-
     @Override
     public List<ProcessedFood> findAll() {
         return processedFoodRepo.findAll();

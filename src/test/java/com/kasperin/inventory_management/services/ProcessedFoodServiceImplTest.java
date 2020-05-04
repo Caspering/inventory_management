@@ -9,6 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -97,11 +100,18 @@ class ProcessedFoodServiceImplTest {
     }
 
     @Test
-    void findAllByFoodType() {
-    }
-
-    @Test
     void findAll() {
+        // given
+        List<ProcessedFood> processedFoods = Arrays.asList(new ProcessedFood(), new ProcessedFood());
+
+        when(processedFoodRepo.findAll()).thenReturn(processedFoods);
+
+        // when
+        List<ProcessedFood> result = processedFoodService.findAll();
+
+        // then
+        verify(processedFoodRepo).findAll();
+        assertEquals(2, result.size());
     }
 
     @Test
