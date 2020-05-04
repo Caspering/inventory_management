@@ -75,7 +75,7 @@ class ProcessedFoodServiceImplTest {
         // then
         verify(processedFoodRepo).findById(eq(ID));
 
-        assertEquals(ID, processedFood.getId());
+        assertEquals(ID, result.getId());
     }
 
     @Test
