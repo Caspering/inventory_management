@@ -42,24 +42,13 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
     }
 
     @Override
-    public List<ProcessedFood> findAllVegan() {
-        return processedFoodRepo.findAll()
-                .stream()
-                .filter(processedFood -> processedFood.getFoodType().equals(FoodType.VEGAN))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProcessedFood> findAllNonVegan() {
-        return processedFoodRepo.findAll()
-                .stream()
-                .filter(processedFood -> processedFood.getFoodType().equals(FoodType.NONVEGAN))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<ProcessedFood> findAll() {
         return processedFoodRepo.findAll();
+    }
+
+    @Override
+    public List<ProcessedFood> findByType(FoodType foodType) {
+        return processedFoodRepo.findAllByFoodType(foodType);
     }
 
     @Override

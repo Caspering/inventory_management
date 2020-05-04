@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.services;
 
+import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 
 import java.util.List;
@@ -13,11 +14,9 @@ public interface ProcessedFoodService {
 
     Optional<ProcessedFood> findByName(String name);
 
-    List<ProcessedFood> findAllVegan();
-
-    List<ProcessedFood> findAllNonVegan();
-
     List<ProcessedFood> findAll();
+
+    List<ProcessedFood> findByType(FoodType foodType);
 
     void deleteById(Long id);
 
