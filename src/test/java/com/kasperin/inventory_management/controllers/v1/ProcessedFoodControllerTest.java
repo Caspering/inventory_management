@@ -50,6 +50,7 @@ class ProcessedFoodControllerTest {
         // when
         mockMvc.perform(
                 get("/api/v1/processedFoods").contentType(MediaType.APPLICATION_JSON))
+                // then
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[1].id").value(2L));
