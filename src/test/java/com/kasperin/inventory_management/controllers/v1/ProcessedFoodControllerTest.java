@@ -161,6 +161,8 @@ class ProcessedFoodControllerTest {
         // when
         mockMvc.perform(get("/api/v1/processedFoods/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+
+        verify(processedFoodService).findById(anyLong());
     }
 
     @Test
