@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +34,7 @@ class ProcessedFoodServiceImplTest {
     ProcessedFoodServiceImpl processedFoodService;
 
     @Mock
-    ProcessedFoodRepo processedFoodRepo;
+    ProcessedFoodRepo processedFoodRepository;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -53,12 +52,12 @@ class ProcessedFoodServiceImplTest {
         savedProcessedFood.setPrice(PRICE);
         savedProcessedFood.setFoodType(FOODTYPE);
 
-        when(processedFoodRepo.save(any()))
+        when(processedFoodRepository.save(any()))
                 .thenReturn(savedProcessedFood);
 
         ProcessedFood result = processedFoodService.save(savedProcessedFood);
 
-        verify(processedFoodRepo).save(any());
+        verify(processedFoodRepository).save(any());
 
         assertEquals(savedProcessedFood, result);
 
@@ -70,13 +69,13 @@ class ProcessedFoodServiceImplTest {
         ProcessedFood processedFood = new ProcessedFood();
         processedFood.setId(ID);
 
-        when(processedFoodRepo.findById(anyLong())).thenReturn(Optional.of(processedFood));
+        when(processedFoodRepository.findById(anyLong())).thenReturn(Optional.of(processedFood));
 
         // when
         ProcessedFood result = processedFoodService.findById(ID);
 
         // then
-        verify(processedFoodRepo).findById(eq(ID));
+        verify(processedFoodRepository).findById(eq(ID));
 
         assertEquals(ID, result.getId());
     }
@@ -88,13 +87,13 @@ class ProcessedFoodServiceImplTest {
         processedFood.setId(ID);
         processedFood.setName(NAME);
 
-        when(processedFoodRepo.findByName(anyString())).thenReturn(processedFood);
+        when(processedFoodRepository.findByName(anyString())).thenReturn(processedFood);
 
         // when
         ProcessedFood result = processedFoodService.findByName(NAME);
 
         // then
-        verify(processedFoodRepo).findByName(eq(NAME));
+        verify(processedFoodRepository).findByName(eq(NAME));
 
         assertEquals(processedFood, result);
     }
@@ -104,17 +103,22 @@ class ProcessedFoodServiceImplTest {
         // given
         List<ProcessedFood> processedFoods = Arrays.asList(new ProcessedFood(), new ProcessedFood());
 
-        when(processedFoodRepo.findAll()).thenReturn(processedFoods);
+        when(processedFoodRepository.findAll()).thenReturn(processedFoods);
 
         // when
         List<ProcessedFood> result = processedFoodService.findAll();
 
         // then
-        verify(processedFoodRepo).findAll();
+        verify(processedFoodRepository).findAll();
         assertEquals(2, result.size());
     }
 
     @Test
     void deleteById() {
+        // given - no conditions
+        // when
+        processedFoodService.deleteById(ID);
+        // then
+        processedFoodRepository.deleteById(eq(ID));
     }
 }

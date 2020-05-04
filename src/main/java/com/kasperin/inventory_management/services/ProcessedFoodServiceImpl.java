@@ -63,13 +63,6 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     @Override
     public void deleteById(Long id) {
-        if(processedFoodRepo.findById(id).isPresent()) {
-            processedFoodRepo.deleteById(id);
-            log.info("Processed Food with id:" + id +  " successfully deleted");
-        } else {
-            log.debug("Processed Food with id: " + id + " not found");
-            throw new ResourceNotFoundException("Processed Food id: " + id + " not found");
-        }
-
+        processedFoodRepo.deleteById(id);
     }
 }
