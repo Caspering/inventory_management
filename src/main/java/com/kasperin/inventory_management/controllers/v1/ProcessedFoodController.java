@@ -31,7 +31,7 @@ public class ProcessedFoodController {
         }
     }
 
-    @GetMapping("{name}")
+    @GetMapping(value = "/by-name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ProcessedFood findByName(@PathVariable String name) {
         return processedFoodService.findByName(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

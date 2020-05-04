@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -102,7 +103,35 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void findByName() {
+    void findByName() throws Exception {
+        final Long id = 1L;
+        final String name = "name";
+
+        // given
+        ProcessedFood pf = new ProcessedFood();
+        pf.setId(id);
+        pf.setName(name);
+
+        when(processedFoodService.findByName(anyString())).thenReturn(Optional.of(pf));
+
+        // when
+        mockMvc.perform(get("/api/v1/processedFoods/by-name/name").accept(MediaType.APPLICATION_JSON))
+                // then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.name").value(name));
+
+        verify(processedFoodService).findByName(eq(name));
+    }
+
+    @Test
+    void findByName_notFound() throws Exception {
+        // given
+        when(processedFoodService.findByName(anyString())).thenReturn(Optional.empty());
+
+        // when
+        mockMvc.perform(get("/api/v1/processedFoods/by-name/wat").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test
