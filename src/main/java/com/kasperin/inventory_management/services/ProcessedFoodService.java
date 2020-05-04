@@ -15,7 +15,9 @@ public interface ProcessedFoodService {
 
     ProcessedFood findByName(String name);
 
-    List<ProcessedFood> findAllByFoodType (FoodType foodType);
+    List<ProcessedFood> findAllVegan();
+
+    List<ProcessedFood> findAllNonVegan();
 
     List<ProcessedFood> findAll();
 

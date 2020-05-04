@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.controllers.v1;
 
+import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.services.ProcessedFoodService;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import java.util.List;
 @RequestMapping(ProcessedFoodController.BASE_URL)
 public class ProcessedFoodController {
 
-    public static final String BASE_URL = "api/v1/processedFoods";
+    public static final String BASE_URL = "api/v1/processedFoods/";
 
     private final ProcessedFoodService processedFoodService;
 
@@ -29,6 +30,18 @@ public class ProcessedFoodController {
     @ResponseStatus(HttpStatus.OK)
     public ProcessedFood findByName(@PathVariable String name){
         return processedFoodService.findByName(name);
+    }
+
+    @GetMapping("/NONVEGAN")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProcessedFood> findAllNonVegan() {
+        return processedFoodService.findAllNonVegan();
+    }
+
+    @GetMapping("/VEGAN")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProcessedFood> findAllVegan() {
+        return processedFoodService.findAllVegan();
     }
 
     @GetMapping("{ID}")

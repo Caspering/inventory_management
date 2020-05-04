@@ -11,13 +11,16 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     private final ProcessedFoodRepo processedFoodRepo;
+
 
     public ProcessedFoodServiceImpl(ProcessedFoodRepo processedFoodRepo) {
         this.processedFoodRepo = processedFoodRepo;
@@ -48,9 +51,25 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
     }
 
     @Override
-    public List<ProcessedFood> findAllByFoodType(FoodType foodType) {
-        return processedFoodRepo.findAllByFoodType(foodType);
+    public List<ProcessedFood> findAllVegan() {
+        return processedFoodRepo.findAll()
+                .stream()
+                .filter(processedFood -> processedFood.getFoodType().equals(FoodType.VEGAN))
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ProcessedFood> findAllNonVegan() {
+        return processedFoodRepo.findAll()
+                .stream()
+                .filter(processedFood -> processedFood.getFoodType().equals(FoodType.NONVEGAN))
+                .collect(Collectors.toList());
+    }
+
+//    @Override
+//    public List<ProcessedFood> findAllByFoodType(FoodType foodType) {
+//        return processedFoodRepo.findAllByFoodType(foodType);
+//    }
 
 
     @Override
