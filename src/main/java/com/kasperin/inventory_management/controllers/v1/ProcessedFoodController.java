@@ -2,10 +2,10 @@ package com.kasperin.inventory_management.controllers.v1;
 
 import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
-import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.kasperin.inventory_management.services.ProcessedFoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,11 +17,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProcessedFoodController {
 
-    public static final String BASE_URL = "api/v1/processedFoods/";
+    public static final String BASE_URL = "/api/v1/processedFoods";
 
     private final ProcessedFoodService processedFoodService;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<ProcessedFood> findAll(@RequestParam("type") Optional<FoodType> foodType) {
         if (foodType.isPresent()) { // type specified, filter
