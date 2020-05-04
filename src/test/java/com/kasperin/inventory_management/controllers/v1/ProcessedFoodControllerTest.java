@@ -22,8 +22,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -184,6 +183,7 @@ class ProcessedFoodControllerTest {
         // when
         mockMvc.perform(
                 post("/api/v1/processedFoods")
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pf)))
                 .andExpect(status().isCreated())
@@ -195,6 +195,11 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteById() throws Exception {
+        // when
+        mockMvc.perform(delete("/api/v1/processedFoods/1"))
+                .andExpect(status().isOk());
+
+        verify(processedFoodService).deleteById(eq(1L));
     }
 }
