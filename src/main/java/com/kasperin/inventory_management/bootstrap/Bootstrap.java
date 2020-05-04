@@ -5,6 +5,7 @@ import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -12,14 +13,15 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
-public class FruitAndVegeBootStrap implements ApplicationListener<ContextRefreshedEvent> {
+public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private final FruitAndVegeRepository fruitAndVegeRepository;
 
     private final ProcessedFoodRepo processedFoodRepo;
 
-    public FruitAndVegeBootStrap(FruitAndVegeRepository fruitAndVegeRepository, ProcessedFoodRepo processedFoodRepo) {
+    public Bootstrap(FruitAndVegeRepository fruitAndVegeRepository, ProcessedFoodRepo processedFoodRepo) {
         this.fruitAndVegeRepository = fruitAndVegeRepository;
         this.processedFoodRepo = processedFoodRepo;
     }
@@ -28,9 +30,11 @@ public class FruitAndVegeBootStrap implements ApplicationListener<ContextRefresh
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
-        fruitAndVegeRepository.saveAll(getFruitAndVeges());
-        processedFoodRepo.saveAll(getProcessedFood());
+        List<FruitAndVege> savedFAV = fruitAndVegeRepository.saveAll(getFruitAndVeges());
+        log.info("Produce saved: {}", savedFAV);
 
+        List<ProcessedFood> savedPF = processedFoodRepo.saveAll(getProcessedFood());
+        log.info("Processed foods saved: {}", savedPF);
     }
 
     private List<FruitAndVege> getFruitAndVeges(){
