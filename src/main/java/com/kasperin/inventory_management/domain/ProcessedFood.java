@@ -6,13 +6,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Data
-@Setter
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table
 public class ProcessedFood {
 
     @Id
@@ -29,7 +26,7 @@ public class ProcessedFood {
     private Double price;
 
     @Column
-    private Integer InStockQuantity;
+    private Integer inStockQuantity;
 
     @Column
     private Date mfgDate;
