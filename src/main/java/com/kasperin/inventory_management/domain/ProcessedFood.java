@@ -28,13 +28,13 @@ public class ProcessedFood {
     @Column
     private Integer inStockQuantity;
 
+    @Enumerated(value = EnumType.STRING)
+    private FoodType foodType;
+
     @Column
     private Date mfgDate;
 
     @Column
     private Date expDate;
-
-    @Enumerated(value = EnumType.STRING)
-    private FoodType foodType;
 
 }
