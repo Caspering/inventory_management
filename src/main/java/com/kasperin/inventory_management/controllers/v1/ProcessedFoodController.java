@@ -3,6 +3,7 @@ package com.kasperin.inventory_management.controllers.v1;
 import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.services.ProcessedFoodService;
+import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,13 +35,13 @@ public class ProcessedFoodController {
     @GetMapping(value = "/by-name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ProcessedFood findByName(@PathVariable String name) {
-        return processedFoodService.findByName(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return processedFoodService.findByName(name).orElseThrow(ResourceNotFoundException::new);
     }
 
     @GetMapping("{ID}")
     @ResponseStatus(HttpStatus.OK)
     public ProcessedFood findById(@PathVariable String ID) {
-        return processedFoodService.findById(Long.valueOf(ID));
+        return processedFoodService.findById(Long.valueOf(ID)).orElseThrow(ResourceNotFoundException::new);
     }
 
     @PostMapping

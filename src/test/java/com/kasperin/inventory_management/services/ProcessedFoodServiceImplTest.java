@@ -72,7 +72,7 @@ class ProcessedFoodServiceImplTest {
         when(processedFoodRepository.findById(anyLong())).thenReturn(Optional.of(processedFood));
 
         // when
-        ProcessedFood result = processedFoodService.findById(ID);
+        ProcessedFood result = processedFoodService.findById(ID).get();
 
         // then
         verify(processedFoodRepository).findById(eq(ID));

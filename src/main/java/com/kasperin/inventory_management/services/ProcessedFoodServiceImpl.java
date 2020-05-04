@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,8 +31,8 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
     }
 
     @Override
-    public ProcessedFood findById(Long id) {
-        return processedFoodRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
+    public Optional<ProcessedFood> findById(Long id) {
+        return processedFoodRepo.findById(id);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.controllers.v1;
 
+import com.kasperin.inventory_management.controllers.RestResponseEntityExceptionHandler;
 import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.services.ProcessedFoodService;
@@ -36,7 +37,9 @@ class ProcessedFoodControllerTest {
     void setUp() {
         controller = new ProcessedFoodController(processedFoodService);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
     }
 
     @Test
@@ -135,7 +138,29 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void findById() {
+    void findById() throws Exception {
+        // given
+        ProcessedFood pf = new ProcessedFood();
+        pf.setId(1L);
+
+        when(processedFoodService.findById(anyLong())).thenReturn(Optional.of(pf));
+
+        // when
+        mockMvc.perform(get("/api/v1/processedFoods/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L));
+
+        verify(processedFoodService).findById(anyLong());
+    }
+
+    @Test
+    void findById_notFound() throws Exception {
+        // given
+        when(processedFoodService.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        mockMvc.perform(get("/api/v1/processedFoods/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test

@@ -10,7 +10,7 @@ public interface ProcessedFoodService {
 
     ProcessedFood save(ProcessedFood processedFood);
 
-    ProcessedFood findById(Long id);
+    Optional<ProcessedFood> findById(Long id);
 
     Optional<ProcessedFood> findByName(String name);
 
