@@ -5,6 +5,7 @@ import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -12,14 +13,15 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
-public class FruitAndVegeBootStrap implements ApplicationListener<ContextRefreshedEvent> {
+public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private final FruitAndVegeRepository fruitAndVegeRepository;
 
     private final ProcessedFoodRepo processedFoodRepo;
 
-    public FruitAndVegeBootStrap(FruitAndVegeRepository fruitAndVegeRepository, ProcessedFoodRepo processedFoodRepo) {
+    public Bootstrap(FruitAndVegeRepository fruitAndVegeRepository, ProcessedFoodRepo processedFoodRepo) {
         this.fruitAndVegeRepository = fruitAndVegeRepository;
         this.processedFoodRepo = processedFoodRepo;
     }
@@ -28,9 +30,11 @@ public class FruitAndVegeBootStrap implements ApplicationListener<ContextRefresh
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
-        fruitAndVegeRepository.saveAll(getFruitAndVeges());
-        processedFoodRepo.saveAll(getProcessedFood());
+        List<FruitAndVege> savedFAV = fruitAndVegeRepository.saveAll(getFruitAndVeges());
+        log.info("Produce saved: {}", savedFAV);
 
+        List<ProcessedFood> savedPF = processedFoodRepo.saveAll(getProcessedFood());
+        log.info("Processed foods saved: {}", savedPF);
     }
 
     private List<FruitAndVege> getFruitAndVeges(){
@@ -62,4 +66,40 @@ public class FruitAndVegeBootStrap implements ApplicationListener<ContextRefresh
         
         return fruitAndVeges;
     }
+
+    private List<ProcessedFood> getProcessedFood() {
+
+        List<ProcessedFood> proFood = new ArrayList<>();
+            
+        ProcessedFood savedProcessedFood = new ProcessedFood();
+//        savedProcessedFood.setId(1L);
+        savedProcessedFood.setName("Chips");
+        savedProcessedFood.setBarcode("12345");
+        savedProcessedFood.setPrice(1.3);
+        savedProcessedFood.setFoodType(FoodType.VEGAN);
+        
+        proFood.add(savedProcessedFood);
+
+
+        ProcessedFood proFood2 = new ProcessedFood();
+//        proFood2.setId(1L);
+        proFood2.setName("burger");
+        proFood2.setBarcode("12345");
+        proFood2.setPrice(1.3);
+        proFood2.setFoodType(FoodType.VEGAN);
+
+        proFood.add(proFood2);
+
+        ProcessedFood proFood3 = new ProcessedFood();
+//        proFood3.setId(1L);
+        proFood3.setName("fries");
+        proFood3.setBarcode("12345");
+        proFood3.setPrice(1.3);
+        proFood3.setFoodType(FoodType.NONVEGAN);
+
+        proFood.add(proFood3);
+        
+        return proFood;
+
+    }    
 }

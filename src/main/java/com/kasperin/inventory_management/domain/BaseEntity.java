@@ -27,7 +27,7 @@ public class BaseEntity implements Serializable {
     private Double price;
 
     @Column
-    private Integer InStockQuantity;
+    private Integer inStockQuantity;
 
 
 }

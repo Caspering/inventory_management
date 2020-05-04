@@ -1,8 +1,13 @@
 package com.kasperin.inventory_management.controllers.v1;
 
+import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
+import com.kasperin.inventory_management.api.v1.model.FruitAndVegeListDTO;
+import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.services.FruitAndVegeService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -10,7 +15,7 @@ import java.util.List;
 @RequestMapping(FruitAndVegeController.BASE_URL)
 public class FruitAndVegeController {
 
-    public static final String BASE_URL = "/api/v1/customers";
+    public static final String BASE_URL = "/api/v1/fruitAndVeges";
 
     private final FruitAndVegeService fruitAndVegeService;
 
@@ -18,9 +23,6 @@ public class FruitAndVegeController {
         this.fruitAndVegeService = fruitAndVegeService;
     }
 
-    private String getCustomerUrl(Long id) {
-        return FruitAndVegeController.BASE_URL + "/" + id;
-    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -41,7 +43,7 @@ public class FruitAndVegeController {
         return fruitAndVegeService.createNewFruitAndVege(fruitAndVegeDTO);
     }
 
-    @DeleteMapping({"/{id}"})
+    @DeleteMapping({"{id}"})
     @ResponseStatus(HttpStatus.OK)
     public void deleteFruitAndVege(@PathVariable Long id){
         fruitAndVegeService.deleteById(id);

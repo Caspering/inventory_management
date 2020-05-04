@@ -6,14 +6,16 @@ import com.kasperin.inventory_management.api.v1.model.FruitAndVegeListDTO;
 import com.kasperin.inventory_management.controllers.v1.FruitAndVegeController;
 import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
-public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
+public class FruitAndVegeServiceImpl implements FruitAndVegeService {
 
     private final FruitAndVegeMapper fruitAndVegeMapper;
 
@@ -50,7 +52,7 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
 
     @Override
     public FruitAndVegeDTO findById(Long id) {
-        return  fruitAndVegeRepository.findById(id)
+        return fruitAndVegeRepository.findById(id)
                 .map(fruitAndVegeMapper::fruitAndVegeToFruitAndVegeDTO)
                 .map(fruitAndVegeDTO -> {
                     //set API URL
@@ -73,34 +75,6 @@ public class FruitAndVegeServiceImpl implements  FruitAndVegeService{
     public void deleteById(Long id) {
         fruitAndVegeRepository.deleteById(id);
     }
-
-
-
-
-
-//    @Override
-//    public FruitAndVegeListDTO findAll() {
-//        List<FruitAndVegeDTO> fruitAndVegeDTOS = fruitAndVegeRepository
-//                .findAll()
-//                .stream()
-//                .map(fruitAndVege -> {
-//                    FruitAndVegeDTO fruitAndVegeDTO = fruitAndVegeMapper
-//                            .fruitAndVegeToFruitAndVegeDTO(fruitAndVege);
-//                    fruitAndVegeDTO.setFruitAndVegeUrl(getFruitAndVegeUrl(fruitAndVege.getId()));
-//                    return fruitAndVegeDTO;
-//                })
-//                .collect(Collectors.toList());
-//
-//        return new FruitAndVegeListDTO(fruitAndVegeDTOS);
-//    }
-
-//    @Override
-//    public List<FruitAndVegeDTO> findAll() {
-//        return fruitAndVegeRepository.findAll()
-//                .stream()
-//                .map(fruitAndVegeMapper::fruitAndVegeToFruitAndVegeDTO)
-//                .collect(Collectors.toList());
-//    }
 
 
 }
