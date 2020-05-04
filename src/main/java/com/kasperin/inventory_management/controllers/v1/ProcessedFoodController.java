@@ -1,10 +1,10 @@
 package com.kasperin.inventory_management.controllers.v1;
 
-import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.services.ProcessedFoodService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class ProcessedFoodController {
     @GetMapping("{name}")
     @ResponseStatus(HttpStatus.OK)
     public ProcessedFood findByName(@PathVariable String name){
-        return processedFoodService.findByName(name);
+        return processedFoodService.findByName(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/NONVEGAN")
