@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.controllers.v1;
 
+import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.services.ProcessedFoodService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,9 +13,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -54,11 +56,49 @@ class ProcessedFoodControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[1].id").value(2L));
+
+        verify(processedFoodService).findAll();
+        verify(processedFoodService, never()).findByType(any());
     }
 
     @Test
-    void findAllByType() {
+    void findAllByType_vegan() throws Exception {
+        // given
+        ProcessedFood pf = new ProcessedFood();
+        pf.setId(1L);
+        pf.setFoodType(FoodType.VEGAN);
 
+        when(processedFoodService.findByType(any())).thenReturn(Collections.singletonList(pf));
+
+        // when
+        mockMvc.perform(get("/api/v1/processedFoods?type=VEGAN")
+                .accept(MediaType.APPLICATION_JSON))
+                // then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].foodType").value(FoodType.VEGAN.name()));
+
+        verify(processedFoodService).findByType(eq(FoodType.VEGAN));
+        verify(processedFoodService, never()).findAll();
+    }
+
+    @Test
+    void findAllByType_nonvegan() throws Exception {
+        // given
+        ProcessedFood pf = new ProcessedFood();
+        pf.setId(1L);
+        pf.setFoodType(FoodType.NONVEGAN);
+
+        when(processedFoodService.findByType(any())).thenReturn(Collections.singletonList(pf));
+
+        // when
+        mockMvc.perform(get("/api/v1/processedFoods?type=NONVEGAN")
+                .accept(MediaType.APPLICATION_JSON))
+        // then
+        .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].foodType").value(FoodType.NONVEGAN.name()));
+
+        verify(processedFoodService).findByType(eq(FoodType.NONVEGAN));
+        verify(processedFoodService, never()).findAll();
     }
 
     @Test
