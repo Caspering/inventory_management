@@ -87,10 +87,12 @@ class ProcessedFoodServiceImplTest {
         processedFood.setId(ID);
         processedFood.setName(NAME);
 
-        when(processedFoodRepository.findByName(anyString())).thenReturn(Optional.of(processedFood));
+        when(processedFoodRepository.findByName(anyString()))
+                .thenReturn(Optional.of(processedFood));
 
         // when
-        Optional<ProcessedFood> result = processedFoodService.findByName(NAME);
+        Optional<ProcessedFood> result = processedFoodService
+                .findByName(NAME);
 
         // then
         verify(processedFoodRepository).findByName(eq(NAME));

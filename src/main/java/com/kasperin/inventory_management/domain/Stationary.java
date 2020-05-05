@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 @Builder
 @Entity
 public class Stationary  extends BaseEntity{
