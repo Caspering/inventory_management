@@ -39,7 +39,6 @@ class ProcessedFoodServiceImplTest {
     @BeforeEach
     void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-
     }
 
     @Test
@@ -60,7 +59,6 @@ class ProcessedFoodServiceImplTest {
         verify(processedFoodRepository).save(any());
 
         assertEquals(savedProcessedFood, result);
-
     }
 
     @Test

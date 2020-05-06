@@ -17,8 +17,6 @@ public interface StationaryService {
 
     Stationary save(Stationary stationary);
 
-    Stationary post(Long id, Stationary stationary);
-
     void deleteById(Long id);
 
 

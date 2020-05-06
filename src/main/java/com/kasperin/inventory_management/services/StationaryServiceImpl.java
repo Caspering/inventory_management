@@ -40,24 +40,7 @@ public class StationaryServiceImpl implements StationaryService{
     }
 
     @Override
-    public Stationary post(Long id, Stationary stationary) {
-        if(stationaryRepository.findById(id).isPresent()){
-            stationary.setId(id);
-            stationaryRepository.save(stationary);
-            log.info("Stationary item with id: " + id + "has been updated");
-            return stationary;
-        }else{
-            throw new ResourceNotFoundException("Stationary item with id: " + id + "does not exist");
-        }
-    }
-
-    @Override
     public void deleteById(Long id) {
-        if(stationaryRepository.findById(id).isPresent()){
             stationaryRepository.deleteById(id);
-            log.info("Stationary item with id: " + id + "has been deleted");
-        }else{
-            throw new ResourceNotFoundException("Stationary item with id: " + id + "does not exist");
-        }
     }
 }
