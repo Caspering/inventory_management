@@ -26,12 +26,12 @@ public class FruitAndVegeController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<FruitAndVege> getAllFruitAndVegeList(){
+    public List<FruitAndVege> getAllFruitAndVege(){
         return fruitAndVegeService.findAll();
     }
 
     @GetMapping("{name}")
-    public ResponseEntity<FruitAndVegeDTO> findByName( @PathVariable String name){
+    public ResponseEntity<FruitAndVegeDTO> getByName( @PathVariable String name){
         return new ResponseEntity<FruitAndVegeDTO>(
                 fruitAndVegeService.findByName(name), HttpStatus.OK
         );
@@ -39,14 +39,14 @@ public class FruitAndVegeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FruitAndVegeDTO createNewVendor(@RequestBody FruitAndVegeDTO fruitAndVegeDTO){
+    public FruitAndVegeDTO createNewFruitAndVege(@RequestBody FruitAndVegeDTO fruitAndVegeDTO){
         return fruitAndVegeService.createNewFruitAndVege(fruitAndVegeDTO);
     }
 
-    @DeleteMapping({"{id}"})
+    @DeleteMapping({"{ID}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteFruitAndVege(@PathVariable Long id){
-        fruitAndVegeService.deleteById(id);
+    public void deleteFruitAndVege(@PathVariable String ID){
+        fruitAndVegeService.deleteById(Long.valueOf(ID));
     }
 
 }

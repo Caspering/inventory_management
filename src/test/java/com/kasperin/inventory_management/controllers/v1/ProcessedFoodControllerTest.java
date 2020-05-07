@@ -49,7 +49,7 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void findAll() throws Exception {
+    void getAll() throws Exception {
         // given
         ProcessedFood pf1 = new ProcessedFood();
         pf1.setId(1L);
@@ -72,7 +72,7 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void findAllByType_vegan() throws Exception {
+    void getAllByType_vegan() throws Exception {
         // given
         ProcessedFood pf = new ProcessedFood();
         pf.setId(1L);
@@ -92,7 +92,7 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void findAllByType_nonvegan() throws Exception {
+    void getAllByType_nonvegan() throws Exception {
         // given
         ProcessedFood pf = new ProcessedFood();
         pf.setId(1L);
@@ -112,7 +112,7 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void findByName() throws Exception {
+    void getByName() throws Exception {
         final Long id = 1L;
         final String name = "name";
 
@@ -134,7 +134,7 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void findByName_notFound() throws Exception {
+    void getByName_notFound() throws Exception {
         // given
         when(processedFoodService.findByName(anyString())).thenReturn(Optional.empty());
 
@@ -144,7 +144,7 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void findById() throws Exception {
+    void getById() throws Exception {
         // given
         ProcessedFood pf = new ProcessedFood();
         pf.setId(1L);
@@ -160,7 +160,7 @@ class ProcessedFoodControllerTest {
     }
 
     @Test
-    void findById_notFound() throws Exception {
+    void getById_notFound() throws Exception {
         // given
         when(processedFoodService.findById(anyLong())).thenReturn(Optional.empty());
 

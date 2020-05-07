@@ -24,23 +24,23 @@ public class ProcessedFoodController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<ProcessedFood> findAll(@RequestParam("type") Optional<FoodType> foodType) {
-        if (foodType.isPresent()) { // type specified, filter
+    public List<ProcessedFood> getAll(@RequestParam("type") Optional<FoodType> foodType) {
+        if (foodType.isPresent()) {
             return processedFoodService.findByType(foodType.get());
-        } else { // nope, return everything
+        } else { //else return everything
             return processedFoodService.findAll();
         }
     }
 
     @GetMapping(value = "/by-name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ProcessedFood findByName(@PathVariable String name) {
+    public ProcessedFood getByName(@PathVariable String name) {
         return processedFoodService.findByName(name).orElseThrow(ResourceNotFoundException::new);
     }
 
     @GetMapping("{ID}")
     @ResponseStatus(HttpStatus.OK)
-    public ProcessedFood findById(@PathVariable String ID) {
+    public ProcessedFood getById(@PathVariable String ID) {
         return processedFoodService.findById(Long.valueOf(ID)).orElseThrow(ResourceNotFoundException::new);
     }
 
