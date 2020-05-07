@@ -4,6 +4,7 @@ import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.api.v1.model.FruitAndVegeListDTO;
 import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.services.FruitAndVegeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,15 +14,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping(FruitAndVegeController.BASE_URL)
+@RequiredArgsConstructor
 public class FruitAndVegeController {
 
     public static final String BASE_URL = "/api/v1/fruitAndVeges";
 
     private final FruitAndVegeService fruitAndVegeService;
-
-    public FruitAndVegeController(FruitAndVegeService fruitAndVegeService) {
-        this.fruitAndVegeService = fruitAndVegeService;
-    }
 
 
     @GetMapping

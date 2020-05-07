@@ -9,13 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(StationaryController.BASE_URL)
 @RequiredArgsConstructor
 public class StationaryController {
 
-    public static final String BASE_URL = "/api/v1/stationary";
+    public static final String BASE_URL = "/api/v1/stationary/";
 
     private final StationaryService stationaryService;
 
@@ -25,16 +26,32 @@ public class StationaryController {
         return stationaryService.findAll();
     }
 
-    @GetMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    @GetMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseStatus(HttpStatus.OK)
+//    public Optional<Stationary> getByName(@PathVariable String name) {
+//        return stationaryService.findByName(name);
+//                //.orElseThrow(ResourceNotFoundException::new);
+//    }
+
+//    @GetMapping("{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Optional<Stationary> getById(@PathVariable Long id) {
+//        return stationaryService.findById(id);
+//    }
+
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Stationary getByName(@PathVariable String name) {
-        return stationaryService.findByName(name).orElseThrow(ResourceNotFoundException::new);
+    public Stationary getById(@PathVariable Long id) {
+        return stationaryService.findById(id).orElseThrow(ResourceNotFoundException::new);
+
     }
 
-    @GetMapping("{ID}")
-    @ResponseStatus(HttpStatus.OK)
-    public Stationary getById(@PathVariable String ID) {
-        return stationaryService.findById(Long.valueOf(ID)).orElseThrow(ResourceNotFoundException::new);
+
+    @GetMapping("{name}")
+    @ResponseStatus( HttpStatus.OK)
+    public Optional<Stationary> getByName(@PathVariable String name){
+        return stationaryService.findByName(name);
     }
 
     @PostMapping
@@ -43,10 +60,10 @@ public class StationaryController {
         return stationaryService.save(stationary);
     }
 
-    @DeleteMapping({"{ID}"})
+    @DeleteMapping({"{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteById(@PathVariable String ID) {
-        stationaryService.deleteById(Long.valueOf(ID));
+    public void deleteById(@PathVariable Long id) {
+        stationaryService.deleteById(id);
     }
 
 

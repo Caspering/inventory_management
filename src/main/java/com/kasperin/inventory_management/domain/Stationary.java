@@ -5,12 +5,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
-//@AllArgsConstructor
-@Builder
+@AllArgsConstructor
+//@Builder
 @Entity
-public class Stationary  extends BaseEntity{
+public class Stationary{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private String barcode;
+
+    @Column
+    private Double price;
+
+    @Column
+    private Integer InStockQuantity;
 }
