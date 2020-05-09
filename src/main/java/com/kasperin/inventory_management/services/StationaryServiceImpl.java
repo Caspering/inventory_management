@@ -22,10 +22,19 @@ public class StationaryServiceImpl implements StationaryService{
         return stationaryRepository.findAll();
     }
 
-    @Override
-    public Optional<Stationary> findByName(String name) {
-        return stationaryRepository.findByName(name);
+
+    //just experimenting
+        @Override
+    public Stationary findByName(String name) {
+        return stationaryRepository.findByName(name).orElseThrow(ResourceNotFoundException::new);
     }
+
+
+    //works fine, just experimenting
+//    @Override
+//    public Optional<Stationary> findByName(String name) {
+//        return stationaryRepository.findByName(name);
+//    }
 
     @Override
     public Optional<Stationary> findById(Long id) {
@@ -38,6 +47,7 @@ public class StationaryServiceImpl implements StationaryService{
         log.info("Stationary item: " + stationary.getName() + ", has been saved");
         return stationary;
     }
+
 
     @Override
     public void deleteById(Long id) {

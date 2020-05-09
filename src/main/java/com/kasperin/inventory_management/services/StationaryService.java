@@ -10,7 +10,7 @@ public interface StationaryService {
 
     List<Stationary> findAll();
 
-    Optional<Stationary> findByName(String name);
+    Stationary findByName(String name);
 
     Optional<Stationary> findById(Long id);
 
