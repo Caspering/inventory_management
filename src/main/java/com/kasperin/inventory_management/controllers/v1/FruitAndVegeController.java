@@ -1,13 +1,11 @@
 package com.kasperin.inventory_management.controllers.v1;
 
 import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
-import com.kasperin.inventory_management.api.v1.model.FruitAndVegeListDTO;
 import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.services.FruitAndVegeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +26,14 @@ public class FruitAndVegeController {
         return fruitAndVegeService.findAll();
     }
 
-    @GetMapping("{name}")
+    @GetMapping("/id/{id}")
+    public ResponseEntity<FruitAndVegeDTO> getById( @PathVariable String id){
+        return new ResponseEntity<FruitAndVegeDTO>(
+                fruitAndVegeService.findById(Long.valueOf(id)), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/name/{name}")
     public ResponseEntity<FruitAndVegeDTO> getByName( @PathVariable String name){
         return new ResponseEntity<FruitAndVegeDTO>(
                 fruitAndVegeService.findByName(name), HttpStatus.OK

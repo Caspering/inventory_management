@@ -14,6 +14,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +44,36 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         List<Stationary> savedSt = stationaryRepository.saveAll(getStationary());
         log.info("Stationary saved: {}", savedSt);
+
+//        List<Stationary> savedFromCsv = stationaryRepository.saveAll(saveCsv());
+//        log.info("Stationary saved: {}", saveCsv());
     }
+
+
+//    private List<Stationary> saveCsv() {
+//        String line = "";
+//        List<Stationary> stats = new ArrayList<>();
+//        try {
+//            BufferedReader br = new BufferedReader(new FileReader("src/main/resources/book.csv"));
+//            while ((line=br.readLine())!=null){
+//                String [] data = line.split(",");
+//
+//                Stationary s = new Stationary();
+//                s.setName(data[0]);
+//                s.setBarcode(data[1]);
+//                s.setPrice(Double.valueOf(data[2]));
+//                s.setInStockQuantity(Integer.valueOf(data[3]));
+//                stats.add(s);
+//
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return stats;
+//    }
+
 
     private List<FruitAndVege> getFruitAndVeges(){
 
@@ -52,13 +85,13 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         fav1.setPrice(2.99);
 
         fruitAndVeges.add(fav1);
-        
+
         FruitAndVege fruitAndVege2 = new FruitAndVege();
         fruitAndVege2.setName("Orange");
         fruitAndVege2.setBarcode("123456");
         fruitAndVege2.setInStockQuantity(6);
         fruitAndVege2.setPrice(3.8);
-        
+
         fruitAndVeges.add(fruitAndVege2);
 
         FruitAndVege fruitAndVege3 = new FruitAndVege();
@@ -68,20 +101,20 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         fruitAndVege3.setPrice(3.8);
 
         fruitAndVeges.add(fruitAndVege3);
-        
+
         return fruitAndVeges;
     }
 
     private List<ProcessedFood> getProcessedFood() {
 
         List<ProcessedFood> proFood = new ArrayList<>();
-            
+
         ProcessedFood savedProcessedFood = new ProcessedFood();
         savedProcessedFood.setName("Chips");
         savedProcessedFood.setBarcode("12345");
         savedProcessedFood.setPrice(1.3);
         savedProcessedFood.setFoodType(FoodType.VEGAN);
-        
+
         proFood.add(savedProcessedFood);
 
 
@@ -100,7 +133,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         proFood3.setFoodType(FoodType.NONVEGAN);
 
         proFood.add(proFood3);
-        
+
         return proFood;
 
     }
