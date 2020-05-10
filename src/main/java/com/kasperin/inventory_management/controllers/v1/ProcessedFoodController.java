@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,16 +31,16 @@ public class ProcessedFoodController {
         }
     }
 
-    @GetMapping(value = "/by-name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ProcessedFood getByName(@PathVariable String name) {
-        return processedFoodService.findByName(name).orElseThrow(ResourceNotFoundException::new);
+        return processedFoodService.findByName(name);
     }
 
-    @GetMapping("{ID}")
+    @GetMapping({"/id/{ID}"})
     @ResponseStatus(HttpStatus.OK)
-    public ProcessedFood getById(@PathVariable String ID) {
-        return processedFoodService.findById(Long.valueOf(ID)).orElseThrow(ResourceNotFoundException::new);
+    public Optional<ProcessedFood> getById(@PathVariable String ID) {
+        return processedFoodService.findById(Long.valueOf(ID));
     }
 
     @PostMapping

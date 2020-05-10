@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface StationaryRepository extends JpaRepository<Stationary, Long> {
 
-    Optional<Stationary> findByName(String name);
+    Stationary findByName(String name);
 
 
 }

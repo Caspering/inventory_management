@@ -12,7 +12,7 @@ public interface ProcessedFoodService {
 
     Optional<ProcessedFood> findById(Long id);
 
-    Optional<ProcessedFood> findByName(String name);
+    ProcessedFood  findByName(String name);
 
     List<ProcessedFood> findAll();
 

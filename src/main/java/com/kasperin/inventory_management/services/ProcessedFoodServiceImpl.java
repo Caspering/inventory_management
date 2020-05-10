@@ -22,7 +22,7 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
     }
 
     private String getProcessedFoodUrl(Long id) {
-        return FruitAndVegeController.BASE_URL + "/" + id;
+        return FruitAndVegeController.BASE_URL + "/id/" + id;
     }
 
     @Override
@@ -32,17 +32,23 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     @Override
     public Optional<ProcessedFood> findById(Long id) {
-        return processedFoodRepo.findById(id);
+       return processedFoodRepo.findById(id);
     }
 
     @Override
-    public Optional<ProcessedFood> findByName(String name) {
-        return processedFoodRepo.findByName(name);
+    public ProcessedFood  findByName(String name) {
+        ProcessedFood pf = processedFoodRepo.findByName(name);
+        pf.setProcessedFoodUrl(getProcessedFoodUrl(pf.getId()));
+        return pf;
     }
 
     @Override
     public List<ProcessedFood> findAll() {
-        return processedFoodRepo.findAll();
+       List<ProcessedFood> pf = processedFoodRepo.findAll();
+       for(ProcessedFood p : pf){
+           p.setProcessedFoodUrl(getProcessedFoodUrl(p.getId()));
+       }
+       return pf;
     }
 
     @Override

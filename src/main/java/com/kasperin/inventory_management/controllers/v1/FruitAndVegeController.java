@@ -19,6 +19,11 @@ public class FruitAndVegeController {
 
     private final FruitAndVegeService fruitAndVegeService;
 
+//    @GetMapping("/csv-file")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void saveCsv(){
+//        fruitAndVegeService.saveCsv();
+//    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

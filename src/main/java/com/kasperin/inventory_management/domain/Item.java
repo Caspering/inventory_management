@@ -1,21 +1,19 @@
 package com.kasperin.inventory_management.domain;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
-@MappedSuperclass
-public class BaseEntity implements Serializable {
+@NoArgsConstructor
+@Entity
+public class Item implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    public boolean isNew() {
-        return this.id == null;
-    }
 
     @Column
     private String name;
@@ -27,7 +25,8 @@ public class BaseEntity implements Serializable {
     private Double price;
 
     @Column
-    private Integer inStockQuantity;
+    private int inStockQuantity;
+
 
 
 }
