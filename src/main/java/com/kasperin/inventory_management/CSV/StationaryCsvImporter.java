@@ -1,7 +1,7 @@
 package com.kasperin.inventory_management.CSV;
 
-import com.kasperin.inventory_management.domain.FruitAndVege;
-import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.domain.Stationary;
+import com.kasperin.inventory_management.repository.StationaryRepository;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -15,16 +15,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
-public class FruitAndVegeCsvImporter {
+public class StationaryCsvImporter {
 
-    private final FruitAndVegeRepository fruitAndVegeRepository;
+    private final StationaryRepository stationaryRepository;
 
     private final CsvParser parser;
 
-    FruitAndVegeCsvImporter(FruitAndVegeRepository fruitAndVegeRepository) {
-        this.fruitAndVegeRepository = fruitAndVegeRepository;
+    StationaryCsvImporter(StationaryRepository stationaryRepository) {
+        this.stationaryRepository = stationaryRepository;
 
         CsvParserSettings settings = new CsvParserSettings();
         settings.setHeaderExtractionEnabled(true);
@@ -33,14 +32,14 @@ public class FruitAndVegeCsvImporter {
     }
 
     @PostConstruct
-    public void read() throws IOException, InterruptedException {
+    public void read() throws IOException{
         List<Record> records = this.parser
-                .parseAllRecords(getReader("/fruit_vege.csv"));
+                .parseAllRecords(getReader("/stationary.csv"));
 
-        List<FruitAndVege> fruitAndVeges = records.stream()
-                .map(FruitAndVege::new)
+        List<Stationary> stationary = records.stream()
+                .map(Stationary::new)
                 .collect(Collectors.toList());
-        insertData(fruitAndVeges);
+        insertData(stationary);
     }
 
     private Reader getReader(String s) throws UnsupportedEncodingException {
@@ -48,8 +47,8 @@ public class FruitAndVegeCsvImporter {
                 .getResourceAsStream(s), "UTF-8");
     }
 
-    private void insertData(List<FruitAndVege> fruitAndVeges) {
-        fruitAndVegeRepository.saveAll(fruitAndVeges);
+    private void insertData(List<Stationary> stationary) {
+        stationaryRepository.saveAll(stationary);
     }
 
 }

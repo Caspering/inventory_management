@@ -1,7 +1,7 @@
 package com.kasperin.inventory_management.CSV;
 
-import com.kasperin.inventory_management.domain.FruitAndVege;
-import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.domain.ProcessedFood;
+import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -15,16 +15,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
-public class FruitAndVegeCsvImporter {
-
-    private final FruitAndVegeRepository fruitAndVegeRepository;
+public class ProcessedFoodCsvImporter {
+    private final ProcessedFoodRepo processedFoodRepo;
 
     private final CsvParser parser;
 
-    FruitAndVegeCsvImporter(FruitAndVegeRepository fruitAndVegeRepository) {
-        this.fruitAndVegeRepository = fruitAndVegeRepository;
+    ProcessedFoodCsvImporter(ProcessedFoodRepo processedFoodRepo) {
+        this.processedFoodRepo = processedFoodRepo;
 
         CsvParserSettings settings = new CsvParserSettings();
         settings.setHeaderExtractionEnabled(true);
@@ -35,12 +33,12 @@ public class FruitAndVegeCsvImporter {
     @PostConstruct
     public void read() throws IOException, InterruptedException {
         List<Record> records = this.parser
-                .parseAllRecords(getReader("/fruit_vege.csv"));
+                .parseAllRecords(getReader("/processed_food.csv"));
 
-        List<FruitAndVege> fruitAndVeges = records.stream()
-                .map(FruitAndVege::new)
+        List<ProcessedFood> processedFoods = records.stream()
+                .map(ProcessedFood::new)
                 .collect(Collectors.toList());
-        insertData(fruitAndVeges);
+        insertData(processedFoods);
     }
 
     private Reader getReader(String s) throws UnsupportedEncodingException {
@@ -48,8 +46,7 @@ public class FruitAndVegeCsvImporter {
                 .getResourceAsStream(s), "UTF-8");
     }
 
-    private void insertData(List<FruitAndVege> fruitAndVeges) {
-        fruitAndVegeRepository.saveAll(fruitAndVeges);
+    private void insertData(List<ProcessedFood> processedFoods) {
+        processedFoodRepo.saveAll(processedFoods);
     }
-
 }

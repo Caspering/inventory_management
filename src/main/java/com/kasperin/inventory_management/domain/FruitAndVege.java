@@ -12,35 +12,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class FruitAndVege extends Item{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Transient
     @JsonProperty("fruitAndVege_url")
     private String fruitAndVegeUrl;
 
     public FruitAndVege(Record record) {
-        this.name = record.getString("name");
-        this.barcode = record.getString("barcode");
-        this.price = record.getDouble("price");
-        this.inStockQuantity= record.getInt("qty");
+        super.setName(record.getString("name"));
+        super.setBarcode(record.getString("barcode"));
+        super.setPrice(record.getDouble("price"));
+        super.setInStockQuantity(record.getInt("qty"));
     }
-
-//    public boolean isNew() {
-//        return this.id == null;
-//    }
-//
-    @Column
-    private String name;
-
-    @Column
-    private String barcode;
-
-    @Column
-    private Double price;
-
-    @Column
-    private int inStockQuantity;
 
 }
