@@ -43,7 +43,8 @@ public class SwaggerConfig { //} extends WebMvcConfigurationSupport {
 
     private ApiInfo metaData(){
 
-        Contact contact = new Contact("Vaughn Nze", "https://github.com/Caspering/inventory_management",
+        Contact contact = new Contact("Vaughn Nze",
+                "https://github.com/KasperingOps/inventory_management_engine",
                 "vaughnnze@gmail.com");
 
         return new ApiInfo(
