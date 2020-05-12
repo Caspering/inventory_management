@@ -2,7 +2,6 @@ package com.kasperin.inventory_management.services;
 
 import com.kasperin.inventory_management.api.v1.mapper.FruitAndVegeMapper;
 import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
-import com.kasperin.inventory_management.api.v1.model.FruitAndVegeListDTO;
 import com.kasperin.inventory_management.controllers.v1.FruitAndVegeController;
 import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
@@ -10,13 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service

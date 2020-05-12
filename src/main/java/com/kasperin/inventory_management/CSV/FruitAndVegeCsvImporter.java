@@ -33,7 +33,7 @@ public class FruitAndVegeCsvImporter {
     }
 
     @PostConstruct
-    public void read() throws IOException, InterruptedException {
+    public void read() throws IOException {
         List<Record> records = this.parser
                 .parseAllRecords(getReader("/fruit_vege.csv"));
 

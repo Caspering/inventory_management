@@ -12,14 +12,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class FruitAndVege extends Item{
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
     @Transient
     @JsonProperty("fruitAndVege_url")
     private String fruitAndVegeUrl;
 
+    //Csv Importer Constructor
     public FruitAndVege(Record record) {
         super.setName(record.getString("name"));
         super.setBarcode(record.getString("barcode"));

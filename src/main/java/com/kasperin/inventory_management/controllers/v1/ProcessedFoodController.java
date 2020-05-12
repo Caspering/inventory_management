@@ -3,7 +3,6 @@ package com.kasperin.inventory_management.controllers.v1;
 import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.services.ProcessedFoodService;
-import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

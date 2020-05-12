@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FruitAndVegeRepository
         extends JpaRepository<FruitAndVege, Long> {
 
-
     FruitAndVege findByName(String name);
 
 

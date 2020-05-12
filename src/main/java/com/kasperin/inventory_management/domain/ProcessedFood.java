@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.univocity.parsers.annotations.EnumOptions;
 import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.Parsed;
-import com.univocity.parsers.common.record.Record;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;

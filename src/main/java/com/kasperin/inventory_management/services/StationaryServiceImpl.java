@@ -1,18 +1,12 @@
 package com.kasperin.inventory_management.services;
 
-import com.kasperin.inventory_management.controllers.v1.FruitAndVegeController;
 import com.kasperin.inventory_management.controllers.v1.StationaryController;
-import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 @Slf4j

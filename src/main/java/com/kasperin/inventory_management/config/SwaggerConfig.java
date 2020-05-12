@@ -17,10 +17,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.ArrayList;
 import java.util.List;
 
-//@EnableSwagger2WebMvc
+
 @EnableSwagger2
 @Configuration
-public class SwaggerConfig { //} extends WebMvcConfigurationSupport {
+public class SwaggerConfig {
 
     @Bean
     public LinkDiscoverers discoverers() {
@@ -57,12 +57,5 @@ public class SwaggerConfig { //} extends WebMvcConfigurationSupport {
                 "https://www.apache.org/licenses/LICENSE-2.0",
                 new ArrayList<>());
     }
-//    @Override
-//    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("swagger-ui.html")
-//                .addResourceLocations("classpath:/META-INF/resources/");
-//
-//        registry.addResourceHandler("/webjars/**")
-//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-//    }
+
 }
