@@ -20,7 +20,7 @@ public class ProcessedFood extends Item{
     private String processedFoodUrl;
 
     @Parsed(field = "type")
-    @EnumOptions(customElement = "toString")
+    @EnumOptions(customElement = "typeCode")
     @Enumerated(value = EnumType.STRING)
     FoodType foodType;
 
@@ -33,19 +33,5 @@ public class ProcessedFood extends Item{
     @Parsed(field = "exp")
     @Format(formats = {"yyyy-MM-dd", "dd/MM/yyyy"}, options = "locale=en;lenient=false")
     private Date expDate;
-
-    public ProcessedFood(Record record){
-        super.setName(record.getString("name"));
-        super.setBarcode(record.getString("barcode"));
-        super.setPrice(record.getDouble("price"));
-        super.setInStockQuantity(record.getInt("qty"));
-//        setFoodType(foodType.toString(record.getString(4)));
-//        this.mfgDate = record.getDate("mfg", "dd/MM/yyyy");
-//        this.expDate = record.getDate("exp", "dd/MM/yyyy");
-
-    }
-
-
-
 
 }
