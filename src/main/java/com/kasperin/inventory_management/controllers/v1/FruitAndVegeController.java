@@ -19,7 +19,6 @@ public class FruitAndVegeController {
 
     private final FruitAndVegeService fruitAndVegeService;
 
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<FruitAndVege> getAllFruitAndVege(){

@@ -13,8 +13,6 @@ public interface StationaryService {
 
     Optional<Stationary> findById(Long id);
 
-//    void saveCsv();
-
     Stationary save(Stationary stationary);
 
     void deleteById(Long id);

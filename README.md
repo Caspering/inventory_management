@@ -35,3 +35,5 @@
 |Name                                   |Barcode                                |Price      |qty|
 |---------------------------------------|---------------------------------------|-----------|---|
 |Glue stick                             |123456789000011                        |1.99       |15 |
+"# inventory_management_engine" 
+"# inventory_management_engine" 
