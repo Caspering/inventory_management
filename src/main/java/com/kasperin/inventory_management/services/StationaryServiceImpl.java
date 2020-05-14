@@ -31,6 +31,8 @@ public class StationaryServiceImpl implements StationaryService{
         return savedSt;
     }
 
+
+
     @Override
     public List<Stationary> findAll() {
         List<Stationary> st = stationaryRepository.findAll();
