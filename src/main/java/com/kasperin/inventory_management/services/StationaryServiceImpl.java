@@ -31,6 +31,33 @@ public class StationaryServiceImpl implements StationaryService{
         return savedSt;
     }
 
+    @Override
+    public Stationary updateById(Long id, Stationary st1) {
+        return stationaryRepository.findById(id).map(stationary -> {
+
+            if(st1.getInStockQuantity() != 0){
+                stationary.setInStockQuantity(st1.getInStockQuantity());
+            }
+
+
+            if(st1.getName() != null){
+            stationary.setName(st1.getName());
+        }
+        if(st1.getBarcode() != null){
+            stationary.setBarcode(st1.getBarcode());
+        }
+        if(st1.getPrice() != null){
+            stationary.setPrice(st1.getPrice());
+        }
+
+
+//        return stationaryRepository.findById(id).map(stationary -> {
+//
+//            stationary.setInStockQuantity(quantity);
+//
+           return stationaryRepository.save(stationary);
+        }).orElseThrow(RuntimeException::new);
+    }
 
 
     @Override

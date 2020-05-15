@@ -25,7 +25,7 @@ public class FruitAndVegeController {
         return fruitAndVegeService.findAll();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FruitAndVegeDTO> getById( @PathVariable String id){
         return new ResponseEntity<FruitAndVegeDTO>(
                 fruitAndVegeService.findById(Long.valueOf(id)), HttpStatus.OK
