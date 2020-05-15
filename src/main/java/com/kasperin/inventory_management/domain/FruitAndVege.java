@@ -16,7 +16,7 @@ public class FruitAndVege extends Item{
     @JsonProperty("fruitAndVege_url")
     private String fruitAndVegeUrl;
 
-    //Csv Importer Constructor
+    //Csv Importer
     public FruitAndVege(Record record) {
         super.setName(record.getString("name"));
         super.setBarcode(record.getString("barcode"));

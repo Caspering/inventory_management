@@ -2,6 +2,7 @@ package com.kasperin.inventory_management.controllers.v1;
 
 import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.domain.FruitAndVege;
+import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.services.FruitAndVegeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,11 @@ public class FruitAndVegeController {
         return new ResponseEntity<FruitAndVegeDTO>(
                 fruitAndVegeService.findByName(name), HttpStatus.OK
         );
+    }
+
+    @PatchMapping({"/{id}"})
+    public FruitAndVege updateById(@PathVariable Long id, @RequestBody FruitAndVege fav){
+        return fruitAndVegeService.updateById(id,fav);
     }
 
     @PostMapping

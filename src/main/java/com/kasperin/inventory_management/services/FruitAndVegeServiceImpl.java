@@ -42,6 +42,27 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
     }
 
     @Override
+    public FruitAndVege updateById(Long id, FruitAndVege fav) {
+        return fruitAndVegeRepository.findById(id).map(fruitAndVege -> {
+
+            if(fav.getInStockQuantity() != 0){
+                fruitAndVege.setInStockQuantity(fav.getInStockQuantity());
+            }
+            if(fav.getName() != null){
+                fruitAndVege.setName(fav.getName());
+            }
+            if(fav.getBarcode() != null){
+                fruitAndVege.setBarcode(fav.getBarcode());
+            }
+            if(fav.getPrice() != null){
+                fruitAndVege.setPrice(fav.getPrice());
+            }
+
+            return fruitAndVegeRepository.save(fruitAndVege);
+        }).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
     public FruitAndVegeDTO findById(Long id) {
         return fruitAndVegeRepository.findById(id)
                 .map(fruitAndVegeMapper::fruitAndVegeToFruitAndVegeDTO)
