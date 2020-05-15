@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -39,6 +40,27 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
     public FruitAndVegeDTO createNewFruitAndVege(FruitAndVegeDTO fruitAndVegeDTO) {
 
         return saveAndReturnDTO(fruitAndVegeMapper.fruitAndVegeDTOtoFruitAndVege(fruitAndVegeDTO));
+    }
+
+    @Override
+    public Optional<FruitAndVege> updateById(Long id, FruitAndVege fav) {
+        return fruitAndVegeRepository.findById(id).map(fruitAndVege -> {
+
+            if(fav.getInStockQuantity() != 0){
+                fruitAndVege.setInStockQuantity(fav.getInStockQuantity());
+            }
+            if(fav.getName() != null){
+                fruitAndVege.setName(fav.getName());
+            }
+            if(fav.getBarcode() != null){
+                fruitAndVege.setBarcode(fav.getBarcode());
+            }
+            if(fav.getPrice() != null){
+                fruitAndVege.setPrice(fav.getPrice());
+            }
+
+            return fruitAndVegeRepository.save(fruitAndVege);
+        });
     }
 
     @Override

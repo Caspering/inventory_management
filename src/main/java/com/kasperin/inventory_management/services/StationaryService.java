@@ -15,6 +15,8 @@ public interface StationaryService {
 
     Stationary save(Stationary stationary);
 
+    Optional<Stationary> updateById(Long id, Stationary stationary);
+
     void deleteById(Long id);
 
 

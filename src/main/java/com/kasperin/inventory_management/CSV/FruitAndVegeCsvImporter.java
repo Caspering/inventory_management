@@ -5,6 +5,9 @@ import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -15,13 +18,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@ConditionalOnResource(resources = "/food.csv")
 @Service
 public class FruitAndVegeCsvImporter {
 
     private final FruitAndVegeRepository fruitAndVegeRepository;
 
     private final CsvParser parser;
+
 
     FruitAndVegeCsvImporter(FruitAndVegeRepository fruitAndVegeRepository) {
         this.fruitAndVegeRepository = fruitAndVegeRepository;
@@ -32,15 +36,19 @@ public class FruitAndVegeCsvImporter {
         this.parser = new CsvParser(settings);
     }
 
+
+
+
     @PostConstruct
     public void read() throws IOException {
-        List<Record> records = this.parser
-                .parseAllRecords(getReader("/fruit_vege.csv"));
 
-        List<FruitAndVege> fruitAndVeges = records.stream()
-                .map(FruitAndVege::new)
-                .collect(Collectors.toList());
-        insertData(fruitAndVeges);
+          List<Record> records = this.parser
+                  .parseAllRecords(getReader("/food.csv"));
+
+          List<FruitAndVege> fruitAndVeges = records.stream()
+                  .map(FruitAndVege::new)
+                  .collect(Collectors.toList());
+          insertData(fruitAndVeges);
     }
 
     private Reader getReader(String s) throws UnsupportedEncodingException {

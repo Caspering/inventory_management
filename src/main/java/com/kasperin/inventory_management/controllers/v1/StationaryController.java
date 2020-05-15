@@ -24,7 +24,7 @@ public class StationaryController {
         return stationaryService.findAll();
     }
 
-    @GetMapping({"/id/{ID}"})
+    @GetMapping({"/{ID}"})
     @ResponseStatus(HttpStatus.OK)
     public Optional<Stationary> getById(@PathVariable String ID) {
         return stationaryService.findById(Long.valueOf(ID));
@@ -34,6 +34,11 @@ public class StationaryController {
     @ResponseStatus(HttpStatus.OK)
     public Stationary getByName(@PathVariable("name") String name){
         return stationaryService.findByName(name);
+    }
+
+    @PatchMapping({"/{id}"})
+    public Optional<Stationary> updateById(@PathVariable Long id, @RequestBody Stationary stationary){
+        return stationaryService.updateById(id,stationary);
     }
 
     @PostMapping

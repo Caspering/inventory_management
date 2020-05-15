@@ -5,6 +5,8 @@ import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +16,7 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+@ConditionalOnResource(resources = "/processed_food.csv")
 @Service
 public class ProcessedFoodCsvImporter {
 
@@ -35,14 +38,16 @@ public class ProcessedFoodCsvImporter {
         this.parser = new CsvParser(settings);
     }
 
+
     @PostConstruct
     public void read() throws IOException {
 
-        parser.parse(getReader("/processed_food.csv"));
 
-        List<ProcessedFood> processedFoods = rowProcessor.getBeans();
+    parser.parse(getReader("/processed_food.csv"));
 
-        insertData(processedFoods);
+    List<ProcessedFood> processedFoods = rowProcessor.getBeans();
+
+    insertData(processedFoods);
 
     }
 

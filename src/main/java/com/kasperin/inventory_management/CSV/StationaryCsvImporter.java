@@ -5,6 +5,9 @@ import com.kasperin.inventory_management.repository.StationaryRepository;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -15,13 +18,17 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ConditionalOnResource(resources = "/stationary.csv")
 @Service
 public class StationaryCsvImporter {
 
+
     private final StationaryRepository stationaryRepository;
+
 
     private final CsvParser parser;
 
+    @Autowired
     StationaryCsvImporter(StationaryRepository stationaryRepository) {
         this.stationaryRepository = stationaryRepository;
 
@@ -31,8 +38,11 @@ public class StationaryCsvImporter {
         this.parser = new CsvParser(settings);
     }
 
+
+    @Autowired
     @PostConstruct
     public void read() throws IOException{
+
         List<Record> records = this.parser
                 .parseAllRecords(getReader("/stationary.csv"));
 
@@ -40,11 +50,13 @@ public class StationaryCsvImporter {
                 .map(Stationary::new)
                 .collect(Collectors.toList());
         insertData(stationary);
+
     }
 
     private Reader getReader(String s) throws UnsupportedEncodingException {
-        return new InputStreamReader(this.getClass()
-                .getResourceAsStream(s), "UTF-8");
+
+                return new InputStreamReader(this.getClass()
+                        .getResourceAsStream(s), "UTF-8");
     }
 
     private void insertData(List<Stationary> stationary) {

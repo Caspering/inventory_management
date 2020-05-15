@@ -36,10 +36,15 @@ public class ProcessedFoodController {
         return processedFoodService.findByName(name);
     }
 
-    @GetMapping({"/id/{ID}"})
+    @GetMapping({"/{ID}"})
     @ResponseStatus(HttpStatus.OK)
     public Optional<ProcessedFood> getById(@PathVariable String ID) {
         return processedFoodService.findById(Long.valueOf(ID));
+    }
+
+    @PatchMapping({"/{id}"})
+    public Optional<ProcessedFood> updateById(@PathVariable Long id, @RequestBody ProcessedFood processedFood){
+        return processedFoodService.updateById(id,processedFood);
     }
 
     @PostMapping
