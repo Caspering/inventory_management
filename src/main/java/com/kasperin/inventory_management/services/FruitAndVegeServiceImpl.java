@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -42,7 +43,7 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
     }
 
     @Override
-    public FruitAndVege updateById(Long id, FruitAndVege fav) {
+    public Optional<FruitAndVege> updateById(Long id, FruitAndVege fav) {
         return fruitAndVegeRepository.findById(id).map(fruitAndVege -> {
 
             if(fav.getInStockQuantity() != 0){
@@ -59,7 +60,7 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
             }
 
             return fruitAndVegeRepository.save(fruitAndVege);
-        }).orElseThrow(RuntimeException::new);
+        });
     }
 
     @Override

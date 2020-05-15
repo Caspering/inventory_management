@@ -37,7 +37,7 @@ public class StationaryController {
     }
 
     @PatchMapping({"/{id}"})
-    public Stationary updateById(@PathVariable Long id, @RequestBody Stationary stationary){
+    public Optional<Stationary> updateById(@PathVariable Long id, @RequestBody Stationary stationary){
         return stationaryService.updateById(id,stationary);
     }
 

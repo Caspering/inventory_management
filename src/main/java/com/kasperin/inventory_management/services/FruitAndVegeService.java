@@ -11,7 +11,7 @@ public interface FruitAndVegeService {
 
     FruitAndVegeDTO createNewFruitAndVege(FruitAndVegeDTO fruitAndVegeDTO);
 
-    FruitAndVege updateById(Long id, FruitAndVege fruitAndVege);
+    Optional<FruitAndVege> updateById(Long id, FruitAndVege fruitAndVege);
 
     FruitAndVegeDTO saveAndReturnDTO(FruitAndVege fruitAndVege);
 

@@ -31,6 +31,27 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
     }
 
     @Override
+    public Optional<ProcessedFood> updateById(Long id, ProcessedFood proFood) {
+        return processedFoodRepo.findById(id).map(processedFood -> {
+
+            if(proFood.getInStockQuantity() != 0){
+                processedFood.setInStockQuantity(proFood.getInStockQuantity());
+            }
+            if(proFood.getName() != null){
+                processedFood.setName(proFood.getName());
+            }
+            if(proFood.getBarcode() != null){
+                processedFood.setBarcode(proFood.getBarcode());
+            }
+            if(proFood.getPrice() != null){
+                processedFood.setPrice(proFood.getPrice());
+            }
+
+            return processedFoodRepo.save(processedFood);
+        });
+    }
+
+    @Override
     public Optional<ProcessedFood> findById(Long id) {
        return processedFoodRepo.findById(id);
     }

@@ -32,7 +32,7 @@ public class StationaryServiceImpl implements StationaryService{
     }
 
     @Override
-    public Stationary updateById(Long id, Stationary st1) {
+    public Optional<Stationary> updateById(Long id, Stationary st1) {
         return stationaryRepository.findById(id).map(stationary -> {
 
         if(st1.getInStockQuantity() != 0){
@@ -49,7 +49,7 @@ public class StationaryServiceImpl implements StationaryService{
         }
 
            return stationaryRepository.save(stationary);
-        }).orElseThrow(RuntimeException::new);
+        });
     }
 
 

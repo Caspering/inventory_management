@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(FruitAndVegeController.BASE_URL)
@@ -41,7 +42,7 @@ public class FruitAndVegeController {
     }
 
     @PatchMapping({"/{id}"})
-    public FruitAndVege updateById(@PathVariable Long id, @RequestBody FruitAndVege fav){
+    public Optional<FruitAndVege> updateById(@PathVariable Long id, @RequestBody FruitAndVege fav){
         return fruitAndVegeService.updateById(id,fav);
     }
 

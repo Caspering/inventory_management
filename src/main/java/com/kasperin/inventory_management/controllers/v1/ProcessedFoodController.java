@@ -42,6 +42,11 @@ public class ProcessedFoodController {
         return processedFoodService.findById(Long.valueOf(ID));
     }
 
+    @PatchMapping({"/{id}"})
+    public Optional<ProcessedFood> updateById(@PathVariable Long id, @RequestBody ProcessedFood processedFood){
+        return processedFoodService.updateById(id,processedFood);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProcessedFood createNewProcessedFood(@RequestBody ProcessedFood processedFood) {
