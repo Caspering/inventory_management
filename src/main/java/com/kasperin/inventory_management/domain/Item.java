@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-@Entity
+@MappedSuperclass
 public class Item implements Serializable {
 
     @Id
