@@ -1,6 +1,7 @@
 package com.kasperin.inventory_management.controllers.v1;
 
 import com.kasperin.inventory_management.domain.Item;
+import com.kasperin.inventory_management.domain.ItemList;
 import com.kasperin.inventory_management.services.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class ItemController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<Item> getAllItems(){
+    public List<Object> getAllItems(){
         return itemService.findAll();
     }
 

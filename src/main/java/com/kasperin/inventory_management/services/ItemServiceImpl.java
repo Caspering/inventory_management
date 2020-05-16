@@ -3,20 +3,26 @@ package com.kasperin.inventory_management.services;
 import com.kasperin.inventory_management.controllers.v1.FruitAndVegeController;
 import com.kasperin.inventory_management.controllers.v1.ProcessedFoodController;
 import com.kasperin.inventory_management.controllers.v1.StationaryController;
-import com.kasperin.inventory_management.domain.FruitAndVege;
-import com.kasperin.inventory_management.domain.Item;
-import com.kasperin.inventory_management.domain.ProcessedFood;
-import com.kasperin.inventory_management.domain.Stationary;
+
+import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import com.kasperin.inventory_management.repository.ItemRepo;
+import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
+import com.kasperin.inventory_management.repository.StationaryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepo itemRepo;
+
+    private final FruitAndVegeRepository fruitAndVegeRepository;
+    private final ProcessedFoodRepo processedFoodRepo;
+    private final StationaryRepository stationaryRepository;
 
     private String getFruitAndVegeUrl(Long id) {
         return FruitAndVegeController.BASE_URL + "/id/" + id;
@@ -31,17 +37,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> findAll() {
-        List<Item> items = itemRepo.findAll();
-        for(Item i : items){
-            if (i instanceof FruitAndVege){
-                ((FruitAndVege) i).setFruitAndVegeUrl(getFruitAndVegeUrl(i.getId()));
-            }else if (i instanceof ProcessedFood){
-                ((ProcessedFood) i).setProcessedFoodUrl(getProcessedFoodUrl(i.getId()));
-            }else if (i instanceof Stationary){
-                ((Stationary) i).setStationaryUrl(getStationaryUrl(i.getId()));
-            }
-        }
+    public List<Object> findAll() {
+
+        List<Object> items = new ArrayList<>();
+
+        items.add(fruitAndVegeRepository.findAll());
+        items.add(processedFoodRepo.findAll());
+        items.add(stationaryRepository.findAll());
+
         return items;
+
     }
 }
