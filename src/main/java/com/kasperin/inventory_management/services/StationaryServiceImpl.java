@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Slf4j
@@ -56,9 +57,7 @@ public class StationaryServiceImpl implements StationaryService{
     @Override
     public List<Stationary> findAll() {
         List<Stationary> st = stationaryRepository.findAll();
-        for(Stationary s : st){
-            s.setStationaryUrl(getStationaryUrl(s.getId()));
-        }
+        st.removeIf(s -> s.getInStockQuantity() == 0);
         return st;
     }
 

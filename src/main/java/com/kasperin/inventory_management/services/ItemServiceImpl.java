@@ -5,7 +5,6 @@ import com.kasperin.inventory_management.controllers.v1.ProcessedFoodController;
 import com.kasperin.inventory_management.controllers.v1.StationaryController;
 
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
-import com.kasperin.inventory_management.repository.ItemRepo;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import lombok.AllArgsConstructor;
@@ -17,8 +16,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
-
-    private final ItemRepo itemRepo;
 
     private final FruitAndVegeRepository fruitAndVegeRepository;
     private final ProcessedFoodRepo processedFoodRepo;
