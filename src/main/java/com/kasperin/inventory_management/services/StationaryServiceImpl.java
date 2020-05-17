@@ -20,15 +20,17 @@ public class StationaryServiceImpl implements StationaryService{
 
     private final StationaryRepository stationaryRepository;
 
+
     /*private String getStationaryUrl(Long id) {
         return StationaryController.BASE_URL + "/id/" + id;
     }*/
 
     @Override
     public Stationary save(Stationary stationary) {
+
         Stationary savedSt = stationaryRepository.save(stationary);
 
-//        savedSt.setStationaryUrl(getStationaryUrl(savedSt.getId()));
+        //savedSt.setStationaryUrl(getStationaryUrl(savedSt.getId()));
 
         log.info("Stationary item: " + stationary.getName() + ", has been saved");
 
@@ -36,24 +38,51 @@ public class StationaryServiceImpl implements StationaryService{
     }
 
     @Override
-    public Optional<Stationary> updateById(Long id, Stationary st1) {
-        return stationaryRepository.findById(id).map(stationary -> {
+    public Optional<Stationary> updateById(Long id, Stationary stationaryBody) {
 
-        if(st1.getInStockQuantity() != 0){
-                stationary.setInStockQuantity(st1.getInStockQuantity());
-        }
-        if(st1.getName() != null){
-            stationary.setName(st1.getName());
-        }
-        if(st1.getBarcode() != null){
-            stationary.setBarcode(st1.getBarcode());
-        }
-        if(st1.getPrice() != null){
-            stationary.setPrice(st1.getPrice());
+        Optional<Stationary> stationaryInRepo = stationaryRepository.findById(id);
+
+        /*If the stationary entity with the requested id exists in the Repo update its
+        field or else delete it if the inStockQuantity state/field is set to zero*/
+        if (stationaryInRepo.isPresent()) {
+            return stationaryInRepo.map(stationary -> {
+                if (isRealEntity(stationaryBody, stationary))
+                    return stationaryRepository.save(stationary);
+
+                    /*if the inStockQuantity is set to zero delete the entity
+                    from db and return null*/
+                    stationaryRepository.delete(stationary);
+                return null;
+            });
         }
 
-           return stationaryRepository.save(stationary);
-        });
+        /*But if the stationary with the requested id is not found*/
+        else{
+            log.debug("Object not found");
+            throw new RuntimeException("Object not found");
+        }
+    }
+
+
+    /*if an entity has an inStockQuantity greater than 1 isRealEntity
+    will update its fields and return true*/
+    private boolean isRealEntity(Stationary newStationary, Stationary stationaryInDb) {
+        /*if the inStockQuantity is not updated to zero
+        then update the entity with their fields.*/
+        if (newStationary.getInStockQuantity() >= 1) {
+            stationaryInDb.setInStockQuantity(newStationary.getInStockQuantity());
+            if (newStationary.getName() != null) {
+            stationaryInDb.setName(newStationary.getName());
+            }
+            if (newStationary.getBarcode() != null) {
+            stationaryInDb.setBarcode(newStationary.getBarcode());
+            }
+            if (newStationary.getPrice() != null) {
+            stationaryInDb.setPrice(newStationary.getPrice());
+            }
+            return true;
+        }
+        return false;
     }
 
 
@@ -69,7 +98,6 @@ public class StationaryServiceImpl implements StationaryService{
                 })
                 //.filter(s -> s.getInStockQuantity() != 0)
                 .collect(Collectors.toList());
-
     }
 
     @Override
