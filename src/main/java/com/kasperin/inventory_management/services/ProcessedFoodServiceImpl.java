@@ -60,7 +60,7 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
     public ProcessedFood  findByName(String name) {
 //        ProcessedFood pf =
 //        pf.setProcessedFoodUrl(getProcessedFoodUrl(pf.getId()));
-        return processedFoodRepo.findByName(name);
+        return processedFoodRepo.findByNameIgnoreCase(name);
     }
 
     @Override
