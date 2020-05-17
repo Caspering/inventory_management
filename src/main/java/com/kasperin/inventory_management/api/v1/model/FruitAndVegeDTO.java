@@ -20,7 +20,7 @@ public class FruitAndVegeDTO {
 
     private Integer InStockQuantity;
 
-    @JsonProperty("fruitAndVege_url")
-    private String fruitAndVegeUrl;
+//    @JsonProperty("fruitAndVege_url")
+//    private String fruitAndVegeUrl;
 
 }

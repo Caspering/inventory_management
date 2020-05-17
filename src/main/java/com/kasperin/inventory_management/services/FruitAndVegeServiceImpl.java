@@ -21,9 +21,9 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
 
     private final FruitAndVegeRepository fruitAndVegeRepository;
 
-    private String getFruitAndVegeUrl(Long id) {
-        return FruitAndVegeController.BASE_URL + "/id/" + id;
-    }
+//    private String getFruitAndVegeUrl(Long id) {
+//        return FruitAndVegeController.BASE_URL + "/id/" + id;
+//    }
 
     @Override
     public FruitAndVegeDTO saveAndReturnDTO(FruitAndVege fruitAndVege) {
@@ -31,7 +31,7 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
 
         FruitAndVegeDTO returnDto = fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(savedFruitAndVege);
 
-        returnDto.setFruitAndVegeUrl(getFruitAndVegeUrl(savedFruitAndVege.getId()));
+//        returnDto.setFruitAndVegeUrl(getFruitAndVegeUrl(savedFruitAndVege.getId()));
 
         return returnDto;
     }
@@ -67,10 +67,7 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
     public FruitAndVegeDTO findById(Long id) {
         return fruitAndVegeRepository.findById(id)
                 .map(fruitAndVegeMapper::fruitAndVegeToFruitAndVegeDTO)
-                .map(fruitAndVegeDTO -> {
-                    fruitAndVegeDTO.setFruitAndVegeUrl(getFruitAndVegeUrl(id));//setting a url
-                    return fruitAndVegeDTO;
-                }).orElseThrow(ResourceNotFoundException::new);
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
@@ -81,9 +78,9 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
     @Override
     public List<FruitAndVege> findAll() {
         List <FruitAndVege> fv = fruitAndVegeRepository.findAll();
-        for(FruitAndVege f : fv){
-            f.setFruitAndVegeUrl(getFruitAndVegeUrl(f.getId()));
-        }
+//        for(FruitAndVege f : fv){
+//            f.setFruitAndVegeUrl(getFruitAndVegeUrl(f.getId()));
+//        }
         return fv;
     }
 

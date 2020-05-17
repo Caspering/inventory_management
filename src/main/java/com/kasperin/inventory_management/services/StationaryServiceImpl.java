@@ -17,15 +17,15 @@ public class StationaryServiceImpl implements StationaryService{
 
     private final StationaryRepository stationaryRepository;
 
-    private String getStationaryUrl(Long id) {
+    /*private String getStationaryUrl(Long id) {
         return StationaryController.BASE_URL + "/id/" + id;
-    }
+    }*/
 
     @Override
     public Stationary save(Stationary stationary) {
         Stationary savedSt = stationaryRepository.save(stationary);
 
-        savedSt.setStationaryUrl(getStationaryUrl(savedSt.getId()));
+//        savedSt.setStationaryUrl(getStationaryUrl(savedSt.getId()));
 
         log.info("Stationary item: " + stationary.getName() + ", has been saved");
 
@@ -63,8 +63,8 @@ public class StationaryServiceImpl implements StationaryService{
 
     @Override
     public Stationary findByName(String name) {
-        Stationary st = stationaryRepository.findByName(name);
-        st.setStationaryUrl(getStationaryUrl(st.getId()));
+        Stationary st = stationaryRepository.findByNameIgnoreCase(name);
+//      st.setStationaryUrl(getStationaryUrl(st.getId()));
         return st;
     }
 

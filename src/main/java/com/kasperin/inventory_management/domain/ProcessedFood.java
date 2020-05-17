@@ -15,9 +15,9 @@ import java.util.Date;
 @Entity
 public class ProcessedFood extends Item{
 
-    @Transient
-    @JsonProperty("processedFood_url")
-    private String processedFoodUrl;
+//    @Transient
+//    @JsonProperty("processedFood_url")
+//    private String processedFoodUrl;
 
     @Parsed(field = "type")
     @EnumOptions(customElement = "typeCode")

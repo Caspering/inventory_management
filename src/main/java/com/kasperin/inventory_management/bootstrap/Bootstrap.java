@@ -118,6 +118,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         st1.setName("Glue");
         st1.setBarcode("12345");
         st1.setPrice(1.3);
+        st1.setInStockQuantity(13);
 
         stationaries.add(st1);
 
@@ -126,6 +127,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         st2.setName("Pencil");
         st2.setBarcode("12345");
         st2.setPrice(1.3);
+        st2.setInStockQuantity(13);
 
         stationaries.add(st2);
 
@@ -134,6 +136,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         st3.setName("Ink");
         st3.setBarcode("12345");
         st3.setPrice(1.3);
+        st3.setInStockQuantity(13);
 
         stationaries.add(st3);
 

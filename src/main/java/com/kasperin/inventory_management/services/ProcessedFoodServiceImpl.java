@@ -21,9 +21,9 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
         this.processedFoodRepo = processedFoodRepo;
     }
 
-    private String getProcessedFoodUrl(Long id) {
-        return FruitAndVegeController.BASE_URL + "/id/" + id;
-    }
+//    private String getProcessedFoodUrl(Long id) {
+//        return FruitAndVegeController.BASE_URL + "/id/" + id;
+//    }
 
     @Override
     public ProcessedFood save(ProcessedFood processedFood) {
@@ -58,17 +58,17 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     @Override
     public ProcessedFood  findByName(String name) {
-        ProcessedFood pf = processedFoodRepo.findByName(name);
-        pf.setProcessedFoodUrl(getProcessedFoodUrl(pf.getId()));
-        return pf;
+//        ProcessedFood pf =
+//        pf.setProcessedFoodUrl(getProcessedFoodUrl(pf.getId()));
+        return processedFoodRepo.findByName(name);
     }
 
     @Override
     public List<ProcessedFood> findAll() {
        List<ProcessedFood> pf = processedFoodRepo.findAll();
-       for(ProcessedFood p : pf){
-           p.setProcessedFoodUrl(getProcessedFoodUrl(p.getId()));
-       }
+//       for(ProcessedFood p : pf){
+//           p.setProcessedFoodUrl(getProcessedFoodUrl(p.getId()));
+//       }
        return pf;
     }
 

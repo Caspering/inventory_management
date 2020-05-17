@@ -1,7 +1,5 @@
 package com.kasperin.inventory_management.controllers.v1;
 
-import com.kasperin.inventory_management.domain.Item;
-import com.kasperin.inventory_management.domain.ItemList;
 import com.kasperin.inventory_management.services.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -11,13 +11,12 @@ import javax.persistence.Transient;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Stationary extends Item{
 
-    @Transient
-    @JsonProperty("stationary_url")
-    private String stationaryUrl;
+//    @Transient
+//    @JsonProperty("stationary_url")
+//    private String stationaryUrl;
 
     //Csv Importer Constructor
     public Stationary(Record record) {
