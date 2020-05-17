@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -56,16 +59,23 @@ public class StationaryServiceImpl implements StationaryService{
 
     @Override
     public List<Stationary> findAll() {
-        List<Stationary> st = stationaryRepository.findAll();
-        st.removeIf(s -> s.getInStockQuantity() == 0);
-        return st;
+        return stationaryRepository.findAll()
+                .stream()
+                .map(s -> {
+                    if (s.getInStockQuantity() == 0)
+                        stationaryRepository.delete(s);
+                    return s;
+                })
+                //.filter(s -> s.getInStockQuantity() != 0)
+                .collect(Collectors.toList());
+
     }
 
     @Override
     public Stationary findByName(String name) {
-        Stationary st = stationaryRepository.findByNameIgnoreCase(name);
+//        Stationary st =
 //      st.setStationaryUrl(getStationaryUrl(st.getId()));
-        return st;
+        return stationaryRepository.findByNameIgnoreCase(name);
     }
 
     @Override
@@ -78,3 +88,10 @@ public class StationaryServiceImpl implements StationaryService{
             stationaryRepository.deleteById(id);
     }
 }
+
+
+
+
+
+//        List<Stationary> st = stationaryRepository.findAll();
+//        st.removeIf(s -> s.getInStockQuantity() == 0);
