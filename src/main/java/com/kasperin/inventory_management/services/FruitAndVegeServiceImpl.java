@@ -72,7 +72,7 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
 
     @Override
     public FruitAndVegeDTO findByName(String name) {
-        return fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(fruitAndVegeRepository.findByName(name));
+        return fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(fruitAndVegeRepository.findByNameIgnoreCase(name));
     }
 
     @Override
