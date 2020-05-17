@@ -62,8 +62,9 @@ public class StationaryServiceImpl implements StationaryService{
         return stationaryRepository.findAll()
                 .stream()
                 .map(s -> {
-                    if (s.getInStockQuantity() == 0)
+                    if (s.getInStockQuantity() == 0) {
                         stationaryRepository.delete(s);
+                    }
                     return s;
                 })
                 //.filter(s -> s.getInStockQuantity() != 0)
