@@ -8,5 +8,6 @@ public interface StationaryRepository extends JpaRepository<Stationary, Long> {
     Stationary findByNameIgnoreCase(String name);
 
     boolean existsById(Long id);
+    boolean existsByNameIgnoreCase(String name);
 
 }

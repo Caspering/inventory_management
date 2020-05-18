@@ -30,6 +30,14 @@ public class StationaryServiceImpl implements StationaryService{
                     ("Stationary object with the requested id: "+ id +" was not found");
         }
     }
+    private Stationary getStationaryByNameIgnoreCase(String name) {
+        if (stationaryRepository.existsByNameIgnoreCase(name)) {
+            return stationaryRepository.findByNameIgnoreCase(name);
+        }else{
+            throw new ResourceNotFoundException("The Stationary item with name: "
+                    + name + " does not exist");
+        }
+    }
 
     @Override
     @Validated(OnCreate.class)
@@ -73,7 +81,7 @@ public class StationaryServiceImpl implements StationaryService{
 
     @Override
     public Stationary findByName(String name) {
-        return stationaryRepository.findByNameIgnoreCase(name);
+        return getStationaryByNameIgnoreCase(name);
     }
 
     @Override
