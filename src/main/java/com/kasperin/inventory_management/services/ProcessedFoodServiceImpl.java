@@ -2,6 +2,7 @@ package com.kasperin.inventory_management.services;
 
 import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
+import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
@@ -26,6 +27,15 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
                     ("The Processed food object with the requested id: "+ id +" was not found");
         }
     }
+    private ProcessedFood getStationaryByNameIgnoreCase(String name) {
+        if (processedFoodRepo.existsByNameIgnoreCase(name)) {
+            return processedFoodRepo.findByNameIgnoreCase(name);
+        }else{
+            throw new ResourceNotFoundException("The Processes food item with name: "
+                    + name + " does not exist");
+        }
+    }
+
 
     public ProcessedFoodServiceImpl(ProcessedFoodRepo processedFoodRepo) {
         this.processedFoodRepo = processedFoodRepo;
@@ -68,7 +78,7 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     @Override
     public ProcessedFood  findByName(String name) {
-        return processedFoodRepo.findByNameIgnoreCase(name);
+        return getStationaryByNameIgnoreCase(name);
     }
 
     @Override

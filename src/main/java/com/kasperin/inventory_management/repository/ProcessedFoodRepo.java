@@ -11,8 +11,8 @@ public interface ProcessedFoodRepo
         extends JpaRepository<ProcessedFood, Long> {
 
     ProcessedFood findByNameIgnoreCase(String name);
-
     List<ProcessedFood> findAllByFoodType(FoodType foodType);
+    boolean existsByNameIgnoreCase(String name);
 
 
 }
