@@ -40,16 +40,13 @@ public class StationaryController {
     }
 
     @PatchMapping({"/{id}"})
-    public Optional<Stationary> updateById
-            (@PathVariable Long id,
-             @RequestBody @Validated({OnUpdate.class}) Stationary stationary){
+    public Optional<Stationary> updateById(@PathVariable Long id, @RequestBody Stationary stationary){
         return stationaryService.updateById(id,stationary);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Stationary createNewStationary
-            (@RequestBody @Validated({OnCreate.class})Stationary stationary) {
+    public Stationary createNewStationary(@RequestBody Stationary stationary) {
         return stationaryService.save(stationary);
     }
 

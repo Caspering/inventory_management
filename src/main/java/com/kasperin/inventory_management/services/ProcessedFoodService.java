@@ -2,16 +2,18 @@ package com.kasperin.inventory_management.services;
 
 import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
-import com.kasperin.inventory_management.domain.Stationary;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+@Validated
 public interface ProcessedFoodService {
 
-    ProcessedFood save(ProcessedFood processedFood);
+    ProcessedFood save(@Valid ProcessedFood processedFood);
 
-    Optional<ProcessedFood> updateById(Long id, ProcessedFood processedFood);
+    Optional<ProcessedFood> updateById(Long id, @Valid ProcessedFood processedFood);
 
     Optional<ProcessedFood> findById(Long id);
 
