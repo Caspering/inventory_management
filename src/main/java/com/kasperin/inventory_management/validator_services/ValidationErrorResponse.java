@@ -14,5 +14,4 @@ public class ValidationErrorResponse {
 
     private List<Violation> violations = new ArrayList<>();
 
-
 }
