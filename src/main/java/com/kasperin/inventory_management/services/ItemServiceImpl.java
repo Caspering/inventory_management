@@ -17,12 +17,27 @@ import java.util.List;
 @AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    private final FruitAndVegeRepository fruitAndVegeRepository;
-    private final ProcessedFoodRepo processedFoodRepo;
-    private final StationaryRepository stationaryRepository;
     private final StationaryService stationaryService;
+    private final ProcessedFoodService processedFoodService;
+    private final FruitAndVegeService fruitAndVegeService;
 
- /*   private String getFruitAndVegeUrl(Long id) {
+    @Override
+    public List<Object> findAll() {
+
+        List<Object> items = new ArrayList<>();
+
+        items.add(fruitAndVegeService.findAll());
+        items.add(processedFoodService.findAll());
+        items.add(stationaryService.findAll());
+
+        return items;
+
+    }
+
+}
+
+
+  /*  private String getFruitAndVegeUrl(Long id) {
         return FruitAndVegeController.BASE_URL + "/id/" + id;
     }
 
@@ -32,19 +47,4 @@ public class ItemServiceImpl implements ItemService {
 
     private String getStationaryUrl(Long id) {
         return StationaryController.BASE_URL + "/id/" + id;
-    }
-  */
-
-    @Override
-    public List<Object> findAll() {
-
-        List<Object> items = new ArrayList<>();
-
-        items.add(fruitAndVegeRepository.findAll());
-        items.add(processedFoodRepo.findAll());
-        items.add(stationaryService.findAll());
-
-        return items;
-
-    }
-}
+    }*/

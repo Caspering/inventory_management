@@ -1,17 +1,18 @@
 package com.kasperin.inventory_management.services;
 
-import com.kasperin.inventory_management.controllers.v1.StationaryController;
 import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.StationaryRepository;
+import com.kasperin.inventory_management.validator_services.OnCreate;
+import com.kasperin.inventory_management.validator_services.OnUpdate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -20,17 +21,11 @@ public class StationaryServiceImpl implements StationaryService{
 
     private final StationaryRepository stationaryRepository;
 
-
-    /*private String getStationaryUrl(Long id) {
-        return StationaryController.BASE_URL + "/id/" + id;
-    }*/
-
     @Override
-    public Stationary save(Stationary stationary) {
+    @Validated(OnCreate.class)
+    public Stationary save(@Valid Stationary stationary) {
 
         Stationary savedSt = stationaryRepository.save(stationary);
-
-        //savedSt.setStationaryUrl(getStationaryUrl(savedSt.getId()));
 
         log.info("Stationary item: " + stationary.getName() + ", has been saved");
 
@@ -38,31 +33,32 @@ public class StationaryServiceImpl implements StationaryService{
     }
 
     @Override
-    public Optional<Stationary> updateById(Long id, Stationary stationaryBody) {
+    @Validated(OnUpdate.class)
+    public Optional<Stationary> updateById(Long id, @Valid Stationary stationaryBody) {
 
-        Optional<Stationary> stationaryInRepo = stationaryRepository.findById(id);
-
-        /*If the stationary entity with the requested id exists in the Repo update its
+        /*If the stationary entity with the requested id exists in the Repo, update its
         field or else delete it if the inStockQuantity state/field is set to zero*/
-        if (stationaryInRepo.isPresent()) {
+        if (stationaryRepository.existsById(id)) {
+        Optional<Stationary> stationaryInRepo = stationaryRepository.findById(id);
             return stationaryInRepo.map(stationary -> {
-                if (isRealEntity(stationaryBody, stationary))
-                    return stationaryRepository.save(stationary);
 
+                /*Check if inStockQuantity is greater than 1 and Apply changes*/
+                if (isRealEntity(stationaryBody, stationary)) {
+                    return stationaryRepository.save(stationary);
+                }
                     /*if the inStockQuantity is set to zero delete the entity
                     from db and return null*/
-                    stationaryRepository.delete(stationary);
+                stationaryRepository.delete(stationary);
                 return null;
             });
         }
 
         /*But if the stationary with the requested id is not found*/
         else{
-            log.debug("Object not found");
-            throw new RuntimeException("Object not found");
+            throw new ResourceNotFoundException
+            ("Stationary object with the requested id was not found");
         }
     }
-
 
     /*if an entity has an inStockQuantity greater than 1 isRealEntity
     will update its fields and return true*/
@@ -84,7 +80,6 @@ public class StationaryServiceImpl implements StationaryService{
         }
         return false;
     }
-
 
     @Override
     public List<Stationary> findAll() {
@@ -118,9 +113,3 @@ public class StationaryServiceImpl implements StationaryService{
     }
 }
 
-
-
-
-
-//        List<Stationary> st = stationaryRepository.findAll();
-//        st.removeIf(s -> s.getInStockQuantity() == 0);

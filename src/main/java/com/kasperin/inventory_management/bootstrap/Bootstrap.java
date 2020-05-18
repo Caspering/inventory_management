@@ -14,10 +14,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +83,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         savedProcessedFood.setBarcode("12345");
         savedProcessedFood.setPrice(1.3);
         savedProcessedFood.setFoodType(FoodType.VEGAN);
-
+        savedProcessedFood.setInStockQuantity(13);
         proFood.add(savedProcessedFood);
 
 
@@ -96,7 +92,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         proFood2.setBarcode("12345");
         proFood2.setPrice(1.3);
         proFood2.setFoodType(FoodType.VEGAN);
-
+        proFood2.setInStockQuantity(13);
         proFood.add(proFood2);
 
         ProcessedFood proFood3 = new ProcessedFood();
@@ -104,6 +100,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         proFood3.setBarcode("12345");
         proFood3.setPrice(1.3);
         proFood3.setFoodType(FoodType.NONVEGAN);
+        proFood3.setInStockQuantity(13);
 
         proFood.add(proFood3);
 
@@ -145,7 +142,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         st4.setName("Ruler");
         st4.setBarcode("12445");
         st4.setPrice(1.4);
-
+        st4.setInStockQuantity(13);
         stationaries.add(st4);
 
 
@@ -153,7 +150,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         st5.setName("Eraser");
         st5.setBarcode("12545");
         st5.setPrice(1.5);
-
+        st5.setInStockQuantity(18);
         stationaries.add(st5);
 
 
