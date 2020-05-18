@@ -23,7 +23,7 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
             return processedFoodRepo.findById(id);
         }else{
             throw new ResourceNotFoundException
-                    ("Stationary object with the requested id: "+ id +" was not found");
+                    ("The Processed food object with the requested id: "+ id +" was not found");
         }
     }
 
