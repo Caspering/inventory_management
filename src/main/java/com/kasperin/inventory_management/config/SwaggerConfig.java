@@ -44,7 +44,7 @@ public class SwaggerConfig {
     private ApiInfo metaData(){
 
         Contact contact = new Contact("Vaughn Nze",
-                "https://caspering.github.io/inventory_management/",
+                "http://10.1.3.232:8080/swagger-ui.html#/",
                 "vaughnnze@gmail.com");
 
         return new ApiInfo(
