@@ -7,6 +7,6 @@ public interface FruitAndVegeRepository
         extends JpaRepository<FruitAndVege, Long> {
 
     FruitAndVege findByNameIgnoreCase(String name);
-
+    boolean existsByNameIgnoreCase(String name);
 
 }

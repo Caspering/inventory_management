@@ -1,6 +1,5 @@
 package com.kasperin.inventory_management.api.v1.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
 import lombok.AllArgsConstructor;
@@ -31,8 +30,5 @@ public class FruitAndVegeDTO {
                     "stationary inStockQuantity"
     )
     private Integer InStockQuantity;
-
-//    @JsonProperty("fruitAndVege_url")
-//    private String fruitAndVegeUrl;
 
 }

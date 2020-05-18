@@ -44,17 +44,17 @@ public class SwaggerConfig {
     private ApiInfo metaData(){
 
         Contact contact = new Contact("Vaughn Nze",
-                "https://github.com/KasperingOps/inventory_management_engine",
+                "https://caspering.github.io/inventory_management/",
                 "vaughnnze@gmail.com");
 
         return new ApiInfo(
                 "Inventory Management System",
-                "This is an inventory management system that exercises RESTful API's",
+                "This is an inventory management system that exercises RESTful API",
                 "1.0",
                 "Terms of Service: ",
                 contact,
-                "Apache License Version 2.0",
-                "https://www.apache.org/licenses/LICENSE-2.0",
+                "MIT License",
+                "https://opensource.org/licenses/MIT",
                 new ArrayList<>());
     }
 

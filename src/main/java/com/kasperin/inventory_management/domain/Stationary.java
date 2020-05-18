@@ -16,9 +16,6 @@ import javax.persistence.Transient;
 @Validated
 public class Stationary extends Item{
 
-//    @Transient
-//    @JsonProperty("stationary_url")
-//    private String stationaryUrl;
 
     //Csv Importer Constructor
     public Stationary(Record record) {

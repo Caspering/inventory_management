@@ -12,3 +12,21 @@
 //        log.info("Hello Kasper!");
 //    }
 //}
+
+/*
+
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    ValidationErrorResponse onMethodArgumentNotValidException(
+            MethodArgumentNotValidException e) {
+        ValidationErrorResponse error = new ValidationErrorResponse();
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+            error.getViolations().add(
+                    new Violation(fieldError.getField(), fieldError.getDefaultMessage()));
+        }
+        return error;
+    }
+
+*/

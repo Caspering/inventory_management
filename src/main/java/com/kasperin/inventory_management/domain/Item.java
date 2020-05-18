@@ -21,6 +21,8 @@ public class Item implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(groups = OnCreate.class,
+    message = "The item must be given a name")
     @Column
     @Parsed
     private String name;
@@ -33,15 +35,10 @@ public class Item implements Serializable {
     @Parsed
     private Double price;
 
-    //@NotNull
     @Min(value = 1, groups = OnCreate.class,
-         message = "There must be at least {value} count " +
-                   "of in stock quantity for a stationary item"
-    )
+         message = "There must be at least {value} count of in stock quantity for a stationary item")
     @Min(value = 0, groups = OnUpdate.class,
-         message = "You must update with at least 0 or more " +
-                   "stationary inStockQuantity"
-    )
+         message = "You must update with at least 0 or more stationary inStockQuantity")
     @Column
     @Parsed(field = "qty")
     private int inStockQuantity;
