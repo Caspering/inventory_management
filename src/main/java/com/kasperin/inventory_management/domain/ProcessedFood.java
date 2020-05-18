@@ -1,23 +1,21 @@
 package com.kasperin.inventory_management.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.univocity.parsers.annotations.EnumOptions;
 import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.Parsed;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @Entity
 public class ProcessedFood extends Item{
-
-    @Transient
-    @JsonProperty("processedFood_url")
-    private String processedFoodUrl;
 
     @Parsed(field = "type")
     @EnumOptions(customElement = "typeCode")
@@ -35,3 +33,10 @@ public class ProcessedFood extends Item{
     private Date expDate;
 
 }
+
+//    @Transient
+//    @JsonProperty("processedFood_url")
+//    private String processedFoodUrl;
+
+
+

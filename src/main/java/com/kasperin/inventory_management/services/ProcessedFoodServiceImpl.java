@@ -1,12 +1,15 @@
 package com.kasperin.inventory_management.services;
 
-import com.kasperin.inventory_management.controllers.v1.FruitAndVegeController;
 import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
+import com.kasperin.inventory_management.validator_services.OnCreate;
+import com.kasperin.inventory_management.validator_services.OnUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,61 +18,62 @@ import java.util.Optional;
 public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     private final ProcessedFoodRepo processedFoodRepo;
-
+    private Optional<ProcessedFood> getProcessedFood(Long id) {
+        if (processedFoodRepo.existsById(id)) {
+            return processedFoodRepo.findById(id);
+        }else{
+            throw new ResourceNotFoundException
+                    ("The Processed food object with the requested id: "+ id +" was not found");
+        }
+    }
 
     public ProcessedFoodServiceImpl(ProcessedFoodRepo processedFoodRepo) {
         this.processedFoodRepo = processedFoodRepo;
     }
 
-    private String getProcessedFoodUrl(Long id) {
-        return FruitAndVegeController.BASE_URL + "/id/" + id;
-    }
-
     @Override
-    public ProcessedFood save(ProcessedFood processedFood) {
+    @Validated(OnCreate.class)
+    public ProcessedFood save(@Valid ProcessedFood processedFood) {
         return processedFoodRepo.save(processedFood);
     }
 
     @Override
-    public Optional<ProcessedFood> updateById(Long id, ProcessedFood proFood) {
-        return processedFoodRepo.findById(id).map(processedFood -> {
+    @Validated(OnUpdate.class)
+    public Optional<ProcessedFood> updateById(Long id, @Valid ProcessedFood newData) {
+            return getProcessedFood(id)
+                .map(processedFood -> {
+                    if(newData.getInStockQuantity() >= 1) {
+                        processedFood.setInStockQuantity(newData.getInStockQuantity());
 
-            if(proFood.getInStockQuantity() != 0){
-                processedFood.setInStockQuantity(proFood.getInStockQuantity());
-            }
-            if(proFood.getName() != null){
-                processedFood.setName(proFood.getName());
-            }
-            if(proFood.getBarcode() != null){
-                processedFood.setBarcode(proFood.getBarcode());
-            }
-            if(proFood.getPrice() != null){
-                processedFood.setPrice(proFood.getPrice());
-            }
+                        if (newData.getName() != null)
+                        processedFood.setName(newData.getName());
 
-            return processedFoodRepo.save(processedFood);
-        });
+                        if (newData.getBarcode() != null)
+                        processedFood.setBarcode(newData.getBarcode());
+
+                        if (newData.getPrice() != null)
+                        processedFood.setPrice(newData.getPrice());
+
+                        return processedFoodRepo.save(processedFood);
+                    }
+                processedFoodRepo.delete(processedFood);
+                return null;
+            });
     }
 
     @Override
     public Optional<ProcessedFood> findById(Long id) {
-       return processedFoodRepo.findById(id);
+        return getProcessedFood(id);
     }
 
     @Override
     public ProcessedFood  findByName(String name) {
-        ProcessedFood pf = processedFoodRepo.findByName(name);
-        pf.setProcessedFoodUrl(getProcessedFoodUrl(pf.getId()));
-        return pf;
+        return processedFoodRepo.findByNameIgnoreCase(name);
     }
 
     @Override
     public List<ProcessedFood> findAll() {
-       List<ProcessedFood> pf = processedFoodRepo.findAll();
-       for(ProcessedFood p : pf){
-           p.setProcessedFoodUrl(getProcessedFoodUrl(p.getId()));
-       }
-       return pf;
+       return processedFoodRepo.findAll();
     }
 
     @Override
@@ -79,6 +83,8 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     @Override
     public void deleteById(Long id) {
-        processedFoodRepo.deleteById(id);
+        getProcessedFood(id).map(processedFood -> {processedFoodRepo.delete(processedFood);
+            return null;
+        });
     }
 }

@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StationaryRepository extends JpaRepository<Stationary, Long> {
 
-    Stationary findByName(String name);
+    Stationary findByNameIgnoreCase(String name);
+
+    boolean existsById(Long id);
 
 }

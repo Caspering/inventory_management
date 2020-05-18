@@ -5,10 +5,14 @@ import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.controllers.v1.FruitAndVegeController;
 import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.validator_services.OnCreate;
+import com.kasperin.inventory_management.validator_services.OnUpdate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,78 +22,80 @@ import java.util.Optional;
 public class FruitAndVegeServiceImpl implements FruitAndVegeService {
 
     private final FruitAndVegeMapper fruitAndVegeMapper;
-
     private final FruitAndVegeRepository fruitAndVegeRepository;
 
-    private String getFruitAndVegeUrl(Long id) {
-        return FruitAndVegeController.BASE_URL + "/id/" + id;
+    private Optional<FruitAndVege> getFruitAndVegeById(Long id){
+        if (fruitAndVegeRepository.existsById(id)) {
+            return fruitAndVegeRepository.findById(id);
+        }else{
+            throw new ResourceNotFoundException
+                    ("The Fruit or Vegetable object with the requested id: "+ id +" was not found");
+        }
     }
 
     @Override
-    public FruitAndVegeDTO saveAndReturnDTO(FruitAndVege fruitAndVege) {
+    @Validated(OnCreate.class)
+    public FruitAndVegeDTO saveAndReturnDTO(@Valid FruitAndVege fruitAndVege) {
         FruitAndVege savedFruitAndVege = fruitAndVegeRepository.save(fruitAndVege);
 
         FruitAndVegeDTO returnDto = fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(savedFruitAndVege);
-
-        returnDto.setFruitAndVegeUrl(getFruitAndVegeUrl(savedFruitAndVege.getId()));
 
         return returnDto;
     }
 
     @Override
-    public FruitAndVegeDTO createNewFruitAndVege(FruitAndVegeDTO fruitAndVegeDTO) {
+    @Validated(OnCreate.class)
+    public FruitAndVegeDTO createNewFruitAndVege(@Valid FruitAndVegeDTO fruitAndVegeDTO) {
 
         return saveAndReturnDTO(fruitAndVegeMapper.fruitAndVegeDTOtoFruitAndVege(fruitAndVegeDTO));
     }
 
     @Override
-    public Optional<FruitAndVege> updateById(Long id, FruitAndVege fav) {
-        return fruitAndVegeRepository.findById(id).map(fruitAndVege -> {
+    @Validated(OnUpdate.class)
+    public Optional<FruitAndVege> updateById(Long id, @Valid FruitAndVege fav) {
+        return getFruitAndVegeById(id)
+                .map(fruitAndVege -> {
+                    if(fav.getInStockQuantity() >= 1) {
+                        fruitAndVege.setInStockQuantity(fav.getInStockQuantity());
 
-            if(fav.getInStockQuantity() != 0){
-                fruitAndVege.setInStockQuantity(fav.getInStockQuantity());
-            }
-            if(fav.getName() != null){
-                fruitAndVege.setName(fav.getName());
-            }
-            if(fav.getBarcode() != null){
-                fruitAndVege.setBarcode(fav.getBarcode());
-            }
-            if(fav.getPrice() != null){
-                fruitAndVege.setPrice(fav.getPrice());
-            }
+                        if (fav.getName() != null)
+                            fruitAndVege.setName(fav.getName());
 
-            return fruitAndVegeRepository.save(fruitAndVege);
-        });
+                        if (fav.getBarcode() != null)
+                            fruitAndVege.setBarcode(fav.getBarcode());
+
+                        if (fav.getPrice() != null)
+                            fruitAndVege.setPrice(fav.getPrice());
+
+                        return fruitAndVegeRepository.save(fruitAndVege);
+                    }
+                    fruitAndVegeRepository.delete(fruitAndVege);
+                    return null;
+                });
     }
 
     @Override
     public FruitAndVegeDTO findById(Long id) {
         return fruitAndVegeRepository.findById(id)
                 .map(fruitAndVegeMapper::fruitAndVegeToFruitAndVegeDTO)
-                .map(fruitAndVegeDTO -> {
-                    fruitAndVegeDTO.setFruitAndVegeUrl(getFruitAndVegeUrl(id));//setting a url
-                    return fruitAndVegeDTO;
-                }).orElseThrow(ResourceNotFoundException::new);
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
     public FruitAndVegeDTO findByName(String name) {
-        return fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(fruitAndVegeRepository.findByName(name));
+        return fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(fruitAndVegeRepository.findByNameIgnoreCase(name));
     }
 
     @Override
     public List<FruitAndVege> findAll() {
-        List <FruitAndVege> fv = fruitAndVegeRepository.findAll();
-        for(FruitAndVege f : fv){
-            f.setFruitAndVegeUrl(getFruitAndVegeUrl(f.getId()));
-        }
-        return fv;
+       return fruitAndVegeRepository.findAll();
     }
 
     @Override
     public void deleteById(Long id) {
-        fruitAndVegeRepository.deleteById(id);
+        getFruitAndVegeById(id).map(fruitAndVege -> {fruitAndVegeRepository.delete(fruitAndVege);
+            return null;
+        });
     }
 
 }

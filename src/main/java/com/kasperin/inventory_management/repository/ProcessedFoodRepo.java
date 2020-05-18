@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ProcessedFoodRepo
         extends JpaRepository<ProcessedFood, Long> {
 
-    ProcessedFood findByName(String name);
+    ProcessedFood findByNameIgnoreCase(String name);
 
     List<ProcessedFood> findAllByFoodType(FoodType foodType);
 

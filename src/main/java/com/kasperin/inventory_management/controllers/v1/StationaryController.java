@@ -2,8 +2,11 @@ package com.kasperin.inventory_management.controllers.v1;
 
 import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.services.StationaryService;
+import com.kasperin.inventory_management.validator_services.OnCreate;
+import com.kasperin.inventory_management.validator_services.OnUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -12,9 +12,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class FruitAndVege extends Item{
 
-    @Transient
-    @JsonProperty("fruitAndVege_url")
-    private String fruitAndVegeUrl;
+//    @Transient
+//    @JsonProperty("fruitAndVege_url")
+//    private String fruitAndVegeUrl;
 
     //Csv Importer
     public FruitAndVege(Record record) {
