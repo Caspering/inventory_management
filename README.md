@@ -1,7 +1,7 @@
-# Inventory Management
+# Spring Boot Inventory Management System
 
 ## Requirements
-### Assume that following requirement has been given to you and develop the software to meet these requirements.
+
 #### Online-Grocery store Admin:
 - Create a back-end software to maintain Inventory of items in a general store.
 - input for launching application: 3 csv files with list of fruits & Vegitables(f&v), processed food items & stationary.
@@ -35,5 +35,4 @@
 |Name                                   |Barcode                                |Price      |qty|
 |---------------------------------------|---------------------------------------|-----------|---|
 |Glue stick                             |123456789000011                        |1.99       |15 |
-"# inventory_management_engine" 
-"# inventory_management_engine" 
+
