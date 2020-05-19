@@ -18,12 +18,12 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ConditionalOnResource(resources = "/food.csv")
+@ConditionalOnResource(resources = FruitAndVegeCsvImporter.RESOURCE_LOCATION)
 @Service
 public class FruitAndVegeCsvImporter {
 
+    public static final String RESOURCE_LOCATION = "/food.csv";
     private final FruitAndVegeRepository fruitAndVegeRepository;
-
     private final CsvParser parser;
 
 
@@ -43,7 +43,7 @@ public class FruitAndVegeCsvImporter {
     public void read() throws IOException {
 
           List<Record> records = this.parser
-                  .parseAllRecords(getReader("/food.csv"));
+                  .parseAllRecords(getReader(RESOURCE_LOCATION));
 
           List<FruitAndVege> fruitAndVeges = records.stream()
                   .map(FruitAndVege::new)
