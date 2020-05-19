@@ -11,11 +11,11 @@ spring:
     database: mysql
     show-sql: true
 #    Use below for generating mysql schema
-#    properties:
-#      javax:
-#        persistence:
-#          schema-generation:
-#            create-source: metadata
-#            scripts:
-#              action: create
-#              create-target: kasperin_database_create.sql
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: create
+              create-target: kasperin_database_create.sql

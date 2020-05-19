@@ -16,9 +16,11 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-@ConditionalOnResource(resources = "/processed_food.csv")
+@ConditionalOnResource(resources = ProcessedFoodCsvImporter.RESOURCE_LOCATION)
 @Service
 public class ProcessedFoodCsvImporter {
+
+    public static final String RESOURCE_LOCATION = "/processed_food.csv";
 
     private final ProcessedFoodRepo processedFoodRepo;
 
@@ -43,7 +45,7 @@ public class ProcessedFoodCsvImporter {
     public void read() throws IOException {
 
 
-    parser.parse(getReader("/processed_food.csv"));
+    parser.parse(getReader(ProcessedFoodCsvImporter.RESOURCE_LOCATION));
 
     List<ProcessedFood> processedFoods = rowProcessor.getBeans();
 
