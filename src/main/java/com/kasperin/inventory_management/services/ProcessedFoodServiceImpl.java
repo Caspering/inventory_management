@@ -49,25 +49,38 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     @Override
     @Validated(OnUpdate.class)
-    public Optional<ProcessedFood> updateById(Long id, @Valid ProcessedFood newData) {
+    public Optional<ProcessedFood> updateById(Long id, @Valid ProcessedFood newProcessedFoodData) {
             return getProcessedFood(id)
-                .map(processedFood -> {
-                    if(newData.getInStockQuantity() >= 1) {
-                        processedFood.setInStockQuantity(newData.getInStockQuantity());
+                .map(oldProcessedFoodData -> {
+                    if (newProcessedFoodData.getInStockQuantity() == null)
+                        newProcessedFoodData.setInStockQuantity(oldProcessedFoodData.getInStockQuantity());
 
-                        if (newData.getName() != null)
-                        processedFood.setName(newData.getName());
+                    if(newProcessedFoodData.getInStockQuantity() >= 1) {
+                        oldProcessedFoodData.setInStockQuantity(newProcessedFoodData.getInStockQuantity());
 
-                        if (newData.getBarcode() != null)
-                        processedFood.setBarcode(newData.getBarcode());
+                        if (newProcessedFoodData.getName() != null)
+                            oldProcessedFoodData.setName(newProcessedFoodData.getName());
 
-                        if (newData.getPrice() != null)
-                        processedFood.setPrice(newData.getPrice());
+                        if (newProcessedFoodData.getBarcode() != null)
+                            oldProcessedFoodData.setBarcode(newProcessedFoodData.getBarcode());
 
-                        return processedFoodRepo.save(processedFood);
-                    }
-                processedFoodRepo.delete(processedFood);
-                return null;
+                        if (newProcessedFoodData.getPrice() != null)
+                            oldProcessedFoodData.setPrice(newProcessedFoodData.getPrice());
+
+                        if (newProcessedFoodData.getFoodType() != null)
+                            oldProcessedFoodData.setFoodType(newProcessedFoodData.getFoodType());
+
+                        if (newProcessedFoodData.getMfgDate() != null)
+                            oldProcessedFoodData.setMfgDate(newProcessedFoodData.getMfgDate());
+
+                        if (newProcessedFoodData.getExpDate() != null)
+                            oldProcessedFoodData.setExpDate(newProcessedFoodData.getExpDate());
+
+                        return processedFoodRepo.save(oldProcessedFoodData);
+                        
+                    }else if (newProcessedFoodData.getInStockQuantity() == 0)
+                                processedFoodRepo.delete(oldProcessedFoodData);
+                    return null;
             });
     }
 

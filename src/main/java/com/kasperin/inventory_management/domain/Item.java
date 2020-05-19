@@ -35,12 +35,13 @@ public class Item implements Serializable {
     @Parsed
     private Double price;
 
+
     @Min(value = 1, groups = OnCreate.class,
          message = "There must be at least {value} count of in stock quantity for a stationary item")
     @Min(value = 0, groups = OnUpdate.class,
          message = "You must update with at least 0 or more stationary inStockQuantity")
     @Column
     @Parsed(field = "qty")
-    private int inStockQuantity;
+    private Integer inStockQuantity;
 
 }

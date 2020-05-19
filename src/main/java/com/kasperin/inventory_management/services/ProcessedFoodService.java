@@ -13,7 +13,7 @@ public interface ProcessedFoodService {
 
     ProcessedFood save(@Valid ProcessedFood processedFood);
 
-    Optional<ProcessedFood> updateById(Long id, @Valid ProcessedFood processedFood);
+    Optional<ProcessedFood> updateById(Long id, @Valid ProcessedFood newProcessedFood);
 
     Optional<ProcessedFood> findById(Long id);
 
