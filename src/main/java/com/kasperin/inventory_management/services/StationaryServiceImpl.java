@@ -52,26 +52,32 @@ public class StationaryServiceImpl implements StationaryService{
 
     @Override
     @Validated(OnUpdate.class)
-    public Optional<Stationary> updateById(Long id, @Valid Stationary newData) {
+    public Optional<Stationary> updateById(Long id, @Valid Stationary newStationary) {
         return getStationaryById(id)
-                .map(stationary -> {
-                    if(newData.getInStockQuantity() >= 1) {
-                        stationary.setInStockQuantity(newData.getInStockQuantity());
+                .map(oldStationary -> {
+                    if (newStationary.getInStockQuantity() == null)
+                        newStationary.setInStockQuantity(oldStationary.getInStockQuantity());
 
-                        if (newData.getName() != null)
-                            stationary.setName(newData.getName());
+                    if(newStationary.getInStockQuantity() >= 1) {
+                        oldStationary.setInStockQuantity(newStationary.getInStockQuantity());
 
-                        if (newData.getBarcode() != null)
-                            stationary.setBarcode(newData.getBarcode());
+                        if (newStationary.getName() != null)
+                            oldStationary.setName(newStationary.getName());
 
-                        if (newData.getPrice() != null)
-                            stationary.setPrice(newData.getPrice());
+                        if (newStationary.getBarcode() != null)
+                            oldStationary.setBarcode(newStationary.getBarcode());
 
-                        return stationaryRepository.save(stationary);
-                    }
-                stationaryRepository.delete(stationary);
-                return null;
+                        if (newStationary.getPrice() != null)
+                            oldStationary.setPrice(newStationary.getPrice());
+
+                        return stationaryRepository.save(oldStationary);
+
+                    }else if (newStationary.getInStockQuantity() == 0)
+                        stationaryRepository.delete(oldStationary);
+                        return null;
+
         });
+
     }
 
     @Override

@@ -62,26 +62,30 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
 
     @Override
     @Validated(OnUpdate.class)
-    public Optional<FruitAndVege> updateById(Long id, @Valid FruitAndVege fav) {
+    public Optional<FruitAndVege> updateById(Long id, @Valid FruitAndVege newFruitAndVegeData) {
         return getFruitAndVegeById(id)
-                .map(fruitAndVege -> {
-                    if(fav.getInStockQuantity() >= 1) {
-                        fruitAndVege.setInStockQuantity(fav.getInStockQuantity());
+                .map(oldFruitAndVegeData -> {
+                    if (newFruitAndVegeData.getInStockQuantity() == null)
+                        newFruitAndVegeData.setInStockQuantity(oldFruitAndVegeData.getInStockQuantity());
 
-                        if (fav.getName() != null)
-                            fruitAndVege.setName(fav.getName());
+                    if(newFruitAndVegeData.getInStockQuantity() >= 1) {
+                        oldFruitAndVegeData.setInStockQuantity(newFruitAndVegeData.getInStockQuantity());
 
-                        if (fav.getBarcode() != null)
-                            fruitAndVege.setBarcode(fav.getBarcode());
+                        if (newFruitAndVegeData.getName() != null)
+                            oldFruitAndVegeData.setName(newFruitAndVegeData.getName());
 
-                        if (fav.getPrice() != null)
-                            fruitAndVege.setPrice(fav.getPrice());
+                        if (newFruitAndVegeData.getBarcode() != null)
+                            oldFruitAndVegeData.setBarcode(newFruitAndVegeData.getBarcode());
 
-                        return fruitAndVegeRepository.save(fruitAndVege);
-                    }
-                    fruitAndVegeRepository.delete(fruitAndVege);
-                    return null;
-                });
+                        if (newFruitAndVegeData.getPrice() != null)
+                            oldFruitAndVegeData.setPrice(newFruitAndVegeData.getPrice());
+
+                        return fruitAndVegeRepository.save(oldFruitAndVegeData);
+
+                    }else if (newFruitAndVegeData.getInStockQuantity() == 0)
+                            fruitAndVegeRepository.delete(oldFruitAndVegeData);
+                return null;
+        });
     }
 
     @Override
