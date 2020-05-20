@@ -44,18 +44,14 @@ public class FruitAndVegeCsvImporter {
     @PostConstruct
     public void read() throws IOException {
 
-          List<Record> records = this.parser
-                  .parseAllRecords(getReader(RESOURCE_LOCATION));
+        List<Record> records = this.parser
+                .parseAllRecords(getReader(RESOURCE_LOCATION));
 
-          List<FruitAndVege> fruitAndVeges = records.stream()
-                  .map(FruitAndVege::new)
-                  .collect(Collectors.toList());
-//        for (FruitAndVege fruitAndVege : fruitAndVeges) {
-//            if (!(fruitAndVegeRepository.existsByBarcode(fruitAndVege.getBarcode()))) {
-                insertData(fruitAndVeges);
-//                log.info("This in the read method Stationary item: " + fruitAndVege.getName() + ", has been parsed to insert method");
-//            }
-//        }
+        List<FruitAndVege> fruitAndVeges = records.stream()
+                .map(FruitAndVege::new)
+                .collect(Collectors.toList());
+
+        insertData(fruitAndVeges);
     }
 
     private Reader getReader(String s) throws UnsupportedEncodingException {

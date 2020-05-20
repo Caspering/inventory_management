@@ -1,10 +1,12 @@
 package com.kasperin.inventory_management.CSV;
 
+import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @ConditionalOnResource(resources = StationaryCsvImporter.RESOURCE_LOCATION)
 @Service
 public class StationaryCsvImporter {
@@ -42,10 +45,12 @@ public class StationaryCsvImporter {
         List<Record> records = this.parser
                 .parseAllRecords(getReader(RESOURCE_LOCATION));
 
-        List<Stationary> stationary = records.stream()
+        List<Stationary> stationarys = records.stream()
+                //.stream();
                 .map(Stationary::new)
+                .filter(stationary -> !(stationaryRepository.existsByBarcode(stationary.getBarcode())))
                 .collect(Collectors.toList());
-        insertData(stationary);
+        insertData(stationarys);
 
     }
 
@@ -55,8 +60,20 @@ public class StationaryCsvImporter {
                         .getResourceAsStream(s), "UTF-8");
     }
 
-    private void insertData(List<Stationary> stationary) {
-        stationaryRepository.saveAll(stationary);
+    private void insertData(List<Stationary> stationarys) {
+//        for (Stationary stationary : stationarys) {
+//            if (!(stationaryRepository.existsByBarcode(stationary.getBarcode()))) {
+                stationaryRepository.saveAll(stationarys);
+
+//                log.info("The stationary item with name: " + stationary.getName() + ", has been imported");
+//
+//            } else
+//
+//                log.info("The stationary with name: " + stationary.getName() +
+//                        "and barcode: "+stationary.getBarcode()+
+//                        " was not imported because it already exists");
+//
+//        }
     }
 
 }

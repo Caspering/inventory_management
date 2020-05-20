@@ -43,7 +43,16 @@ public class ProcessedFoodCsvImporter {
     public void read() throws IOException {
     parser.parse(getReader(RESOURCE_LOCATION));
     List<ProcessedFood> processedFoods = rowProcessor.getBeans();
-    insertData(processedFoods);
+
+//                for (ProcessedFood processedFood : processedFoods) {
+//            if (!(processedFoodRepo.existsByBarcode(processedFood.getBarcode()))) {
+        insertData(processedFoods);
+//                log.info("This in ");
+//           }else
+//               log.info("we are in the else of the if method in read meaning barcode exists so duplicate caugth");
+//       }
+
+
     }
 
 
