@@ -13,6 +13,7 @@ public interface ProcessedFoodRepo
     ProcessedFood findByNameIgnoreCase(String name);
     List<ProcessedFood> findAllByFoodType(FoodType foodType);
     boolean existsByNameIgnoreCase(String name);
+    boolean existsByBarcode(String barcode);
 
 
 }

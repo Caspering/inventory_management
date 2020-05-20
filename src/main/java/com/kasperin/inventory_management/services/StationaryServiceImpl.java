@@ -1,6 +1,5 @@
 package com.kasperin.inventory_management.services;
 
-import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import com.kasperin.inventory_management.validator_services.OnCreate;
@@ -10,10 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.management.BadAttributeValueExpException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 public class StationaryServiceImpl implements StationaryService{
 
     private final StationaryRepository stationaryRepository;
-
     private Optional<Stationary> getStationaryById(Long id) {
         if (stationaryRepository.existsById(id)) {
             return stationaryRepository.findById(id);
@@ -43,11 +41,16 @@ public class StationaryServiceImpl implements StationaryService{
     @Validated(OnCreate.class)
     public Stationary save(@Valid Stationary stationary) {
 
-        Stationary savedSt = stationaryRepository.save(stationary);
+        if (!(stationaryRepository.existsByBarcode(stationary.getBarcode()))) {
 
-        log.info("Stationary item: " + stationary.getName() + ", has been saved");
+            Stationary savedSt = stationaryRepository.save(stationary);
 
-        return savedSt;
+            log.info("Stationary item: " + stationary.getName() + ", has been saved");
+
+            return savedSt;
+        }else
+            log.error("A stationary item with barcode: " + stationary.getBarcode() +" exists");
+        return null;
     }
 
     @Override

@@ -27,6 +27,8 @@ public class Item implements Serializable {
     @Parsed
     private String name;
 
+    @NotNull(groups = OnCreate.class,
+            message = "The item must be given a unique barcode")
     @Column
     @Parsed
     private String barcode;
@@ -34,7 +36,6 @@ public class Item implements Serializable {
     @Column
     @Parsed
     private Double price;
-
 
     @Min(value = 1, groups = OnCreate.class,
          message = "There must be at least {value} count of in stock quantity for a stationary item")

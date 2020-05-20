@@ -5,6 +5,7 @@ import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -18,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @ConditionalOnResource(resources = FruitAndVegeCsvImporter.RESOURCE_LOCATION)
 @Service
 public class FruitAndVegeCsvImporter {
@@ -57,7 +59,20 @@ public class FruitAndVegeCsvImporter {
     }
 
     private void insertData(List<FruitAndVege> fruitAndVeges) {
-        fruitAndVegeRepository.saveAll(fruitAndVeges);
+        for (FruitAndVege fruitAndVege : fruitAndVeges) {
+            if (!(fruitAndVegeRepository.existsByBarcode(fruitAndVege.getBarcode()))) {
+                fruitAndVegeRepository.saveAll(fruitAndVeges);
+
+                log.info("Stationary item: " + fruitAndVege.getName() + ", has been imported");
+
+            } else
+
+            log.info("A fruit or vegetable with name: " + fruitAndVege.getName() +
+                        "and barcode: "+fruitAndVege.getBarcode()+
+                        " was not imported because it already exists");
+
+        }
+
     }
 
 }
