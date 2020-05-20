@@ -50,7 +50,12 @@ public class FruitAndVegeCsvImporter {
           List<FruitAndVege> fruitAndVeges = records.stream()
                   .map(FruitAndVege::new)
                   .collect(Collectors.toList());
-          insertData(fruitAndVeges);
+//        for (FruitAndVege fruitAndVege : fruitAndVeges) {
+//            if (!(fruitAndVegeRepository.existsByBarcode(fruitAndVege.getBarcode()))) {
+                insertData(fruitAndVeges);
+//                log.info("This in the read method Stationary item: " + fruitAndVege.getName() + ", has been parsed to insert method");
+//            }
+//        }
     }
 
     private Reader getReader(String s) throws UnsupportedEncodingException {
@@ -63,7 +68,7 @@ public class FruitAndVegeCsvImporter {
             if (!(fruitAndVegeRepository.existsByBarcode(fruitAndVege.getBarcode()))) {
                 fruitAndVegeRepository.saveAll(fruitAndVeges);
 
-                log.info("Stationary item: " + fruitAndVege.getName() + ", has been imported");
+                log.info("The fruit or vegetable item with name: " + fruitAndVege.getName() + ", has been imported");
 
             } else
 

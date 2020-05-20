@@ -1,10 +1,12 @@
 package com.kasperin.inventory_management.CSV;
 
+import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+@Slf4j
 @ConditionalOnResource(resources = ProcessedFoodCsvImporter.RESOURCE_LOCATION)
 @Service
 public class ProcessedFoodCsvImporter {
@@ -51,7 +54,19 @@ public class ProcessedFoodCsvImporter {
 
 
     private void insertData(List<ProcessedFood> processedFoods) {
-        processedFoodRepo.saveAll(processedFoods);
+        for (ProcessedFood processedFood : processedFoods) {
+            if (!(processedFoodRepo.existsByBarcode(processedFood.getBarcode()))) {
+                processedFoodRepo.saveAll(processedFoods);
+
+                log.info("The processed food item: " + processedFood.getName() + ", has been imported");
+
+            } else
+
+                log.info("The processed food item with name: " + processedFood.getName() +
+                        "and barcode: "+processedFood.getBarcode()+
+                        " was not imported because it already exists");
+
+        }
     }
 
 }
