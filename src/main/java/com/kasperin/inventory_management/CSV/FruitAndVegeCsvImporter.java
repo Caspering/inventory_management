@@ -42,6 +42,7 @@ public class FruitAndVegeCsvImporter {
     @PostConstruct
     public void read() throws IOException {
 
+        //Map to store and compare barcodes in record for duplicates
         Map<String, Record> records = new HashMap<>();
 
         // call beginParsing to read records one by one, iterator-style.
@@ -57,6 +58,7 @@ public class FruitAndVegeCsvImporter {
             System.out.println(record.getString("name") + " was added to records");
         }
 
+        //convert Map to List
         List<Record> recordList = new ArrayList<>(records.values());
 
 

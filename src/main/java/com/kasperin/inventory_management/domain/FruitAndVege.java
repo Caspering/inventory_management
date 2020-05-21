@@ -21,8 +21,5 @@ public class FruitAndVege extends Item{
         super.setInStockQuantity(record.getInt("qty"));
     }
 
-    public FruitAndVege(Map.Entry<String, Record> stringRecordEntry) {
-
-    }
 }
 

@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.CSV;
 
+import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import com.univocity.parsers.common.record.Record;
@@ -14,7 +15,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -40,18 +44,30 @@ public class StationaryCsvImporter {
 
     @PostConstruct
     public void read() throws IOException{
+        //Map to store and compare barcodes in record for duplicates
+        Map<String, Record> records = new HashMap<>();
 
-        //Predicate<Stationary> exists = stationary -> (stationaryRepository.existsByBarcode(stationary.getBarcode()));
+        // call beginParsing to read records one by one, iterator-style.
+        parser.beginParsing(getReader(RESOURCE_LOCATION));
 
-        List<Record> records = this.parser
-                .parseAllRecords(getReader(RESOURCE_LOCATION));
+        Record record;
 
-        List<Stationary> stationarys = records
+        while ((record = parser.parseNextRecord()) != null) {
+            if (!records.containsKey(record.getString("barcode") ))
+
+                records.put(record.getString("barcode"),record);
+
+            System.out.println(record.getString("name") + " was added to records");
+        }
+
+        //convert Map to List
+        List<Record> recordList = new ArrayList<>(records.values());
+
+
+        List<Stationary> stationarys = recordList
                 .stream()
                 .map(Stationary::new)
-              //  .filter(exists)
                 .collect(Collectors.toList());
-        //stationarys.removeIf(stationary -> (stationaryRepository.existsByBarcode(stationary.getBarcode())));
 
         insertData(stationarys);
 
@@ -64,19 +80,19 @@ public class StationaryCsvImporter {
     }
 
     private void insertData(List<Stationary> stationarys) {
-//        for (Stationary stationary : stationarys) {
-//            if (!(stationaryRepository.existsByBarcode(stationary.getBarcode()))) {
+        for (Stationary stationary : stationarys) {
+            if (!(stationaryRepository.existsByBarcode(stationary.getBarcode()))) {
                 stationaryRepository.saveAll(stationarys);
 
-//                log.info("The stationary item with name: " + stationary.getName() + ", has been imported");
-//
-//            } else
-//
-//                log.info("The stationary with name: " + stationary.getName() +
-//                        "and barcode: "+stationary.getBarcode()+
-//                        " was not imported because it already exists");
-//
-//        }
+                log.info("The stationary item with name: " + stationary.getName() + ", has been imported");
+
+            } else
+
+                log.info("The stationary with name: " + stationary.getName() +
+                        "and barcode: "+stationary.getBarcode()+
+                        " was not imported because it already exists");
+
+        }
     }
 
 }
