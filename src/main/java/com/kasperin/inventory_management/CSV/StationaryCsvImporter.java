@@ -1,13 +1,11 @@
 package com.kasperin.inventory_management.CSV;
 
-import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -42,14 +41,18 @@ public class StationaryCsvImporter {
     @PostConstruct
     public void read() throws IOException{
 
+        //Predicate<Stationary> exists = stationary -> (stationaryRepository.existsByBarcode(stationary.getBarcode()));
+
         List<Record> records = this.parser
                 .parseAllRecords(getReader(RESOURCE_LOCATION));
 
-        List<Stationary> stationarys = records.stream()
-                //.stream();
+        List<Stationary> stationarys = records
+                .stream()
                 .map(Stationary::new)
-                .filter(stationary -> !(stationaryRepository.existsByBarcode(stationary.getBarcode())))
+              //  .filter(exists)
                 .collect(Collectors.toList());
+        //stationarys.removeIf(stationary -> (stationaryRepository.existsByBarcode(stationary.getBarcode())));
+
         insertData(stationarys);
 
     }

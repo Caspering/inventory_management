@@ -9,5 +9,6 @@ public interface StationaryRepository extends JpaRepository<Stationary, Long> {
     boolean existsById(Long id);
     boolean existsByNameIgnoreCase(String name);
     boolean existsByBarcode(String barcode);
+    Stationary findByBarcode(String barcode);
 
 }

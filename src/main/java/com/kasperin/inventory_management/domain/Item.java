@@ -2,7 +2,9 @@ package com.kasperin.inventory_management.domain;
 
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
+import com.univocity.parsers.annotations.NullString;
 import com.univocity.parsers.annotations.Parsed;
+import com.univocity.parsers.annotations.Validate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,12 +27,14 @@ public class Item implements Serializable {
     message = "The item must be given a name")
     @Column
     @Parsed
+    @Validate
     private String name;
 
     @NotNull(groups = OnCreate.class,
             message = "The item must be given a unique barcode")
     @Column
     @Parsed
+    @Validate
     private String barcode;
 
     @Column
@@ -43,6 +47,7 @@ public class Item implements Serializable {
          message = "You must update with at least 0 or more stationary inStockQuantity")
     @Column
     @Parsed(field = "qty")
+    @NullString(nulls = {"", "N/A"})
     private Integer inStockQuantity;
 
 }

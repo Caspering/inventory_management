@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @Data
 @Entity
@@ -20,5 +21,8 @@ public class FruitAndVege extends Item{
         super.setInStockQuantity(record.getInt("qty"));
     }
 
+    public FruitAndVege(Map.Entry<String, Record> stringRecordEntry) {
+
+    }
 }
 

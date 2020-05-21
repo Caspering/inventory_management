@@ -3,6 +3,7 @@ package com.kasperin.inventory_management.domain;
 import com.univocity.parsers.annotations.EnumOptions;
 import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.Parsed;
+import com.univocity.parsers.annotations.Validate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,11 +24,13 @@ public class ProcessedFood extends Item{
     FoodType foodType;
 
     @Column
+    @Validate
     @Parsed(field = "mfg")
     @Format(formats = {"yyyy-MM-dd", "dd/MM/yyyy"}, options = "locale=en;lenient=false")
     private Date mfgDate;
 
     @Column
+    @Validate
     @Parsed(field = "exp")
     @Format(formats = {"yyyy-MM-dd", "dd/MM/yyyy"}, options = "locale=en;lenient=false")
     private Date expDate;

@@ -6,8 +6,6 @@ import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class FruitAndVegeCsvImporter {
 
-    public static final String RESOURCE_LOCATION = "/food.csv";
+    public static final String RESOURCE_LOCATION = "/fruitAndVegetables.csv";
     private final FruitAndVegeRepository fruitAndVegeRepository;
     private final CsvParser parser;
 
@@ -44,14 +42,31 @@ public class FruitAndVegeCsvImporter {
     @PostConstruct
     public void read() throws IOException {
 
-        List<Record> records = this.parser
-                .parseAllRecords(getReader(RESOURCE_LOCATION));
+        Map<String, Record> records = new HashMap<>();
 
-        List<FruitAndVege> fruitAndVeges = records.stream()
+        // call beginParsing to read records one by one, iterator-style.
+        parser.beginParsing(getReader(RESOURCE_LOCATION));
+
+        Record record;
+
+        while ((record = parser.parseNextRecord()) != null) {
+            if (!records.containsKey(record.getString("barcode") ))
+
+                records.put(record.getString("barcode"),record);
+
+            System.out.println(record.getString("name") + " was added to records");
+        }
+
+        List<Record> recordList = new ArrayList<>(records.values());
+
+
+        List<FruitAndVege> fruitAndVeges = recordList
+                .stream()
                 .map(FruitAndVege::new)
                 .collect(Collectors.toList());
 
         insertData(fruitAndVeges);
+
     }
 
     private Reader getReader(String s) throws UnsupportedEncodingException {

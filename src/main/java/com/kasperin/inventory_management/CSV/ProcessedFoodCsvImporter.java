@@ -1,9 +1,10 @@
 package com.kasperin.inventory_management.CSV;
 
-import com.kasperin.inventory_management.domain.FruitAndVege;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
+import com.univocity.parsers.common.ParsingContext;
 import com.univocity.parsers.common.processor.BeanListProcessor;
+import com.univocity.parsers.common.processor.RowProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -34,7 +36,25 @@ public class ProcessedFoodCsvImporter {
         CsvParserSettings settings = new CsvParserSettings();
         settings.setHeaderExtractionEnabled(true);
         settings.setLineSeparatorDetectionEnabled(true);
-        settings.setRowProcessor(rowProcessor);
+        settings.setProcessor(rowProcessor);
+//        settings.setProcessor(new RowProcessor() {
+//            @Override
+//            public void processStarted(ParsingContext parsingContext) {
+//                System.out.println("Started to process rows of data.");
+//
+//            }
+//
+//            @Override
+//            public void rowProcessed(String[] strings, ParsingContext parsingContext) {
+//
+//            }
+//
+//            @Override
+//            public void processEnded(ParsingContext parsingContext) {
+//
+//            }
+//        });
+
         this.parser = new CsvParser(settings);
     }
 
@@ -43,10 +63,15 @@ public class ProcessedFoodCsvImporter {
     public void read() throws IOException {
     parser.parse(getReader(RESOURCE_LOCATION));
     List<ProcessedFood> processedFoods = rowProcessor.getBeans();
+//    List<ProcessedFood> filtered = new ArrayList<>();
 
 //                for (ProcessedFood processedFood : processedFoods) {
-//            if (!(processedFoodRepo.existsByBarcode(processedFood.getBarcode()))) {
+//            if (processedFoodRepo.existsByBarcode(processedFood.getBarcode()))
+                //filtered.add(processedFood);
+//            processedFoods.remove(processedFood);
+//            }
         insertData(processedFoods);
+//                    insertData(filtered);
 //                log.info("This in ");
 //           }else
 //               log.info("we are in the else of the if method in read meaning barcode exists so duplicate caugth");
@@ -77,5 +102,7 @@ public class ProcessedFoodCsvImporter {
 
         }
     }
+
+
 
 }
