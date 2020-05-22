@@ -4,10 +4,10 @@ import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.univocity.parsers.common.DataProcessingException;
 import com.univocity.parsers.common.processor.BeanListProcessor;
-import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Slf4j
@@ -43,51 +45,49 @@ public class ProcessedFoodCsvImporter {
 
 
     @PostConstruct
-    public void read() throws IOException, DataProcessingException {
-        //Map to store and compare barcodes in record for duplicates
-        Map<String, ProcessedFood> records = new HashMap<>();
+    public void read() throws IOException, DataProcessingException, NullPointerException {
+        try{
+            //Map to store and compare barcodes in record for duplicates
+            Map<String, ProcessedFood> records = new HashMap<>();
 
-        parser.parse(getReader(RESOURCE_LOCATION));
+            parser.parse(getReader(RESOURCE_LOCATION));
 
-       //iterate through the csv data
-        for (ProcessedFood record : rowProcessor.getBeans()) {
+            //iterate through the csv data
+            for (ProcessedFood record : rowProcessor.getBeans()) {
 
-            //do not pick items with duplicates barcode
-            if (!records.containsKey(record.getBarcode())) {
+                //do not pick items that already been picked to prevent duplicate barcodes
+                if (!records.containsKey(record.getBarcode())) {
 
-                try {
+                        //create localDate instances for comparing dates.
+                        LocalDate expDate = record.getExpDate();
+                        LocalDate mfgDate = record.getMfgDate();
 
-                  Date expDate = record.getExpDate();
-                  Date mfgDate = record.getMfgDate();
+                        //compare dates
+                        int diff = expDate.compareTo(mfgDate);
 
-                  //compare dates
-                  int diff = expDate.compareTo(mfgDate);
+                        if (diff == 0) {
+                            log.error("Can not import: "+ record.getName() +
+                                    " because " + expDate + " is Equal to " + mfgDate);
 
-                  if (diff == 0) {
+                        } else if (diff > 0) {
+                            records.put(record.getBarcode(), record);
+                            log.info(expDate + " is AFTER " + mfgDate);
 
-                      log.error(expDate + " is Equal to " + mfgDate);
+                        } else {
+                            log.error("Can not import: "+ record.getName() +
+                                    " because " + expDate + " is BEFORE " + mfgDate);
 
-                  } else if (diff > 0) {
-
-                      records.put(record.getBarcode(), record);
-                      log.info(expDate + " is AFTER " + mfgDate);
-
-                  } else {
-
-                      log.error(expDate + " is BEFORE " + mfgDate);
-
-                  }
-
-              }catch (DataProcessingException e){
-                  log.error("can not convert: " + e);
-              }
-
+                        }
+                }
             }
+                List<ProcessedFood> processedFoods = new ArrayList<>(records.values());
+                insertData(processedFoods);
+
+        }  catch (DataProcessingException | NullPointerException e) {
+            log.error("can not convert: " + e);
+            e.printStackTrace();
+
         }
-
-        List<ProcessedFood> processedFoods = new ArrayList<>(records.values());
-
-        insertData(processedFoods);
     }
 
 
@@ -99,16 +99,18 @@ public class ProcessedFoodCsvImporter {
 
     private void insertData(List<ProcessedFood> processedFoods) {
         for (ProcessedFood processedFood : processedFoods) {
+            //Do not create duplicate/overwrite in db
             if (!(processedFoodRepo.existsByBarcode(processedFood.getBarcode()))) {
+
                 processedFoodRepo.save(processedFood);
 
                 log.info("The processed food item: " + processedFood.getName() + ", has been imported");
             }
-            else
+            else {
                 log.warn("The processed food item with name: " + processedFood.getName() +
-                        "and barcode: "+processedFood.getBarcode()+
+                        "and barcode: " + processedFood.getBarcode() +
                         " was not imported because it already exists");
+            }
         }
     }
-
 }
