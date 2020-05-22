@@ -2,9 +2,9 @@ package com.kasperin.inventory_management.CSV;
 
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
-import com.univocity.parsers.common.ParsingContext;
+import com.univocity.parsers.common.DataProcessingException;
 import com.univocity.parsers.common.processor.BeanListProcessor;
-import com.univocity.parsers.common.processor.RowProcessor;
+import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +16,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @ConditionalOnResource(resources = ProcessedFoodCsvImporter.RESOURCE_LOCATION)
@@ -60,7 +62,65 @@ public class ProcessedFoodCsvImporter {
 
 
     @PostConstruct
-    public void read() throws IOException {
+    public void read() throws IOException, DataProcessingException {
+/*
+        //Map to store and compare barcodes in record for duplicates
+        Map<String, Record> records = new HashMap<>();
+
+        // call beginParsing to read records one by one, iterator-style.
+        parser.beginParsing(getReader(RESOURCE_LOCATION));
+
+        Record record;
+
+        while ((record = parser.parseNextRecord()) != null) {
+
+            if (!records.containsKey(record.getString("barcode"))) {
+              try {
+
+
+ //                 String expDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format((TemporalAccessor) record.getDate("exp"));
+                  Date expDate = ((Date)(record.getDate("exp")));
+ //                 String mfgDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format((TemporalAccessor) record.getDate("mfg"));
+                  Date mfgDate = ((Date)(record.getDate("mfg")));
+
+                  //compare dates
+                  int diff = expDate.compareTo(mfgDate);
+
+                  if (diff == 0) {
+
+                      System.out.println(expDate + " is Equal to " + mfgDate);
+
+                  } else if (diff > 0) {
+
+                      records.put(record.getString("barcode"), record);
+                      System.out.println(expDate + " is AFTER " + mfgDate);
+
+                  } else {
+
+                      System.out.println(expDate + " is BEFORE " + mfgDate);
+
+                  }
+
+              }catch (DataProcessingException e){
+                  log.error("can not convert: " + e);
+              }
+
+            }
+        }*/
+
+/*        //convert Map to List
+   //     List<Record> recordList = new ArrayList<>(records.values());
+        List<ProcessedFood> processedFoods = rowProcessor.getBeans();
+
+//       List<ProcessedFood> processedFoods = recordList
+//                .stream()
+//                .map(ProcessedFood::new)
+//               .collect(Collectors.toList());
+
+        insertData(processedFoods);*/
+
+
+
     parser.parse(getReader(RESOURCE_LOCATION));
     List<ProcessedFood> processedFoods = rowProcessor.getBeans();
 //    List<ProcessedFood> filtered = new ArrayList<>();
@@ -78,6 +138,8 @@ public class ProcessedFoodCsvImporter {
 //       }
 
 
+
+
     }
 
 
@@ -90,7 +152,7 @@ public class ProcessedFoodCsvImporter {
     private void insertData(List<ProcessedFood> processedFoods) {
         for (ProcessedFood processedFood : processedFoods) {
             if (!(processedFoodRepo.existsByBarcode(processedFood.getBarcode()))) {
-                processedFoodRepo.saveAll(processedFoods);
+                processedFoodRepo.save(processedFood);
 
                 log.info("The processed food item: " + processedFood.getName() + ", has been imported");
 

@@ -79,7 +79,7 @@ public class FruitAndVegeCsvImporter {
     private void insertData(List<FruitAndVege> fruitAndVeges) {
         for (FruitAndVege fruitAndVege : fruitAndVeges) {
             if (!(fruitAndVegeRepository.existsByBarcode(fruitAndVege.getBarcode()))) {
-                fruitAndVegeRepository.saveAll(fruitAndVeges);
+                fruitAndVegeRepository.save(fruitAndVege);
 
                 log.info("The fruit or vegetable item with name: " + fruitAndVege.getName() + ", has been imported");
 

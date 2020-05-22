@@ -82,7 +82,7 @@ public class StationaryCsvImporter {
     private void insertData(List<Stationary> stationarys) {
         for (Stationary stationary : stationarys) {
             if (!(stationaryRepository.existsByBarcode(stationary.getBarcode()))) {
-                stationaryRepository.saveAll(stationarys);
+                stationaryRepository.save(stationary);
 
                 log.info("The stationary item with name: " + stationary.getName() + ", has been imported");
 
