@@ -38,11 +38,11 @@ public class FruitAndVegeCsvImporter {
 
 
     @PostConstruct
-    public void read() throws IOException {
+    public void read() throws IOException, NullPointerException, IllegalArgumentException {
 
         //Map to store and compare barcodes in record for duplicates
         Map<String, Record> records = new HashMap<>();
-
+        try{
         // call beginParsing to read records one by one, iterator-style.
         parser.beginParsing(getReader(RESOURCE_LOCATION));
 
@@ -65,6 +65,10 @@ public class FruitAndVegeCsvImporter {
                 .collect(Collectors.toList());
 
         insertData(fruitAndVeges);
+        }catch(NullPointerException | IllegalArgumentException e){
+            log.error("Exception caught " + e);
+            e.printStackTrace();
+        }
     }
 
 
