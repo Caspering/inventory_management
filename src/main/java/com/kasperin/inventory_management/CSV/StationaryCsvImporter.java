@@ -43,34 +43,37 @@ public class StationaryCsvImporter {
 
 
     @PostConstruct
-    public void read() throws IOException{
+    public void read() throws IOException, NullPointerException, IllegalArgumentException{
         //Map to store and compare barcodes in record for duplicates
         Map<String, Record> records = new HashMap<>();
+        try {
+            // call beginParsing to read records one by one, iterator-style.
+            parser.beginParsing(getReader(RESOURCE_LOCATION));
 
-        // call beginParsing to read records one by one, iterator-style.
-        parser.beginParsing(getReader(RESOURCE_LOCATION));
+            Record record;
 
-        Record record;
+            while ((record = parser.parseNextRecord()) != null) {
+                if (!records.containsKey(record.getString("barcode")))
 
-        while ((record = parser.parseNextRecord()) != null) {
-            if (!records.containsKey(record.getString("barcode") ))
+                    records.put(record.getString("barcode"), record);
 
-                records.put(record.getString("barcode"),record);
+                System.out.println(record.getString("name") + " was added to records");
+            }
 
-            System.out.println(record.getString("name") + " was added to records");
+            //convert Map to List
+            List<Record> recordList = new ArrayList<>(records.values());
+
+
+            List<Stationary> stationarys = recordList
+                    .stream()
+                    .map(Stationary::new)
+                    .collect(Collectors.toList());
+
+            insertData(stationarys);
+        }catch(NullPointerException | IllegalArgumentException e){
+            log.error("Exception caught " + e);
+            e.printStackTrace();
         }
-
-        //convert Map to List
-        List<Record> recordList = new ArrayList<>(records.values());
-
-
-        List<Stationary> stationarys = recordList
-                .stream()
-                .map(Stationary::new)
-                .collect(Collectors.toList());
-
-        insertData(stationarys);
-
     }
 
     private Reader getReader(String s) throws UnsupportedEncodingException {
