@@ -6,10 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,11 +20,15 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @ApiOperation(value = "This will get all items in the inventory.")
+    @ApiOperation(value = "This will get all items in stock in the inventory.",
+                  notes = "You can also query the inventory fo all items regardless of in stock status")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<Object> getAllItems(){
-        return itemService.findAll();
+    public List<Object> getAllItems(@RequestParam(value = "all", defaultValue = "") String all){
+        if (all.equals("all")){ return itemService.findAll();
+        }
+        //Else by default just get what is in stock with qty >=1
+        return itemService.findAllInStock();
     }
 
 }

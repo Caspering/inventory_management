@@ -50,7 +50,7 @@ public class StationaryServiceImpl implements StationaryService{
 
             return savedSt;
         }else
-            log.error("A stationary item with barcode: " + stationary.getBarcode() +" exists");
+            log.error("A stationary item with barcode: " + stationary.getBarcode() +" already exists");
         return null;
     }
 

@@ -23,7 +23,8 @@ public class ProcessedFoodController {
 
     private final ProcessedFoodService processedFoodService;
 
-    @ApiOperation(value = "View List of all processed foods in inventory", notes = "You can also query the inventory for a list of processed foods by food type ie. VEGAN and NONVEGAN" )
+    @ApiOperation(value = "View List of all processed foods in inventory",
+            notes = "You can also query the inventory for a list of processed foods by food type ie. VEGAN and NONVEGAN. Or for a list of all in inventory" )
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<ProcessedFood> getAll(@RequestParam(value = "type", defaultValue = "") Optional<FoodType> foodType,

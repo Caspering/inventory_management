@@ -23,11 +23,12 @@ public class StationaryController {
     private final StationaryService stationaryService;
 
 
-    @ApiOperation(value = "Get a list of all in stock stationary in the inventory. Or a list of all stationary in inventory regardless of in stock amount")
+    @ApiOperation(value = "Get a list of all in stock stationary in the inventory",
+            notes = "You can also query the inventory for a list of all stationary in inventory regardless of in stock amount")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Stationary> getAll(@RequestParam(value = "all", defaultValue = "") String all){
-            if (all.equals("all")){ return stationaryService.findAll();
+        if (all.equals("all")){ return stationaryService.findAll();
         }
         //just get what is in stock with qty >=1 if no query
         return stationaryService.findAllInStock();

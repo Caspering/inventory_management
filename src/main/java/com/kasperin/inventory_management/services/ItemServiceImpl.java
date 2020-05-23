@@ -14,9 +14,9 @@ public class ItemServiceImpl implements ItemService {
     private final ProcessedFoodService processedFoodService;
     private final FruitAndVegeService fruitAndVegeService;
 
+
     @Override
     public List<Object> findAll() {
-
         List<Object> items = new ArrayList<>();
 
         items.add(fruitAndVegeService.findAll());
@@ -24,7 +24,16 @@ public class ItemServiceImpl implements ItemService {
         items.add(stationaryService.findAll());
 
         return items;
-
     }
 
+    @Override
+    public List<Object> findAllInStock() {
+        List<Object> itemsInStock = new ArrayList<>();
+
+        itemsInStock.add(fruitAndVegeService.findAllInStock());
+        itemsInStock.add(processedFoodService.findAllInStock());
+        itemsInStock.add(stationaryService.findAllInStock());
+
+        return itemsInStock;
+    }
 }
