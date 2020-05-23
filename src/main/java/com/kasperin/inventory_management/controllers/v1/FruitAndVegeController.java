@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +25,13 @@ public class FruitAndVegeController {
     private final FruitAndVegeService fruitAndVegeService;
 
     @ApiOperation(value = "Get a list of all fruits and vegetables in the inventory.")
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<FruitAndVege> getAllFruitAndVege(){
-        return fruitAndVegeService.findAll();
+    public List<FruitAndVege> getAll(@RequestParam(value = "all", defaultValue = "") String all){
+            if (all.equals("all")){ return fruitAndVegeService.findAll();
+        }
+        //just get what is in stock with qty >=1 if no query
+        return fruitAndVegeService.findAllInStock();
     }
 
     @ApiOperation(value = "Get fruit or vegetable by Id")

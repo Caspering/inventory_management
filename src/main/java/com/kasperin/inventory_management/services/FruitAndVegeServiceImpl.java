@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -62,30 +63,42 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
 
     @Override
     @Validated(OnUpdate.class)
-    public Optional<FruitAndVege> updateById(Long id, @Valid FruitAndVege newFruitAndVegeData) {
+    public Optional<FruitAndVege> updateById(Long id, @Valid FruitAndVege fruitAndVegePatch) {
         return getFruitAndVegeById(id)
-                .map(oldFruitAndVegeData -> {
-                    if (newFruitAndVegeData.getInStockQuantity() == null)
-                        newFruitAndVegeData.setInStockQuantity(oldFruitAndVegeData.getInStockQuantity());
+                .map(fruitAndVegeInDB -> {
+                    if (fruitAndVegePatch.getInStockQuantity() == null)
+                        fruitAndVegePatch.setInStockQuantity(fruitAndVegeInDB.getInStockQuantity());
 
-                    if(newFruitAndVegeData.getInStockQuantity() >= 1) {
-                        oldFruitAndVegeData.setInStockQuantity(newFruitAndVegeData.getInStockQuantity());
+                    if(fruitAndVegePatch.getInStockQuantity() >= 0) {
+                        fruitAndVegeInDB.setInStockQuantity(fruitAndVegePatch.getInStockQuantity());
 
-                        if (newFruitAndVegeData.getName() != null)
-                            oldFruitAndVegeData.setName(newFruitAndVegeData.getName());
+                        if (fruitAndVegePatch.getName() != null)
+                            fruitAndVegeInDB.setName(fruitAndVegePatch.getName());
 
-                        if (newFruitAndVegeData.getBarcode() != null)
-                            oldFruitAndVegeData.setBarcode(newFruitAndVegeData.getBarcode());
+                        if (fruitAndVegePatch.getBarcode() != null)
+                            fruitAndVegeInDB.setBarcode(fruitAndVegePatch.getBarcode());
 
-                        if (newFruitAndVegeData.getPrice() != null)
-                            oldFruitAndVegeData.setPrice(newFruitAndVegeData.getPrice());
+                        if (fruitAndVegePatch.getPrice() != null)
+                            fruitAndVegeInDB.setPrice(fruitAndVegePatch.getPrice());
 
-                        return fruitAndVegeRepository.save(oldFruitAndVegeData);
-
-                    }else if (newFruitAndVegeData.getInStockQuantity() == 0)
-                            fruitAndVegeRepository.delete(oldFruitAndVegeData);
-                return null;
+                        log.info("The Fruit or vegetable: " + fruitAndVegeInDB.getName() + " was updated");
+                        return fruitAndVegeRepository.save(fruitAndVegeInDB);
+                    }
+                return fruitAndVegeInDB;
         });
+    }
+
+    @Override
+    public List<FruitAndVege> findAll() {
+        return fruitAndVegeRepository.findAll();
+    }
+
+    @Override
+    public List<FruitAndVege> findAllInStock() {
+        return fruitAndVegeRepository.findAll()
+                .stream()
+                .filter(fruitAndVege -> fruitAndVege.getInStockQuantity()>=1)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -98,11 +111,6 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
     @Override
     public FruitAndVegeDTO findByName(String name) {
         return getFruitAndVegeDTOByNameIgnoreCase(name);
-    }
-
-    @Override
-    public List<FruitAndVege> findAll() {
-       return fruitAndVegeRepository.findAll();
     }
 
     @Override

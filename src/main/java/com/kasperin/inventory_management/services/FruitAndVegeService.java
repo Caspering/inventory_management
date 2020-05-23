@@ -17,6 +17,8 @@ public interface FruitAndVegeService {
 
     FruitAndVegeDTO saveAndReturnDTO(@Valid FruitAndVege fruitAndVege);
 
+    List<FruitAndVege> findAllInStock();
+
     FruitAndVegeDTO findById(Long id);
 
     FruitAndVegeDTO findByName(String name);

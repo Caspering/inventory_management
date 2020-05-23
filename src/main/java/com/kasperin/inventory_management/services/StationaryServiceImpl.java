@@ -74,13 +74,11 @@ public class StationaryServiceImpl implements StationaryService{
                         if (stationaryPatch.getPrice() != null)
                             stationaryInDB.setPrice(stationaryPatch.getPrice());
 
+                        log.info("The stationary item : " + stationaryInDB.getName() + " was updated");
                         return stationaryRepository.save(stationaryInDB);
-
                     }
-                    return stationaryInDB;
-
+                return stationaryInDB;
         });
-
     }
 
     @Override
@@ -90,20 +88,10 @@ public class StationaryServiceImpl implements StationaryService{
 
     @Override
     public List<Stationary> findAllInStock() {
-
         return stationaryRepository.findAll()
                 .stream()
                 .filter(stationary -> stationary.getInStockQuantity()>=1)
-//                .map(Stationary::new)
                 .collect(Collectors.toList());
-
-        /*List<Stationary> allStationary = stationaryRepository.findAll();
-        for (Stationary stationary : allStationary){
-            List<instock>
-            if (stationary.getInStockQuantity() != 0)
-                stationaryRepository.delete(oldStationary);
-        }
-        return null;*/
     }
 
     @Override

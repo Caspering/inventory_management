@@ -2,18 +2,14 @@ package com.kasperin.inventory_management.controllers.v1;
 
 import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.services.StationaryService;
-import com.kasperin.inventory_management.validator_services.OnCreate;
-import com.kasperin.inventory_management.validator_services.OnUpdate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Api(description = "Stationary items API")
@@ -26,19 +22,12 @@ public class StationaryController {
 
     private final StationaryService stationaryService;
 
-    /*@ApiOperation(value = "Get a list of all stationary in the inventory.")
-    @GetMapping({"/all"})
-    @ResponseStatus(HttpStatus.OK)
-    public List<Stationary> getAllStationary(){
-        return stationaryService.findAll();
-    }*/
 
-    @ApiOperation(value = "Get a list of all stationary in the inventory.")
+    @ApiOperation(value = "Get a list of all in stock stationary in the inventory. Or a list of all stationary in inventory regardless of in stock amount")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<Stationary> getAllInStockStationary(@RequestParam(value = "all", defaultValue = "") String all){
-        for(Stationary st : stationaryService.findAll()) {
-            if (all.equals("all")) return stationaryService.findAll();
+    public List<Stationary> getAll(@RequestParam(value = "all", defaultValue = "") String all){
+            if (all.equals("all")){ return stationaryService.findAll();
         }
         //just get what is in stock with qty >=1 if no query
         return stationaryService.findAllInStock();
