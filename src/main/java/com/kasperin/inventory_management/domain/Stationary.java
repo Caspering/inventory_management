@@ -1,14 +1,11 @@
 package com.kasperin.inventory_management.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.univocity.parsers.common.record.Record;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
-import javax.persistence.Transient;
 
 @Data
 @NoArgsConstructor

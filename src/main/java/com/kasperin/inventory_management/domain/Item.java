@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -31,8 +30,7 @@ public class Item implements Serializable {
     private String name;
 
     @NotNull(groups = OnCreate.class,
-            message = "The item must be given a unique barcode")
-    @Column
+            message = "The item must be given a unique barcode")//TODO check and constrain empty string
     @Parsed
     @Validate
     private String barcode;
@@ -41,10 +39,10 @@ public class Item implements Serializable {
     @Parsed
     private Double price;
 
-    @Min(value = 1, groups = OnCreate.class,
-         message = "There must be at least {value} count of in stock quantity for a stationary item")
+    @Min(value = 0, groups = OnCreate.class,
+         message = "You must update with at least {value} or more stationary inStockQuantity")
     @Min(value = 0, groups = OnUpdate.class,
-         message = "You must update with at least 0 or more stationary inStockQuantity")
+         message = "You must update with at least {value} or more stationary inStockQuantity")
     @Column
     @Parsed(field = "qty")
     @NullString(nulls = {"", "N/A"})

@@ -8,10 +8,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Api(description = "Stationary items API")
@@ -24,11 +26,22 @@ public class StationaryController {
 
     private final StationaryService stationaryService;
 
-    @ApiOperation(value = "Get a list of all stationary in the inventory.")
-    @GetMapping
+    /*@ApiOperation(value = "Get a list of all stationary in the inventory.")
+    @GetMapping({"/all"})
     @ResponseStatus(HttpStatus.OK)
     public List<Stationary> getAllStationary(){
         return stationaryService.findAll();
+    }*/
+
+    @ApiOperation(value = "Get a list of all stationary in the inventory.")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Stationary> getAllInStockStationary(@RequestParam(value = "all", defaultValue = "") String all){
+        for(Stationary st : stationaryService.findAll()) {
+            if (all.equals("all")) return stationaryService.findAll();
+        }
+        //just get what is in stock with qty >=1 if no query
+        return stationaryService.findAllInStock();
     }
 
     @ApiOperation(value = "Get stationary by Id")

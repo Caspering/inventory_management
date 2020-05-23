@@ -13,6 +13,7 @@ import javax.management.BadAttributeValueExpException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -55,29 +56,28 @@ public class StationaryServiceImpl implements StationaryService{
 
     @Override
     @Validated(OnUpdate.class)
-    public Optional<Stationary> updateById(Long id, @Valid Stationary newStationary) {
+    public Optional<Stationary> updateById(Long id, @Valid Stationary stationaryPatch) {
         return getStationaryById(id)
-                .map(oldStationary -> {
-                    if (newStationary.getInStockQuantity() == null)
-                        newStationary.setInStockQuantity(oldStationary.getInStockQuantity());
+                .map(stationaryInDB -> {
+                    if (stationaryPatch.getInStockQuantity() == null)
+                        stationaryPatch.setInStockQuantity(stationaryInDB.getInStockQuantity());
 
-                    if(newStationary.getInStockQuantity() >= 1) {
-                        oldStationary.setInStockQuantity(newStationary.getInStockQuantity());
+                    if(stationaryPatch.getInStockQuantity() >= 0) {
+                        stationaryInDB.setInStockQuantity(stationaryPatch.getInStockQuantity());
 
-                        if (newStationary.getName() != null)
-                            oldStationary.setName(newStationary.getName());
+                        if (stationaryPatch.getName() != null)
+                            stationaryInDB.setName(stationaryPatch.getName());
 
-                        if (newStationary.getBarcode() != null)
-                            oldStationary.setBarcode(newStationary.getBarcode());
+                        if (stationaryPatch.getBarcode() != null)
+                            stationaryInDB.setBarcode(stationaryPatch.getBarcode());
 
-                        if (newStationary.getPrice() != null)
-                            oldStationary.setPrice(newStationary.getPrice());
+                        if (stationaryPatch.getPrice() != null)
+                            stationaryInDB.setPrice(stationaryPatch.getPrice());
 
-                        return stationaryRepository.save(oldStationary);
+                        return stationaryRepository.save(stationaryInDB);
 
-                    }else if (newStationary.getInStockQuantity() == 0)
-                        stationaryRepository.delete(oldStationary);
-                        return null;
+                    }
+                    return stationaryInDB;
 
         });
 
@@ -86,6 +86,24 @@ public class StationaryServiceImpl implements StationaryService{
     @Override
     public List<Stationary> findAll() {
         return stationaryRepository.findAll();
+    }
+
+    @Override
+    public List<Stationary> findAllInStock() {
+
+        return stationaryRepository.findAll()
+                .stream()
+                .filter(stationary -> stationary.getInStockQuantity()>=1)
+//                .map(Stationary::new)
+                .collect(Collectors.toList());
+
+        /*List<Stationary> allStationary = stationaryRepository.findAll();
+        for (Stationary stationary : allStationary){
+            List<instock>
+            if (stationary.getInStockQuantity() != 0)
+                stationaryRepository.delete(oldStationary);
+        }
+        return null;*/
     }
 
     @Override

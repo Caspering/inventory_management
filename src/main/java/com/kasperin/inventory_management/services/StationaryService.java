@@ -12,6 +12,8 @@ public interface StationaryService {
 
     List<Stationary> findAll();
 
+    List<Stationary> findAllInStock();
+
     Stationary findByName(String name);
 
     Optional<Stationary> findById(Long id);

@@ -1,12 +1,10 @@
 package com.kasperin.inventory_management.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.univocity.parsers.common.record.Record;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.Map;
+import javax.persistence.Entity;
 
 @Data
 @Entity
