@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -49,38 +50,37 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     @Override
     @Validated(OnUpdate.class)
-    public Optional<ProcessedFood> updateById(Long id, @Valid ProcessedFood newProcessedFoodData) {
+    public Optional<ProcessedFood> updateById(Long id, @Valid ProcessedFood processedFoodPatch) {
             return getProcessedFood(id)
-                .map(oldProcessedFoodData -> {
-                    if (newProcessedFoodData.getInStockQuantity() == null)
-                        newProcessedFoodData.setInStockQuantity(oldProcessedFoodData.getInStockQuantity());
+                .map(processedFoodInDB -> {
+                    if (processedFoodPatch.getInStockQuantity() == null)
+                        processedFoodPatch.setInStockQuantity(processedFoodInDB.getInStockQuantity());
 
-                    if(newProcessedFoodData.getInStockQuantity() >= 1) {
-                        oldProcessedFoodData.setInStockQuantity(newProcessedFoodData.getInStockQuantity());
+                    if(processedFoodPatch.getInStockQuantity() >= 0) {
+                        processedFoodInDB.setInStockQuantity(processedFoodPatch.getInStockQuantity());
 
-                        if (newProcessedFoodData.getName() != null)
-                            oldProcessedFoodData.setName(newProcessedFoodData.getName());
+                        if (processedFoodPatch.getName() != null)
+                            processedFoodInDB.setName(processedFoodPatch.getName());
 
-                        if (newProcessedFoodData.getBarcode() != null)
-                            oldProcessedFoodData.setBarcode(newProcessedFoodData.getBarcode());
+                        if (processedFoodPatch.getBarcode() != null)
+                            processedFoodInDB.setBarcode(processedFoodPatch.getBarcode());
 
-                        if (newProcessedFoodData.getPrice() != null)
-                            oldProcessedFoodData.setPrice(newProcessedFoodData.getPrice());
+                        if (processedFoodPatch.getPrice() != null)
+                            processedFoodInDB.setPrice(processedFoodPatch.getPrice());
 
-                        if (newProcessedFoodData.getFoodType() != null)
-                            oldProcessedFoodData.setFoodType(newProcessedFoodData.getFoodType());
+                        if (processedFoodPatch.getFoodType() != null)
+                            processedFoodInDB.setFoodType(processedFoodPatch.getFoodType());
 
-                        if (newProcessedFoodData.getMfgDate() != null)
-                            oldProcessedFoodData.setMfgDate(newProcessedFoodData.getMfgDate());
+                        if (processedFoodPatch.getMfgDate() != null)
+                            processedFoodInDB.setMfgDate(processedFoodPatch.getMfgDate());
 
-                        if (newProcessedFoodData.getExpDate() != null)
-                            oldProcessedFoodData.setExpDate(newProcessedFoodData.getExpDate());
+                        if (processedFoodPatch.getExpDate() != null)
+                            processedFoodInDB.setExpDate(processedFoodPatch.getExpDate());
 
-                        return processedFoodRepo.save(oldProcessedFoodData);
-                        
-                    }else if (newProcessedFoodData.getInStockQuantity() == 0)
-                                processedFoodRepo.delete(oldProcessedFoodData);
-                    return null;
+                        log.info("The stationary item : " + processedFoodInDB.getName() + " was updated");
+                        return processedFoodRepo.save(processedFoodInDB);
+                    }
+                    return processedFoodInDB;
             });
     }
 
@@ -97,6 +97,14 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
     @Override
     public List<ProcessedFood> findAll() {
        return processedFoodRepo.findAll();
+    }
+
+    @Override
+    public List<ProcessedFood> findAllInStock() {
+        return processedFoodRepo.findAll()
+                .stream()
+                .filter(processedFood -> processedFood.getInStockQuantity()>=1)
+                .collect(Collectors.toList());
     }
 
     @Override

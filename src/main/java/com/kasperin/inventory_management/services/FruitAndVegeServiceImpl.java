@@ -25,6 +25,7 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
 
     private final FruitAndVegeMapper fruitAndVegeMapper;
     private final FruitAndVegeRepository fruitAndVegeRepository;
+
     private FruitAndVegeDTO getFruitAndVegeDTOByNameIgnoreCase(String name) {
         if (fruitAndVegeRepository.existsByNameIgnoreCase(name)) {
             return fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(fruitAndVegeRepository.findByNameIgnoreCase(name));
@@ -33,7 +34,6 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
                     + name + " does not exist");
         }
     }
-
     private Optional<FruitAndVege> getFruitAndVegeById(Long id){
         if (fruitAndVegeRepository.existsById(id)) {
             return fruitAndVegeRepository.findById(id);

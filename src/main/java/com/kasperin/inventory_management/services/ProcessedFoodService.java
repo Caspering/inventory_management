@@ -21,6 +21,8 @@ public interface ProcessedFoodService {
 
     List<ProcessedFood> findAll();
 
+    List<ProcessedFood> findAllInStock();
+
     List<ProcessedFood> findByType(FoodType foodType);
 
     void deleteById(Long id);
