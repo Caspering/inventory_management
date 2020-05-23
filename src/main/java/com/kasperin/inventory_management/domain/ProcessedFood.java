@@ -1,7 +1,10 @@
 package com.kasperin.inventory_management.domain;
 
 import com.kasperin.inventory_management.CSV.conversions.LocalDateFormatter;
-import com.univocity.parsers.annotations.*;
+import com.univocity.parsers.annotations.Convert;
+import com.univocity.parsers.annotations.EnumOptions;
+import com.univocity.parsers.annotations.Parsed;
+import com.univocity.parsers.annotations.Validate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -36,9 +38,6 @@ public class ProcessedFood extends Item{
 
 }
 
-//    @Transient
-//    @JsonProperty("processedFood_url")
-//    private String processedFoodUrl;
 
 
 

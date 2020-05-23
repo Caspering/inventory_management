@@ -3,11 +3,11 @@ package com.kasperin.inventory_management.CSV;
 import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.univocity.parsers.common.DataProcessingException;
+import com.univocity.parsers.common.RowProcessorErrorHandler;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Slf4j
@@ -39,6 +38,12 @@ public class ProcessedFoodCsvImporter {
         settings.setHeaderExtractionEnabled(true);
         settings.setLineSeparatorDetectionEnabled(true);
         settings.setProcessor(rowProcessor);
+        //Let's set a RowProcessorErrorHandler to log any error. The parser will keep running after encountering error.
+        settings.setProcessorErrorHandler((RowProcessorErrorHandler) (error, inputRow, context) -> {
+            log.error("Error processing row: " + Arrays.toString(inputRow));
+            log.error( "Error details: column '" + error.getColumnName() +
+                    "' (index " + error.getColumnIndex() + ") has value '" + inputRow[error.getColumnIndex()] + "'");
+        });
 
         this.parser = new CsvParser(settings);
     }
@@ -46,11 +51,12 @@ public class ProcessedFoodCsvImporter {
 
     @PostConstruct
     public void read() throws IOException, DataProcessingException, NullPointerException {
-        try{
+
             //Map to store and compare barcodes in record for duplicates
             Map<String, ProcessedFood> records = new HashMap<>();
 
             parser.parse(getReader(RESOURCE_LOCATION));
+            log.info("Printing beans that could be parsed");
 
             //iterate through the csv data
             for (ProcessedFood record : rowProcessor.getBeans()) {
@@ -76,18 +82,11 @@ public class ProcessedFoodCsvImporter {
                         } else {
                             log.error("Can not import: "+ record.getName() +
                                     " because " + expDate + " is BEFORE " + mfgDate);
-
                         }
                 }
             }
                 List<ProcessedFood> processedFoods = new ArrayList<>(records.values());
                 insertData(processedFoods);
-
-        }  catch (DataProcessingException | NullPointerException e) {
-            log.error("can not convert: " + e);
-            e.printStackTrace();
-
-        }
     }
 
 

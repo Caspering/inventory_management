@@ -86,8 +86,8 @@ public class FruitAndVegeCsvImporter {
             } else
 
             log.warn("A fruit or vegetable with name: " + fruitAndVege.getName() +
-                        "and barcode: "+fruitAndVege.getBarcode()+
-                        " was not imported because it already exists");
+                        ", and barcode: "+fruitAndVege.getBarcode()+
+                        " was not imported because it already exists in the database");
 
         }
 
