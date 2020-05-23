@@ -30,7 +30,6 @@ public class ProcessedFoodCsvImporter {
 
     BeanListProcessor<ProcessedFood> rowProcessor = new BeanListProcessor<ProcessedFood>(ProcessedFood.class);
 
-
     ProcessedFoodCsvImporter(ProcessedFoodRepo processedFoodRepo) {
         this.processedFoodRepo = processedFoodRepo;
 
@@ -41,7 +40,7 @@ public class ProcessedFoodCsvImporter {
         //Let's set a RowProcessorErrorHandler to log any error. The parser will keep running after encountering error.
         settings.setProcessorErrorHandler((RowProcessorErrorHandler) (error, inputRow, context) -> {
             log.error("Error processing row: " + Arrays.toString(inputRow));
-            log.error( "Error details: column '" + error.getColumnName() +
+            log.error("Error details: column '" + error.getColumnName() +
                     "' (index " + error.getColumnIndex() + ") has value '" + inputRow[error.getColumnIndex()] + "'");
         });
 
@@ -54,9 +53,9 @@ public class ProcessedFoodCsvImporter {
 
             //Map to store and compare barcodes in record for duplicates
             Map<String, ProcessedFood> records = new HashMap<>();
-
-            parser.parse(getReader(RESOURCE_LOCATION));
-            log.info("Printing beans that could be parsed");
+         try {
+             parser.parse(getReader(RESOURCE_LOCATION));
+             log.info("Printing beans that could be parsed");
 
             //iterate through the csv data
             for (ProcessedFood record : rowProcessor.getBeans()) {
@@ -87,6 +86,9 @@ public class ProcessedFoodCsvImporter {
             }
                 List<ProcessedFood> processedFoods = new ArrayList<>(records.values());
                 insertData(processedFoods);
+         }catch(NullPointerException e){
+             log.error("Processed food csv parsing interrupted with "+ e);
+         }
     }
 
 

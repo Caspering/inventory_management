@@ -37,8 +37,6 @@ public class FruitAndVegeCsvImporter {
     }
 
 
-
-
     @PostConstruct
     public void read() throws IOException {
 
@@ -55,12 +53,11 @@ public class FruitAndVegeCsvImporter {
 
                 records.put(record.getString("barcode"),record);
 
-            System.out.println(record.getString("name") + " was added to records");
+            log.info(record.getString("name") + " was added to parsed");
         }
 
         //convert Map to List
         List<Record> recordList = new ArrayList<>(records.values());
-
 
         List<FruitAndVege> fruitAndVeges = recordList
                 .stream()
@@ -68,13 +65,14 @@ public class FruitAndVegeCsvImporter {
                 .collect(Collectors.toList());
 
         insertData(fruitAndVeges);
-
     }
+
 
     private Reader getReader(String s) throws UnsupportedEncodingException {
         return new InputStreamReader(this.getClass()
                 .getResourceAsStream(s), "UTF-8");
     }
+
 
     private void insertData(List<FruitAndVege> fruitAndVeges) {
         for (FruitAndVege fruitAndVege : fruitAndVeges) {
@@ -83,14 +81,11 @@ public class FruitAndVegeCsvImporter {
 
                 log.info("The fruit or vegetable item with name: " + fruitAndVege.getName() + ", has been imported");
 
-            } else
-
-            log.warn("A fruit or vegetable with name: " + fruitAndVege.getName() +
-                        ", and barcode: "+fruitAndVege.getBarcode()+
+            } else {
+                log.warn("A fruit or vegetable with name: " + fruitAndVege.getName() +
+                        ", and barcode: " + fruitAndVege.getBarcode() +
                         " was not imported because it already exists in the database");
-
+            }
         }
-
     }
-
 }
