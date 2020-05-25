@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Data
@@ -22,30 +23,48 @@ public class Item implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+
     @NotNull(groups = OnCreate.class,
-    message = "The item must be given a name")
+             message = "The item must be given a name")
+    @Size(min=1,
+             groups = {OnUpdate.class, OnCreate.class},
+             message = "The item must be given a name")
     @Column
     @Parsed
     @Validate
     private String name;
 
+
+
     @NotNull(groups = OnCreate.class,
             message = "The item must be given a unique barcode")//TODO check and constrain empty string
+    @Size(min=1,
+            groups = {OnUpdate.class,OnCreate.class},
+            message = "The item must be given a barcode")
     @Parsed
     @Validate
     private String barcode;
 
+
+
+    @Min(value = 0,
+            groups = {OnUpdate.class,OnCreate.class},
+            message = "Item must have at least {value} or more price")
     @Column
     @Parsed
     private Double price;
 
-    @Min(value = 0, groups = OnCreate.class,
-         message = "You must update with at least {value} or more stationary inStockQuantity")
-    @Min(value = 0, groups = OnUpdate.class,
-         message = "You must update with at least {value} or more stationary inStockQuantity")
+
+
+    @Min(value = 0,
+            groups = {OnUpdate.class,OnCreate.class},
+            message = "Item must have at least {value} or more stationary inStockQuantity")
     @Column
     @Parsed(field = "qty")
     @NullString(nulls = {"", "N/A"})
     private Integer inStockQuantity;
+
+
 
 }

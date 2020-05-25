@@ -12,5 +12,4 @@ public enum FoodType {
     FoodType(char typeCode) {
         this.typeCode = typeCode;
     }
-
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(description = "All items API")
+@Api("All items API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ItemController.BASE_URL)

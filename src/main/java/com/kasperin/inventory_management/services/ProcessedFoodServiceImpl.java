@@ -2,7 +2,6 @@ package com.kasperin.inventory_management.services;
 
 import com.kasperin.inventory_management.domain.FoodType;
 import com.kasperin.inventory_management.domain.ProcessedFood;
-import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
@@ -71,8 +70,10 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
                         if (processedFoodPatch.getFoodType() != null)
                             processedFoodInDB.setFoodType(processedFoodPatch.getFoodType());
 
-                        if (processedFoodPatch.getMfgDate() != null)
+                        if (processedFoodPatch.getMfgDate() != null) {
+
                             processedFoodInDB.setMfgDate(processedFoodPatch.getMfgDate());
+                        }
 
                         if (processedFoodPatch.getExpDate() != null)
                             processedFoodInDB.setExpDate(processedFoodPatch.getExpDate());
@@ -80,7 +81,7 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
                         log.info("The stationary item : " + processedFoodInDB.getName() + " was updated");
                         return processedFoodRepo.save(processedFoodInDB);
                     }
-                    return processedFoodInDB;
+                return processedFoodInDB;
             });
     }
 
