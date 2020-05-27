@@ -58,25 +58,30 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
                     if(processedFoodPatch.getInStockQuantity() >= 0) {
                         processedFoodInDB.setInStockQuantity(processedFoodPatch.getInStockQuantity());
 
-                        if (processedFoodPatch.getName() != null)
+                        if (processedFoodPatch.getName() != null) {
                             processedFoodInDB.setName(processedFoodPatch.getName());
+                        }
 
-                        if (processedFoodPatch.getBarcode() != null)
+                        if (processedFoodPatch.getBarcode() != null) {
                             processedFoodInDB.setBarcode(processedFoodPatch.getBarcode());
+                        }
 
-                        if (processedFoodPatch.getPrice() != null)
+                        if (processedFoodPatch.getPrice() != null) {
                             processedFoodInDB.setPrice(processedFoodPatch.getPrice());
+                        }
 
-                        if (processedFoodPatch.getFoodType() != null)
+                        if (processedFoodPatch.getFoodType() != null) {
                             processedFoodInDB.setFoodType(processedFoodPatch.getFoodType());
+                        }
 
                         if (processedFoodPatch.getMfgDate() != null) {
 
                             processedFoodInDB.setMfgDate(processedFoodPatch.getMfgDate());
                         }
 
-                        if (processedFoodPatch.getExpDate() != null)
+                        if (processedFoodPatch.getExpDate() != null) {
                             processedFoodInDB.setExpDate(processedFoodPatch.getExpDate());
+                        }
 
                         log.info("The stationary item : " + processedFoodInDB.getName() + " was updated");
                         return processedFoodRepo.save(processedFoodInDB);
