@@ -58,22 +58,22 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
 //    @ExceptionHandler({ Exception.class })
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ResponseEntity<Object> handleTypeMismatch(NumberFormatException ex,
-//                                                     final HttpHeaders headers,
-//                                                     final HttpStatus status,
-//                                                     final WebRequest request){
-//
-//        logger.info(ex.getClass().getName());
-//
-//        ExceptionResponse apiError = new ExceptionResponse(HttpStatus.BAD_REQUEST,
-//                new Date(),
-//                ex.getMessage(),
-//                request.getDescription(false),
-//                ex.getLocalizedMessage());
-//
-//        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
-//
-//    }
+    public ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex,
+                                                     final HttpHeaders headers,
+                                                     final HttpStatus status,
+                                                     final WebRequest request){
+//handleTypeMismatch((TypeMismatchException)ex, headers, status, request)
+        logger.info(ex.getClass().getName());
+
+        ExceptionResponse apiError = new ExceptionResponse(HttpStatus.BAD_REQUEST,
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false),
+                ex.toString());
+
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+
+    }
 
 //    @ExceptionHandler({ ConstraintViolationException.class })
 //    public ResponseEntity<Object> handleConstraintViolation(final ConstraintViolationException ex, final WebRequest request) {

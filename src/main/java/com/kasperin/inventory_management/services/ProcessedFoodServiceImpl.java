@@ -27,7 +27,7 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
                     ("The Processed food object with the requested id: "+ id +" was not found");
         }
     }
-    private ProcessedFood getStationaryByNameIgnoreCase(String name) {
+    private ProcessedFood getProcessedFoodByNameIgnoreCase(String name) {
         if (processedFoodRepo.existsByNameIgnoreCase(name)) {
             return processedFoodRepo.findByNameIgnoreCase(name);
         }else{
@@ -35,6 +35,16 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
                     + name + " does not exist");
         }
     }
+    private List<ProcessedFood> getAllProcessedFoodByNameIgnoreCase(String name) {
+        if (processedFoodRepo.existsByNameIgnoreCase(name)) {
+            return processedFoodRepo.findAllByNameIgnoreCase(name);
+        }else{
+            throw new ResourceNotFoundException("The Processes food item with name: "
+                    + name + " does not exist");
+        }
+    }
+
+
 
 
     public ProcessedFoodServiceImpl(ProcessedFoodRepo processedFoodRepo) {
@@ -97,13 +107,20 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     @Override
     public ProcessedFood  findByName(String name) {
-        return getStationaryByNameIgnoreCase(name);
+        return getProcessedFoodByNameIgnoreCase(name);
+    }
+
+    @Override
+    public List<ProcessedFood> findAllByName(String name){
+
+        return getAllProcessedFoodByNameIgnoreCase(name);
     }
 
     @Override
     public List<ProcessedFood> findAll() {
        return processedFoodRepo.findAll();
     }
+
 
     @Override
     public List<ProcessedFood> findAllInStock() {

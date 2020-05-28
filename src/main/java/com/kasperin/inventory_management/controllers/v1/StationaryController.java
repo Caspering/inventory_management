@@ -29,8 +29,10 @@ public class StationaryController {
             notes = "You can also query the inventory for a list of all stationary in inventory regardless of in stock amount")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<Stationary> getAll(@RequestParam(value = "all", defaultValue = "") String all){
+    public List<Stationary> getAll(@RequestParam(value = "all", defaultValue = "") String all,
+                                   @RequestParam(value = "name", defaultValue = "") String name){
         if (all.equals("all")){ return stationaryService.findAll();
+        }else if (!name.isEmpty()) { return stationaryService.findAllByName(name);
         }
         //just get what is in stock with qty >=1 if no query
         return stationaryService.findAllInStock();
@@ -38,7 +40,7 @@ public class StationaryController {
 
     @ApiOperation(value = "Get stationary by Id")
     @GetMapping({"/{id}"})
-    //@ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.OK)
     public Optional<Stationary> getById(@PathVariable Long id) {
             return stationaryService.findById(id);
     }

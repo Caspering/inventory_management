@@ -19,6 +19,8 @@ public interface ProcessedFoodService {
 
     ProcessedFood  findByName(String name);
 
+    List<ProcessedFood> findAllByName(String name);
+
     List<ProcessedFood> findAll();
 
     List<ProcessedFood> findAllInStock();

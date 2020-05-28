@@ -28,12 +28,15 @@ public class ProcessedFoodController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<ProcessedFood> getAll(@RequestParam(value = "type", defaultValue = "") Optional<FoodType> foodType,
-                                      @RequestParam(value = "all", defaultValue = "") String all) {
+                                      @RequestParam(value = "all", defaultValue = "") String all,
+                                      @RequestParam(value = "name", defaultValue = "") String name) {
         if (foodType.isPresent()) {
             return processedFoodService.findByType(foodType.get());
         } else if (all.equals("all")){
             return processedFoodService.findAll();
-        } //else return everything
+        }else if (!name.isEmpty()){
+            return processedFoodService.findAllByName(name);
+        }//else return everything
             return processedFoodService.findAllInStock();
     }
 

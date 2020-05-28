@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.services;
 
+import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import com.kasperin.inventory_management.validator_services.OnCreate;
@@ -36,6 +37,15 @@ public class StationaryServiceImpl implements StationaryService{
                     + name + " does not exist");
         }
     }
+    private List<Stationary> getAllStationaryByNameIgnoreCase(String name) {
+        if (stationaryRepository.existsByNameIgnoreCase(name)) {
+            return stationaryRepository.findAllByNameIgnoreCase(name);
+        }else{
+            throw new ResourceNotFoundException("The Stationary item with name: "
+                    + name + " does not exist");
+        }
+    }
+
 
     @Override
     @Validated(OnCreate.class)
@@ -83,6 +93,12 @@ public class StationaryServiceImpl implements StationaryService{
     @Override
     public List<Stationary> findAll() {
         return stationaryRepository.findAll();
+    }
+
+    @Override
+    public List<Stationary> findAllByName(String name){
+
+        return getAllStationaryByNameIgnoreCase(name);
     }
 
     @Override
