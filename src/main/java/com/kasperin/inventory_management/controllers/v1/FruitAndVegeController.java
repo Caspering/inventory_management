@@ -69,8 +69,8 @@ public class FruitAndVegeController {
     @ApiOperation(value = "Delete a fruit or vegetable by its id")
     @DeleteMapping({"{ID}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteFruitAndVege(@PathVariable String ID){
-        fruitAndVegeService.deleteById(Long.valueOf(ID));
+    public void deleteFruitAndVege(@PathVariable Long ID){
+        fruitAndVegeService.deleteById(ID);
     }
 
 }

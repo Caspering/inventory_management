@@ -70,7 +70,7 @@ public class ProcessedFoodController {
     @ApiOperation(value = "Delete a processed food by its id")
     @DeleteMapping({"{ID}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteById(@PathVariable String ID) {
-        processedFoodService.deleteById(Long.valueOf(ID));
+    public void deleteById(@PathVariable Long ID) {
+        processedFoodService.deleteById(ID);
     }
 }
