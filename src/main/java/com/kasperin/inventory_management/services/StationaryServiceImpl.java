@@ -1,6 +1,5 @@
 package com.kasperin.inventory_management.services;
 
-import com.kasperin.inventory_management.domain.ProcessedFood;
 import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import com.kasperin.inventory_management.validator_services.OnCreate;

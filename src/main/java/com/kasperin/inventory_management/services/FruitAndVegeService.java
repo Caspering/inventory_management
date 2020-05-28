@@ -25,6 +25,8 @@ public interface FruitAndVegeService {
 
     List<FruitAndVege> findAll();
 
+    List<FruitAndVege> findAllByName(String name);
+
     void deleteById(Long id);
 
 }

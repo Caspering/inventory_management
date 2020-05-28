@@ -1,7 +1,6 @@
 package com.kasperin.inventory_management.controllers.v1;
 
 import com.kasperin.inventory_management.domain.Stationary;
-import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import com.kasperin.inventory_management.services.StationaryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;

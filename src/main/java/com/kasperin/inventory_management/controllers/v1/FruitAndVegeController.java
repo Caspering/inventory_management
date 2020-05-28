@@ -27,18 +27,21 @@ public class FruitAndVegeController {
     @ApiOperation(value = "Get a list of all fruits and vegetables in the inventory.")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<FruitAndVege> getAll(@RequestParam(value = "all", defaultValue = "") String all){
-            if (all.equals("all")){ return fruitAndVegeService.findAll();
-        }
+    public List<FruitAndVege> getAll(@RequestParam(value = "all", defaultValue = "") String all,
+                                     @RequestParam(value = "name", defaultValue = "") String name){
+            if (all.equals("all")) {
+                return fruitAndVegeService.findAll();
+            }else if (!name.isEmpty()) { return fruitAndVegeService.findAllByName(name);
+            }
         //just get what is in stock with qty >=1 if no query
         return fruitAndVegeService.findAllInStock();
     }
 
     @ApiOperation(value = "Get fruit or vegetable by Id")
     @GetMapping("/{id}")
-    public ResponseEntity<FruitAndVegeDTO> getById( @PathVariable String id){
+    public ResponseEntity<FruitAndVegeDTO> getById( @PathVariable Long id){
         return new ResponseEntity<FruitAndVegeDTO>(
-                fruitAndVegeService.findById(Long.valueOf(id)), HttpStatus.OK
+                fruitAndVegeService.findById(id), HttpStatus.OK
         );
     }
 

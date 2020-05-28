@@ -48,10 +48,10 @@ public class ProcessedFoodController {
     }
 
     @ApiOperation(value = "Get a processed food in inventory by id")
-    @GetMapping({"/{ID}"})
+    @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public Optional<ProcessedFood> getById(@PathVariable String ID) {
-        return processedFoodService.findById(Long.valueOf(ID));
+    public Optional<ProcessedFood> getById(@PathVariable Long id) {
+        return processedFoodService.findById(id);
     }
 
     @ApiOperation(value = "Update a processed food property by id", notes = "When zero (0) is assigned to an inStockQuantity field, the processed food will be deleted")

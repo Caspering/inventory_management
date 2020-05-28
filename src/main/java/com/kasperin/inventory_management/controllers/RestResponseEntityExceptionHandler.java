@@ -29,7 +29,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Object> handleEntityNotFound(ResourceNotFoundException ex, WebRequest request){
+    public ResponseEntity<Object> handleEntityNotFound(ResourceNotFoundException ex,
+                                                       WebRequest request){
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND,
                                               new Date(),
@@ -41,12 +42,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
 
-
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    ValidationErrorResponse onConstraintValidationException(
-            ConstraintViolationException e) {
+    ValidationErrorResponse onConstraintValidationException(ConstraintViolationException e) {
         ValidationErrorResponse error = new ValidationErrorResponse();
         for (ConstraintViolation violation : e.getConstraintViolations()) {
             error.getViolations().add(
@@ -56,8 +55,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
 
-//    @ExceptionHandler({ Exception.class })
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex,
                                                      final HttpHeaders headers,
                                                      final HttpStatus status,
@@ -67,7 +64,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         ExceptionResponse apiError = new ExceptionResponse(HttpStatus.BAD_REQUEST,
                 new Date(),
-                ex.getMessage(),
+                "Unable tp convert '"+ ex.getValue()+ "' to an id number. Use id number",
                 request.getDescription(false),
                 ex.toString());
 
@@ -75,18 +72,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     }
 
-//    @ExceptionHandler({ ConstraintViolationException.class })
-//    public ResponseEntity<Object> handleConstraintViolation(final ConstraintViolationException ex, final WebRequest request) {
-//        logger.info(ex.getClass().getName());
-//        //
-//        final List<String> errors = new ArrayList<String>();
-//        for (final ConstraintViolation<?> violation : ex.getConstraintViolations()) {
-//            errors.add(violation.getRootBeanClass().getName() + " " + violation.getPropertyPath() + ": " + violation.getMessage());
-//        }
-//
-//        final ExceptionResponse apiError = new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
-//        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
-//    }
 
     // 405
 
@@ -113,8 +98,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
 
-
-
     // 415
 
     @Override
@@ -136,36 +119,15 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
 
-
-
-
     // 500
 
     @ExceptionHandler({ Exception.class })
-    public ResponseEntity<Object> handleAll(final Exception ex, final WebRequest request) {
+    public ResponseEntity<Object> handleAll(final Exception ex,
+                                            final WebRequest request) {
         logger.info(ex.getClass().getName());
         logger.error("error", ex);
         //
         final ExceptionResponse apiError = new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
-
-//    @ExceptionHandler({ Exception.class })
-//    public ResponseEntity<Object> handleAll(final Exception ex,
-//                                            final WebRequest request) {
-//        logger.info(ex.getClass().getName());
-//        logger.error("Error", ex);
-//
-////        final ExceptionResponse apiError = new ExceptionResponse(HttpStatus.BAD_REQUEST,
-////                                                                 ex.getLocalizedMessage(),
-////                                                                new Date());
-//
-//        ExceptionResponse apiError = new ExceptionResponse(HttpStatus.BAD_REQUEST,
-//                new Date(),
-//               "Not supported request "+ex+" try a number", //TODO improve this
-//                ex.getLocalizedMessage());
-//
-//        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
-//    }
-
 }

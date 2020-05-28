@@ -2,9 +2,7 @@ package com.kasperin.inventory_management.services;
 
 import com.kasperin.inventory_management.api.v1.mapper.FruitAndVegeMapper;
 import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
-import com.kasperin.inventory_management.controllers.v1.FruitAndVegeController;
 import com.kasperin.inventory_management.domain.FruitAndVege;
-import com.kasperin.inventory_management.domain.Stationary;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
@@ -42,7 +40,14 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
                     ("The Fruit or Vegetable object with the requested id: "+ id +" was not found");
         }
     }
-
+    private List<FruitAndVege> getAllFruitAndVegeByNameIgnoreCase(String name) {
+        if (fruitAndVegeRepository.existsByNameIgnoreCase(name)) {
+            return fruitAndVegeRepository.findAllByNameIgnoreCase(name);
+        }else{
+            throw new ResourceNotFoundException("The Fruit or Vegetable item with name: "
+                    + name + " does not exist");
+        }
+    }
 
     @Override
     @Validated(OnCreate.class)
@@ -111,6 +116,12 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
     @Override
     public FruitAndVegeDTO findByName(String name) {
         return getFruitAndVegeDTOByNameIgnoreCase(name);
+    }
+
+    @Override
+    public List<FruitAndVege> findAllByName(String name){
+
+        return getAllFruitAndVegeByNameIgnoreCase(name);
     }
 
     @Override
