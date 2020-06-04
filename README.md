@@ -20,6 +20,35 @@
 - in-stock vegan processed food with details
 - in-stock stationary with details
 
+#### Add an e-checkout counter 
+
+1.	Stationary is limited to one quantity per item type per customer purchase order.
+2.	Purchase order will take:
+•	date of purchase, 
+•	list of items (should accept bar-code or name), 
+•	quantity of each, 
+•	payment type (cash or card), 
+•	membership number(optional).
+3.	Each purchase order will be assigned a receipt number on successful transaction.
+4.	Inventory should be updated after each transaction.
+5.	Maintain list of memberships with membership number, name, contact email & phone number.
+
+#### Expected output(s):
+
+REST APIs for,
+a.	Transaction details by receipt number.
+b.	Receipt numbers by membership number
+c.	Receipt numbers without membership number
+d.	Total sale amount on a specific date or between two dates
+e.	Total quantities of each item sold on a specific date or between two dates
+f.	Log remaining quantities of items at every configurable number of minutes
+g.	Add new member and generate membership number
+h.	Search items by full/partial name/barcode 
+i.	Maintain list of discounts on items. These should be applied at check-out and should be in receipt details
+j.	List of suggested items based on previous purchases.
+k.	Unit testing
+
+
 #### Valid csv-File sample content:
 ##### F&v file:
 |Name                                   | Barcode                               |Price      |qty|
