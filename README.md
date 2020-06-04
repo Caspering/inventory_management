@@ -1,4 +1,4 @@
-# Spring Boot Inventory Management System
+# Spring Boot Inventory Management System And e-checkout Counter
 
 ## Requirements
 
@@ -34,8 +34,7 @@
 5.	Maintain list of memberships with membership number, name, contact email & phone number.
 
 #### Expected output(s):
-
-REST APIs for,
+####REST APIs for:
 a.	Transaction details by receipt number.
 b.	Receipt numbers by membership number
 c.	Receipt numbers without membership number
