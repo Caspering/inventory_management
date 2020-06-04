@@ -36,16 +36,16 @@
 #### Expected output(s):
 #### REST APIs for:
 a.	Transaction details by receipt number.
-b.	Receipt numbers by membership number
-c.	Receipt numbers without membership number
-d.	Total sale amount on a specific date or between two dates
-e.	Total quantities of each item sold on a specific date or between two dates
-f.	Log remaining quantities of items at every configurable number of minutes
-g.	Add new member and generate membership number
-h.	Search items by full/partial name/barcode 
-i.	Maintain list of discounts on items. These should be applied at check-out and should be in receipt details
+b.	Receipt numbers by membership number.
+c.	Receipt numbers without membership number.
+d.	Total sale amount on a specific date or between two dates.
+e.	Total quantities of each item sold on a specific date or between two dates.
+f.	Log remaining quantities of items at every configurable number of minutes.
+g.	Add new member and generate membership number.
+h.	Search items by full/partial name/barcode. 
+i.	Maintain list of discounts on items. These should be applied at check-out and should be in receipt details.
 j.	List of suggested items based on previous purchases.
-k.	Unit testing
+k.	Unit testing.
 
 
 #### Valid csv-File sample content:
