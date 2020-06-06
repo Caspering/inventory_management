@@ -1,7 +1,8 @@
 package com.kasperin.inventory_management.services;
 
 import com.kasperin.inventory_management.domain.Items.Stationary;
-import com.kasperin.inventory_management.repository.StationaryRepository;
+import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRepository;
+import com.kasperin.inventory_management.services.itemsServices.StationaryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

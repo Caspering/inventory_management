@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.services;
+package com.kasperin.inventory_management.services.itemsServices;
 
 import com.kasperin.inventory_management.domain.Items.Stationary;
 import org.springframework.validation.annotation.Validated;
@@ -25,7 +25,6 @@ public interface StationaryService {
     Optional<Stationary> updateById(Long id, @Valid Stationary newStationary);
 
     void deleteById(Long id);
-
 
     boolean existsById(Stationary stationary);
 }

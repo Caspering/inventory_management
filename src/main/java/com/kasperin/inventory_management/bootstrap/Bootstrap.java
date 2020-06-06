@@ -4,9 +4,9 @@ import com.kasperin.inventory_management.domain.Items.FoodType;
 import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;
 import com.kasperin.inventory_management.domain.Items.Stationary;
-import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
-import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
-import com.kasperin.inventory_management.repository.StationaryRepository;
+import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoodRepo;
+import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
@@ -27,6 +27,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private final StationaryRepository stationaryRepository;
 
     private final ProcessedFoodRepo processedFoodRepo;
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {

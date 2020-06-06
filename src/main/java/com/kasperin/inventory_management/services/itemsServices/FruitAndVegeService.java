@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.services;
+package com.kasperin.inventory_management.services.itemsServices;
 
 import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.domain.Items.FruitAndVege;

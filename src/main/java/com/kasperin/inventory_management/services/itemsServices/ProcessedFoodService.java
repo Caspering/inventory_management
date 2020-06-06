@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.services;
+package com.kasperin.inventory_management.services.itemsServices;
 
 import com.kasperin.inventory_management.domain.Items.FoodType;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;

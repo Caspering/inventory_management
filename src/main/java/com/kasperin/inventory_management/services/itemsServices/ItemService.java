@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.services;
+package com.kasperin.inventory_management.services.itemsServices;
 
 import java.util.List;
 

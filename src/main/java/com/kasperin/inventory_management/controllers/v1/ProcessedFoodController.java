@@ -2,7 +2,7 @@ package com.kasperin.inventory_management.controllers.v1;
 
 import com.kasperin.inventory_management.domain.Items.FoodType;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;
-import com.kasperin.inventory_management.services.ProcessedFoodService;
+import com.kasperin.inventory_management.services.itemsServices.ProcessedFoodService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

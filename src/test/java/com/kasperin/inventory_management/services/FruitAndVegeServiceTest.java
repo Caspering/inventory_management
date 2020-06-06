@@ -3,7 +3,7 @@
 //import com.kasperin.inventory_management.api.v1.mapper.FruitAndVegeMapper;
 //import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 //import com.kasperin.inventory_management.domain.Items.FruitAndVege;
-//import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
+//import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
 //import org.aspectj.lang.annotation.Before;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;

@@ -2,12 +2,14 @@ package com.kasperin.inventory_management.domain.customer;
 
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Member {
 
     @Id

@@ -5,14 +5,15 @@ import com.kasperin.inventory_management.domain.Items.ProcessedFood;
 import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.customer.Member;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class PurchaseOrder {
 
     @Id
@@ -25,7 +26,7 @@ public class PurchaseOrder {
 
     private String memberNumber;
 
-    private String orderNumber;
+    private String purchaseOrderNumber;
 
     @Enumerated(value = EnumType.STRING)
     private PaymentType paymentType;

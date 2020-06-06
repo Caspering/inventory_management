@@ -2,7 +2,7 @@
 //
 //import com.kasperin.inventory_management.domain.Items.FoodType;
 //import com.kasperin.inventory_management.domain.Items.ProcessedFood;
-//import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
+//import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoodRepo;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.InjectMocks;

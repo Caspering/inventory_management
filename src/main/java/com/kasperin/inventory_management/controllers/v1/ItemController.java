@@ -1,6 +1,6 @@
 package com.kasperin.inventory_management.controllers.v1;
 
-import com.kasperin.inventory_management.services.ItemService;
+import com.kasperin.inventory_management.services.itemsServices.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

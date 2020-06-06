@@ -1,7 +1,9 @@
 package com.kasperin.inventory_management.services;
 
 import com.kasperin.inventory_management.api.v1.mapper.FruitAndVegeMapper;
-import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.services.itemsServices.FruitAndVegeService;
+import com.kasperin.inventory_management.services.itemsServices.FruitAndVegeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

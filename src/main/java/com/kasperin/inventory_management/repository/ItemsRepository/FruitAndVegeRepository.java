@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.repository;
+package com.kasperin.inventory_management.repository.ItemsRepository;
 
 import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import org.springframework.data.jpa.repository.JpaRepository;

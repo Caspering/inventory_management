@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 @Validated
 public class Stationary extends Item {
 
-
     //Csv Importer Constructor
     public Stationary(Record record) {
         super.setName(record.getString("name"));

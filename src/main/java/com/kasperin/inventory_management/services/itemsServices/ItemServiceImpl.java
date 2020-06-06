@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.services;
+package com.kasperin.inventory_management.services.itemsServices;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

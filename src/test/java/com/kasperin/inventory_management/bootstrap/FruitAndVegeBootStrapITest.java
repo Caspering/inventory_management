@@ -1,7 +1,7 @@
 package com.kasperin.inventory_management.bootstrap;
 
 import com.kasperin.inventory_management.domain.Items.FruitAndVege;
-import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
