@@ -1,7 +1,7 @@
 /*
 package com.kasperin.inventory_management.validator_services;
 
-import com.kasperin.inventory_management.domain.Item;
+import com.kasperin.inventory_management.domain.Items.Item;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

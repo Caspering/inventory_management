@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.domain;
+package com.kasperin.inventory_management.domain.Items;
 
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
@@ -22,7 +22,6 @@ public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
 
     @NotNull(groups = OnCreate.class,

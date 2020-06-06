@@ -1,6 +1,6 @@
 package com.kasperin.inventory_management.CSV;
 
-import com.kasperin.inventory_management.domain.FruitAndVege;
+import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;

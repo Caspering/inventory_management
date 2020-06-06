@@ -1,6 +1,6 @@
 package com.kasperin.inventory_management.repository;
 
-import com.kasperin.inventory_management.domain.Stationary;
+import com.kasperin.inventory_management.domain.Items.Stationary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

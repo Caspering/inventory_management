@@ -1,16 +1,15 @@
 package com.kasperin.inventory_management.bootstrap;
 
-import com.kasperin.inventory_management.domain.FoodType;
-import com.kasperin.inventory_management.domain.FruitAndVege;
-import com.kasperin.inventory_management.domain.ProcessedFood;
-import com.kasperin.inventory_management.domain.Stationary;
+import com.kasperin.inventory_management.domain.Items.FoodType;
+import com.kasperin.inventory_management.domain.Items.FruitAndVege;
+import com.kasperin.inventory_management.domain.Items.ProcessedFood;
+import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.repository.FruitAndVegeRepository;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +19,7 @@ import java.util.List;
 @Slf4j
 @Component
 @AllArgsConstructor
-@Profile("default")
+//@Profile("default")
 public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private final FruitAndVegeRepository fruitAndVegeRepository;

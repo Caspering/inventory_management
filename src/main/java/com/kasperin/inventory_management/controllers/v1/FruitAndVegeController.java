@@ -1,7 +1,7 @@
 package com.kasperin.inventory_management.controllers.v1;
 
 import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
-import com.kasperin.inventory_management.domain.FruitAndVege;
+import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import com.kasperin.inventory_management.services.FruitAndVegeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

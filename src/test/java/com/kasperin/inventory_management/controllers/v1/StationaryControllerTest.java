@@ -1,6 +1,6 @@
 //package com.kasperin.inventory_management.controllers.v1;
 //
-//import com.kasperin.inventory_management.domain.Stationary;
+//import com.kasperin.inventory_management.domain.Items.Stationary;
 //import com.kasperin.inventory_management.services.StationaryService;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;

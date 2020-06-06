@@ -1,7 +1,6 @@
 package com.kasperin.inventory_management.CSV;
 
-import com.kasperin.inventory_management.domain.FruitAndVege;
-import com.kasperin.inventory_management.domain.Stationary;
+import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Slf4j

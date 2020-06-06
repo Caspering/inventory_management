@@ -1,21 +1,18 @@
-package com.kasperin.inventory_management.domain;
+package com.kasperin.inventory_management.domain.Items;
 
 import com.univocity.parsers.common.record.Record;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
 
 @Data
-@NoArgsConstructor
 @Entity
-@Validated
-public class Stationary extends Item{
+@NoArgsConstructor
+public class FruitAndVege extends Item {
 
-
-    //Csv Importer Constructor
-    public Stationary(Record record) {
+    //Csv Importer
+    public FruitAndVege(Record record) {
         super.setName(record.getString("name"));
         super.setBarcode(record.getString("barcode"));
         super.setPrice(record.getDouble("price"));
@@ -23,3 +20,4 @@ public class Stationary extends Item{
     }
 
 }
+

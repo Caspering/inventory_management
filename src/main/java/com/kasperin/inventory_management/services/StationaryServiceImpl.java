@@ -1,6 +1,6 @@
 package com.kasperin.inventory_management.services;
 
-import com.kasperin.inventory_management.domain.Stationary;
+import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.repository.StationaryRepository;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
@@ -44,7 +44,9 @@ public class StationaryServiceImpl implements StationaryService{
                     + name + " does not exist");
         }
     }
-
+    public boolean existsById(Stationary stationary){
+        return stationaryRepository.existsByBarcode(stationary.getBarcode());
+    }
 
     @Override
     @Validated(OnCreate.class)

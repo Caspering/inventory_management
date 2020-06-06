@@ -1,6 +1,6 @@
 package com.kasperin.inventory_management.controllers.v1;
 
-import com.kasperin.inventory_management.domain.Stationary;
+import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.services.StationaryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -60,7 +60,15 @@ public class StationaryController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Stationary createNewStationary(@RequestBody Stationary stationary) {
+
         return stationaryService.save(stationary);
+
+        //        if(stationaryService.existsById(stationary)){
+//            return ResponseEntity.badRequest()
+//                    .body("Year of birth cannot be in the future");
+//
+//        }
+//        return ResponseEntity.stationaryService.save(stationary)>;
     }
 
     @ApiOperation(value = "Delete a stationary by its id")

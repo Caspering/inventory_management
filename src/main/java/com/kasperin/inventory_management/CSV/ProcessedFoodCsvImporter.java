@@ -1,6 +1,6 @@
 package com.kasperin.inventory_management.CSV;
 
-import com.kasperin.inventory_management.domain.ProcessedFood;
+import com.kasperin.inventory_management.domain.Items.ProcessedFood;
 import com.kasperin.inventory_management.repository.ProcessedFoodRepo;
 import com.univocity.parsers.common.DataProcessingException;
 import com.univocity.parsers.common.RowProcessorErrorHandler;

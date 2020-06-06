@@ -1,6 +1,6 @@
 package com.kasperin.inventory_management.validator_services;
 
-import com.kasperin.inventory_management.domain.ProcessedFood;
+import com.kasperin.inventory_management.domain.Items.ProcessedFood;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
