@@ -1,6 +1,7 @@
 package com.kasperin.inventory_management.domain.Items;
 
 import com.kasperin.inventory_management.CSV.conversions.LocalDateFormatter;
+import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnCreateDateConstraint;
 import com.univocity.parsers.annotations.Convert;
@@ -10,10 +11,7 @@ import com.univocity.parsers.annotations.Validate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
@@ -23,6 +21,9 @@ import java.time.LocalDate;
                 groups =  OnCreate.class,
                 message = "Expiry Date must be ahead of Manufacturing Date")
 public class ProcessedFood extends Item {
+
+    @ManyToOne
+    private PurchaseOrder purchaseOrder;
 
     @Parsed(field = "type")
     @EnumOptions(customElement = "typeCode")

@@ -7,7 +7,9 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    Member findByMemberNumberIgnoreCase(String memberNumber);
+    Optional<Member> findByMemberNumberIgnoreCase(String memberNumber);
 
-    Member findByPhoneNumber(String phoneNumber);
+    Optional<Member> findByPhoneNumber(String phoneNumber);
+
+    Optional<Member> findByFirstNameOrLastName(String firstName, String lastName);
 }

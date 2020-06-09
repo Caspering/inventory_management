@@ -64,6 +64,8 @@ public class Item implements Serializable {
     @NullString(nulls = {"", "N/A"})
     private Integer inStockQuantity;
 
-
+    public double getTotalPrice() {
+        return (this.getInStockQuantity() * this.getPrice());
+    }
 
 }
