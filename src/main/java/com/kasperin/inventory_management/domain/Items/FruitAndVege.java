@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.domain.Items;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.univocity.parsers.common.record.Record;
 import lombok.Data;
@@ -15,8 +16,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class FruitAndVege extends Item {
 
-    @ManyToMany(mappedBy = "fruitAndVeges")
-    private Set<PurchaseOrder> purchaseOrder;
+    @ManyToOne//(mappedBy = "fruitAndVeges")
+    @JsonIgnore
+    private PurchaseOrder purchaseOrder;
 
 
 

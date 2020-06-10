@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.domain.Items;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kasperin.inventory_management.domain.Items.Item;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.univocity.parsers.common.record.Record;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 @Validated
 public class Stationary extends Item {
 
+    @JsonIgnore
     @ManyToOne
     private PurchaseOrder purchaseOrder;
 

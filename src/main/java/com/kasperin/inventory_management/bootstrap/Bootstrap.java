@@ -199,34 +199,34 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     private List<PurchaseOrder> getPurchaseOrder(){
-        ProcessedFood savedProcessedFood = new ProcessedFood();
-        savedProcessedFood.setName("Chips");
-        savedProcessedFood.setBarcode("12345");
-        savedProcessedFood.setPrice(1.3);
-        savedProcessedFood.setFoodType(FoodType.VEGAN);
-        savedProcessedFood.setInStockQuantity(13);
+//        ProcessedFood savedProcessedFood = new ProcessedFood();
+//        savedProcessedFood.setName("Chips");
+//        savedProcessedFood.setBarcode("12345");
+//        savedProcessedFood.setPrice(1.3);
+//        savedProcessedFood.setFoodType(FoodType.VEGAN);
+//        savedProcessedFood.setInStockQuantity(13);
         //savedProcessedFood.setPurchaseOrder(new PurchaseOrder());
 
-        FruitAndVege fav1 = new FruitAndVege();
-        fav1.setName("Banana");
-        fav1.setBarcode("12335663");
-        fav1.setInStockQuantity(5);
-        fav1.setPrice(2.99);
-
-        FruitAndVege fav2 = new FruitAndVege();
-        fav2.setName("Orange");
-        fav2.setBarcode("12233323");
-        fav2.setInStockQuantity(54);
-        fav2.setPrice(1.99);
-
-        Member m1 = new Member();
-        m1.setEmail("jd@gmail.com");
-        m1.setMemberNumber("jb11223");
-        m1.setFirstName("John");
-        m1.setLastName("Doe");
-        m1.setPhoneNumber("234-234-2222");
-        //m1.setPurchaseOrders(getPurchaseOrderSet());
-
+//        FruitAndVege fav1 = new FruitAndVege();
+//        fav1.setName("Banana");
+//        fav1.setBarcode("12335663");
+//        fav1.setInStockQuantity(5);
+//        fav1.setPrice(2.99);
+//
+//        FruitAndVege fav2 = new FruitAndVege();
+//        fav2.setName("Orange");
+//        fav2.setBarcode("12233323");
+//        fav2.setInStockQuantity(54);
+//        fav2.setPrice(1.99);
+//
+//        Member m1 = new Member();
+//        m1.setEmail("jd@gmail.com");
+//        m1.setMemberNumber("jb11223");
+//        m1.setFirstName("John");
+//        m1.setLastName("Doe");
+//        m1.setPhoneNumber("234-234-2222");
+//        //m1.setPurchaseOrders(getPurchaseOrderSet());
+//
         Member m2 = new Member();
         m2.setEmail("ml@gmail.com");
         m2.setMemberNumber("ml11223");
@@ -241,22 +241,23 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         PurchaseOrder PO1 = new PurchaseOrder();
         PO1.setDateCreated(LocalDate.now());
         PO1.setPaymentType(PaymentType.CARD);
-        PO1.getTotalNumberOfItemsInPurchaseOrder();
+       // PO1.setMember(m2);
+        //PO1.getTotalNumberOfItemsInPurchaseOrder();
         //PO1.setPurchaseOrderNumber("1233988393893893");
         //PO1.setFruitAndVeges(getFruitAndVegesSet());
 
         purchaseOrders.add(PO1);
 
         PurchaseOrder PO2 = new PurchaseOrder();
-      //PO2.setMember();
+      //PO2.setMember(m2);
       //PO2.setMemberNumber();
         PO2.setDateCreated(LocalDate.now());
         PO2.setPaymentType(PaymentType.CARD);
-        PO2.getTotalNumberOfItemsInPurchaseOrder();
+        //PO2.getTotalNumberOfItemsInPurchaseOrder();
         PO2.setReceiptNumber("13334988393893893");
 //        PO2.getFruitAndVeges().add(fav1);
 //        PO2.getFruitAndVeges().add(fav2);
-        PO2.setMemberNumber(m1.getMemberNumber());
+       // PO2.setMemberNumber(m1.getMemberNumber());
 
 
 
@@ -266,11 +267,11 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         purchaseOrders.add(PO2);
 
         PurchaseOrder PO3 = new PurchaseOrder();
-       //PO3.setMember(m1);
+       //PO3.setMember(m2);
       // PO3.setMemberNumber();
         PO3.setDateCreated(LocalDate.now());
         PO3.setPaymentType(PaymentType.CASH);
-        PO3.getTotalNumberOfItemsInPurchaseOrder();
+        //PO3.getTotalNumberOfItemsInPurchaseOrder();
         //PO3.setPurchaseOrderNumber("004453333893");
         //PO3.setFruitAndVeges(getFruitAndVegesSet());
        // PO3.setProcessedFoods(getProcessedFoodSet());

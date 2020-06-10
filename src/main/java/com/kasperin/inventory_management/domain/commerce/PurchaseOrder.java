@@ -1,12 +1,14 @@
 package com.kasperin.inventory_management.domain.commerce;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;
 import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.customer.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,11 +19,12 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-//@Table(name = "PurchaseOrder")
 @Data
 @NoArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
 //@RequiredArgsConstructor
 public class PurchaseOrder implements Serializable {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,67 +33,60 @@ public class PurchaseOrder implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateCreated;
 
-    private int TotalNumberOfItemsInPurchaseOrder;
+    @Column(name = "quantity")
+    private int totalNumberOfItemsInPurchaseOrder;
 
+   // @ToString.Include
     private String memberNumber;
 
     //@GeneratedValue
+    //@ToString.Include
     private String receiptNumber;
 
     @Enumerated(value = EnumType.STRING)
     private PaymentType paymentType;
 
-    @ManyToMany(cascade = CascadeType.REFRESH)
+    @OneToMany//(cascade = CascadeType.REFRESH)
     @JoinTable(name = "purchase_order_fruit_and_vege",
                 joinColumns =  @JoinColumn (name = "purchase_order_id"),
                 inverseJoinColumns = {@JoinColumn(name = "fruit_and_vege_id")}
                 )
     //@Size(min=1, message="You must have an Item in your purchase order")
-    private Set<FruitAndVege> fruitAndVeges = new HashSet<>();
+    private List<FruitAndVege> fruitAndVeges = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "purchaseOrder")
+    @OneToMany//(cascade = CascadeType.ALL, mappedBy = "purchaseOrder")
+    @JoinTable(name = "purchase_order_stationary",
+            joinColumns =  @JoinColumn (name = "purchase_order_id"),
+            inverseJoinColumns = {@JoinColumn(name = "stationary_id")}
+    )
     private List<Stationary> stationaries = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "purchaseOrder")
+    @OneToMany//(cascade = CascadeType.REFRESH, mappedBy = "purchaseOrder")
+    @JoinTable(name = "purchase_order_processed_food",
+            joinColumns =  @JoinColumn (name = "purchase_order_id"),
+            inverseJoinColumns = {@JoinColumn(name = "processed_food_id")}
+    )
     private List<ProcessedFood> processedFoods = new ArrayList<>();
 
     @ManyToOne
+    @JsonIgnore
+    //@ToString.Include
     private Member member;
 
+
     @PrePersist
-    void dateCreated() {
+    void setDateCreatedAndMemberNumber(){
         this.dateCreated = LocalDate.now();
+        if (this.member!=null)
+        this.memberNumber = member.getMemberNumber();
+        this.totalNumberOfItemsInPurchaseOrder = countItemsInPurchaseOrder();
     }
 
     @Transient
-    public Double getTotalPurchaseOrderFruitAndVegePrice() {
-        double sum = 0D;
-        Set<FruitAndVege> fruitAndVeges = getFruitAndVeges();
-        for (FruitAndVege fav : fruitAndVeges) {
-            sum += fav.getTotalPrice();
-        }
-
-        return sum;
-    }
-
-    @Transient
-    public Double getTotalPurchaseOrderStationaryPrice() {
-        double sum = 0D;
-        List<Stationary> stationarys = getStationaries();
-        for (Stationary st : stationarys) {
-            sum += st.getTotalPrice();
-        }
-        return sum;
-    }
-
-    @Transient
-    public Double getTotalPurchaseOrderProcessedFoodPrice() {
-        double sum = 0D;
-        List<ProcessedFood> processedFoods = getProcessedFoods();
-        for (ProcessedFood pf : processedFoods) {
-            sum += pf.getTotalPrice();
-        }
-        return sum;
+    public int countItemsInPurchaseOrder() {
+        return this.getNumberOfFruitAndVeges()
+                + this.getNumberOfProcessedFoods()
+                + this.getNumberOfStationarys();
     }
 
     @Transient
@@ -101,26 +97,70 @@ public class PurchaseOrder implements Serializable {
     }
 
     @Transient
+    @JsonIgnore
     public int getNumberOfProcessedFoods() {
-        return this.processedFoods.size();
+        int add = 0;
+        List<ProcessedFood> processedFoods = getProcessedFoods();
+        for(ProcessedFood pf : processedFoods){
+            add += pf.getInStockQuantity();
+        }
+        return add;
     }
 
     @Transient
+    @JsonIgnore
     public int getNumberOfStationarys() {
-        return this.stationaries.size();
+        int add = 0;
+       List<Stationary> stationaries = getStationaries();
+       for(Stationary st : stationaries){
+           add += st.getInStockQuantity();
+       }
+       return add;
     }
 
     @Transient
+    @JsonIgnore
     public int getNumberOfFruitAndVeges() {
-        return this.fruitAndVeges.size();
+        int add = 0;
+        List<FruitAndVege> fruitAndVeges = getFruitAndVeges();
+        for(FruitAndVege fv : fruitAndVeges){
+            add += fv.getInStockQuantity();
+        }
+        return add;
     }
 
     @Transient
-    public int getTotalNumberOfItemsInPurchaseOrder() {
-        return this.getNumberOfFruitAndVeges() + this.getNumberOfProcessedFoods()
-                + this.getNumberOfStationarys();
+    @JsonIgnore
+    public Double getTotalPurchaseOrderFruitAndVegePrice() {
+        double sum = 0D;
+        List<FruitAndVege> fruitAndVeges = getFruitAndVeges();
+        for (FruitAndVege fav : fruitAndVeges) {
+            sum += fav.getTotalPrice();
+        }
+        return sum;
     }
 
+    @Transient
+    @JsonIgnore
+    public Double getTotalPurchaseOrderStationaryPrice() {
+        double sum = 0D;
+        List<Stationary> stationarys = getStationaries();
+        for (Stationary st : stationarys) {
+            sum += st.getTotalPrice();
+        }
+        return sum;
+    }
+
+    @Transient
+    @JsonIgnore
+    public Double getTotalPurchaseOrderProcessedFoodPrice() {
+        double sum = 0D;
+        List<ProcessedFood> processedFoods = getProcessedFoods();
+        for (ProcessedFood pf : processedFoods) {
+            sum += pf.getTotalPrice();
+        }
+        return sum;
+    }
 
 
     public PurchaseOrder addProcessedFood(ProcessedFood processedFood){
@@ -155,19 +195,19 @@ public class PurchaseOrder implements Serializable {
         return this;
     }*/
 
-//    public PurchaseOrder(LocalDate dateCreated, int quantity,
-//                         String purchaseOrderNumber,
-//                         PaymentType paymentType, List<FruitAndVege> fruitAndVeges,
-//                         List<Stationary> stationaries, List<ProcessedFood> processedFoods) {
-//        this.dateCreated = dateCreated;
-//        this.quantity = quantity;
-//        this.memberNumber = memberNumber;
-//        this.purchaseOrderNumber = purchaseOrderNumber;
-//        this.paymentType = paymentType;
-//        this.fruitAndVeges = fruitAndVeges;
-//        this.stationaries = stationaries;
-//        this.processedFoods = processedFoods;
-//    }
+/*    public PurchaseOrder(LocalDate dateCreated, int totalNumberOfItemsInPurchaseOrder,
+                         String receiptNumber,
+                         PaymentType paymentType, Set<FruitAndVege> fruitAndVeges,
+                         List<Stationary> stationaries, List<ProcessedFood> processedFoods) {
+        this.dateCreated = dateCreated;
+        this.totalNumberOfItemsInPurchaseOrder = totalNumberOfItemsInPurchaseOrder;
+       // this.memberNumber = memberNumber;
+        this.receiptNumber = receiptNumber;
+        this.paymentType = paymentType;
+        this.fruitAndVeges = fruitAndVeges;
+        this.stationaries = stationaries;
+        this.processedFoods = processedFoods;
+    }*/
 
  /* public Member getMember() {
         return member;

@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.domain.Items;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
 import com.univocity.parsers.annotations.NullString;
@@ -61,9 +62,11 @@ public class Item implements Serializable {
             message = "Item must have at least {value} or more stationary inStockQuantity")
     @Column
     @Parsed(field = "qty")
-    @NullString(nulls = {"", "N/A"})
+    //@NullString(nulls = {"", "N/A"})
     private Integer inStockQuantity;
 
+    @Transient
+    @JsonIgnore
     public double getTotalPrice() {
         return (this.getInStockQuantity() * this.getPrice());
     }

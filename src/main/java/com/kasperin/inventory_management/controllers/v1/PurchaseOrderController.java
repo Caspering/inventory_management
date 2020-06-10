@@ -1,6 +1,5 @@
 package com.kasperin.inventory_management.controllers.v1;
 
-import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.kasperin.inventory_management.services.commerceServices.PurchaseOrderService;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +23,13 @@ public class PurchaseOrderController {
     @ResponseStatus(HttpStatus.OK)
     public List<PurchaseOrder> getAll(){
         return purchaseOrderService.findAll();
+    }
+
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public PurchaseOrder save(@RequestBody PurchaseOrder purchaseOrder) {
+
+        return purchaseOrderService.save(purchaseOrder);
     }
 }

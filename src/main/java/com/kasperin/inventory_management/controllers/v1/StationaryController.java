@@ -65,7 +65,7 @@ public class StationaryController {
 
         //        if(stationaryService.existsById(stationary)){
 //            return ResponseEntity.badRequest()
-//                    .body("Year of birth cannot be in the future");
+//                    .body("Year cannot be in the future");
 //
 //        }
 //        return ResponseEntity.stationaryService.save(stationary)>;
