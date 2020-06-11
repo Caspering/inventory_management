@@ -16,9 +16,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class FruitAndVege extends Item {
 
-    @ManyToOne//(mappedBy = "fruitAndVeges")
-    @JsonIgnore
-    private PurchaseOrder purchaseOrder;
+    //@ManyToOne//(mappedBy = "fruitAndVeges")
+    //@JsonIgnore
+   // private PurchaseOrder purchaseOrder;
 
 
 

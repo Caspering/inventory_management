@@ -8,23 +8,17 @@ import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.customer.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
-@ToString(onlyExplicitlyIncluded = true)
-//@RequiredArgsConstructor
 public class PurchaseOrder implements Serializable {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,49 +30,40 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "quantity")
     private int totalNumberOfItemsInPurchaseOrder;
 
-   // @ToString.Include
     private String memberNumber;
 
-    //@GeneratedValue
-    //@ToString.Include
     private String receiptNumber;
 
     @Enumerated(value = EnumType.STRING)
     private PaymentType paymentType;
 
-    @OneToMany//(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "purchase_order_fruit_and_vege",
-                joinColumns =  @JoinColumn (name = "purchase_order_id"),
-                inverseJoinColumns = {@JoinColumn(name = "fruit_and_vege_id")}
-                )
+    @ManyToMany
     //@Size(min=1, message="You must have an Item in your purchase order")
     private List<FruitAndVege> fruitAndVeges = new ArrayList<>();
 
-    @OneToMany//(cascade = CascadeType.ALL, mappedBy = "purchaseOrder")
-    @JoinTable(name = "purchase_order_stationary",
-            joinColumns =  @JoinColumn (name = "purchase_order_id"),
-            inverseJoinColumns = {@JoinColumn(name = "stationary_id")}
-    )
+    @ManyToMany
     private List<Stationary> stationaries = new ArrayList<>();
 
-    @OneToMany//(cascade = CascadeType.REFRESH, mappedBy = "purchaseOrder")
-    @JoinTable(name = "purchase_order_processed_food",
+    @ManyToMany//(cascade = CascadeType.REFRESH, mappedBy = "purchaseOrder")
+    /*@JoinTable(name = "purchase_order_processed_food",
             joinColumns =  @JoinColumn (name = "purchase_order_id"),
             inverseJoinColumns = {@JoinColumn(name = "processed_food_id")}
-    )
+    )*/
     private List<ProcessedFood> processedFoods = new ArrayList<>();
 
     @ManyToOne
     @JsonIgnore
-    //@ToString.Include
     private Member member;
-
 
     @PrePersist
     void setDateCreatedAndMemberNumber(){
         this.dateCreated = LocalDate.now();
-        if (this.member!=null)
-        this.memberNumber = member.getMemberNumber();
+//        if (this.memberNumber!=null) {
+//
+// //           this.member=this.getMember(member);
+////            setMember(memberRepository.findByMemberNumberIgnoreCase(this.getMemberNumber()));
+////            this.member = memberRepository.findByMemberNumberIgnoreCase(this.getMemberNumber());
+//        }
         this.totalNumberOfItemsInPurchaseOrder = countItemsInPurchaseOrder();
     }
 
@@ -162,40 +147,38 @@ public class PurchaseOrder implements Serializable {
         return sum;
     }
 
-
-    public PurchaseOrder addProcessedFood(ProcessedFood processedFood){
-        processedFood.setPurchaseOrder(this);
+    public void addProcessedFood(ProcessedFood processedFood){
         this.processedFoods.add(processedFood);
-        return this;
+    }
+    public void removeProcessedFood(ProcessedFood processedFood){
+        processedFoods.remove(processedFood);
+        // processedFood.setPurchaseOrder(null);
     }
 
-    public PurchaseOrder addStationary(Stationary stationary){
-        stationary.setPurchaseOrder(this);
+    public void addStationary(Stationary stationary){
         this.stationaries.add(stationary);
-        return this;
+    }
+    public void removeStationary(Stationary stationary){
+        stationaries.remove(stationary);
+    }
+
+    public void addFruitAndVege(FruitAndVege fruitAndVege){
+        this.fruitAndVeges.add(fruitAndVege);
+    }
+    public void removeFruitAndVege(FruitAndVege fruitAndVege){
+        this.fruitAndVeges.remove(fruitAndVege);
     }
 
 
 
 
-
-
-
-
-
-//      public PurchaseOrder addMember(Member member){
+    //      public PurchaseOrder addMember(Member member){
 //        member.setPurchaseOrders();
 //        this.fruitAndVeges.add(fruitAndVege);
 //        return this;
 //    }
 
-   /* public PurchaseOrder addFruitAndVege(FruitAndVege fruitAndVege){
-        fruitAndVege.setPurchaseOrder(this);
-        this.fruitAndVeges.add(fruitAndVege);
-        return this;
-    }*/
-
-/*    public PurchaseOrder(LocalDate dateCreated, int totalNumberOfItemsInPurchaseOrder,
+    /*    public PurchaseOrder(LocalDate dateCreated, int totalNumberOfItemsInPurchaseOrder,
                          String receiptNumber,
                          PaymentType paymentType, Set<FruitAndVege> fruitAndVeges,
                          List<Stationary> stationaries, List<ProcessedFood> processedFoods) {
@@ -209,7 +192,7 @@ public class PurchaseOrder implements Serializable {
         this.processedFoods = processedFoods;
     }*/
 
- /* public Member getMember() {
+    /* public Member getMember() {
         return member;
     }
 
@@ -217,8 +200,6 @@ public class PurchaseOrder implements Serializable {
         this.member = member;
         member.setPurchaseOrders((Set<PurchaseOrder>) this);
     }*/
-
-
 
     /*public String getMemberNumber() {
         return member.getMemberNumber();

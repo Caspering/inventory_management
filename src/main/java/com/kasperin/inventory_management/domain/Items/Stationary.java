@@ -17,9 +17,9 @@ import javax.persistence.ManyToOne;
 @Validated
 public class Stationary extends Item {
 
-    @JsonIgnore
+   /* @JsonIgnore
     @ManyToOne
-    private PurchaseOrder purchaseOrder;
+    private PurchaseOrder purchaseOrder;*/
 
     //Csv Importer Constructor
     public Stationary(Record record) {

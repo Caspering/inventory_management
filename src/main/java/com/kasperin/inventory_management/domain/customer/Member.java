@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,22 +29,22 @@ public class Member implements Serializable {
     private String phoneNumber;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
-    private Set<PurchaseOrder> purchaseOrders = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "member", orphanRemoval = true)
+    @OrderBy("dateCreated")
+    /*@JoinTable(name = "member_purchase_order",
+            joinColumns =  @JoinColumn (name = "member_id"),
+            inverseJoinColumns = {@JoinColumn(name = "purchase_order_id")}
+    )*/
+    private List<PurchaseOrder> purchaseOrders = new ArrayList<>();
 
-    public Member addPurchaseOrder(PurchaseOrder purchaseOrder){
-        purchaseOrder.setMember(this);
+    public void addPurchaseOrder(PurchaseOrder purchaseOrder){
         this.purchaseOrders.add(purchaseOrder);
-        return this;
+        purchaseOrder.setMember(this);
     }
 
-/*public Set<PurchaseOrder> getPurchaseOrders() {
-        return purchaseOrders;
+    public void removePurchaseOrder(PurchaseOrder purchaseOrder){
+        this.purchaseOrders.remove(purchaseOrder);
+        purchaseOrder.setMember(null);
     }
-
-    public void setPurchaseOrders(Set<PurchaseOrder> purchaseOrders) {
-        this.purchaseOrders = purchaseOrders;
-
-    }*/
 
 }

@@ -22,8 +22,8 @@ import java.time.LocalDate;
                 message = "Expiry Date must be ahead of Manufacturing Date")
 public class ProcessedFood extends Item {
 
-    @ManyToOne
-    private PurchaseOrder purchaseOrder;
+    /*@ManyToOne
+    private PurchaseOrder purchaseOrder;*/
 
     @Parsed(field = "type")
     @EnumOptions(customElement = "typeCode")
