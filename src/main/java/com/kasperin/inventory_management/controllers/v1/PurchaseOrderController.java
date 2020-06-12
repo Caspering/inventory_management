@@ -46,7 +46,7 @@ public class PurchaseOrderController {
 
     @PatchMapping({"/{id}"})
     public Optional<PurchaseOrder> updatePurchaseOrderDetailsById(@PathVariable Long id, @RequestBody PurchaseOrder purchaseOrder){
-        return purchaseOrderService.updateById(id,purchaseOrder);
+        return purchaseOrderService.updatePurchaseOrderDetailsById(id,purchaseOrder);
     }
 
     @DeleteMapping({"{id}"})
