@@ -28,6 +28,20 @@ public class Member implements Serializable {
     private String email;
     private String phoneNumber;
 
+    public String getName() {
+        return this.firstName + " " + this.lastName;
+    }
+
+    public void setName(String name) {
+        String[] parts =name.split(" ");
+        this.firstName = parts[0];
+        this.lastName = parts[1];
+    }
+
+    public void generateMemberNumber(){
+
+
+    }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "member", orphanRemoval = true)
     @OrderBy("dateCreated")

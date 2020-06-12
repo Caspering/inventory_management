@@ -28,7 +28,7 @@ public class PurchaseOrder implements Serializable {
     private LocalDate dateCreated;
 
     @Column(name = "quantity")
-    private int totalNumberOfItemsInPurchaseOrder;
+    private Integer totalNumberOfItemsInPurchaseOrder;
 
     private String memberNumber;
 

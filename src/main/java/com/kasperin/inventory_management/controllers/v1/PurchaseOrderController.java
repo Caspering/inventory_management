@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.controllers.v1;
 
+import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.kasperin.inventory_management.services.commerceServices.PurchaseOrderService;
 import lombok.RequiredArgsConstructor;
@@ -8,13 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(PurchaseOrderController.BASE_URL)
 @RequiredArgsConstructor
 public class PurchaseOrderController {
 
-    public static final String BASE_URL = "/api/v1/purchase_order";
+    public static final String BASE_URL = "/api/v1/purchase_orders";
 
     private final PurchaseOrderService purchaseOrderService;
 
@@ -25,6 +27,15 @@ public class PurchaseOrderController {
         return purchaseOrderService.findAll();
     }
 
+/*    @GetMapping({"/{id}"})
+    @ResponseStatus(HttpStatus.OK)
+    Resource<PurchaseOrder> getById(@PathVariable Long id) {
+        Optional<PurchaseOrder> purchaseOrder = purchaseOrderService.findById(id);
+
+        return new Resource<>(purchaseOrder,
+                linkTo(methodOn(PurchaseOrderController.class).one(id)).withSelRel(),
+                linkTo(methodOn(PurchaseOrderController.class).all()).withRel("purchase_orders"));
+    }*/
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,4 +43,17 @@ public class PurchaseOrderController {
 
         return purchaseOrderService.save(purchaseOrder);
     }
+
+    @PatchMapping({"/{id}"})
+    public Optional<PurchaseOrder> updatePurchaseOrderDetailsById(@PathVariable Long id, @RequestBody PurchaseOrder purchaseOrder){
+        return purchaseOrderService.updateById(id,purchaseOrder);
+    }
+
+    @DeleteMapping({"{id}"})
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteById(@PathVariable Long id) {
+        purchaseOrderService.deleteById(id);
+    }
+
+
 }

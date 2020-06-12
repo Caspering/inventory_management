@@ -1,6 +1,8 @@
 package com.kasperin.inventory_management.services.commerceServices;
 
+import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -25,7 +27,11 @@ public interface PurchaseOrderService {
 
     PurchaseOrder save(@Valid PurchaseOrder purchaseOrder);
 
-    Optional<PurchaseOrder> updateById(Long id, @Valid PurchaseOrder newPurchaseOrder);
+    Optional<PurchaseOrder> removePurchaseOrderItemByIdAndReceiptNumber(Long id, String receiptNumber);
+
+    Optional<PurchaseOrder> addPurchaseOrderItemByIdAndReceiptNumber(Long id, String receiptNumber);
+
+    Optional<PurchaseOrder> updatePurchaseOrderDetailsById(Long id, @Valid PurchaseOrder purchaseOrderPatch);
 
     void deleteById(Long id);
 
