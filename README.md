@@ -22,6 +22,7 @@
 4.	Inventory should be updated after each transaction.
 5.	Maintain list of memberships with membership number, name, contact email & phone number.
 
+
 #### Expected output(s):
 
 #### REST APIs for:
@@ -45,10 +46,6 @@
 - Maintain list of discounts on items. These should be applied at check-out and should be in receipt details.
 - List of suggested items based on previous purchases.
 - Unit testing.
-
-#### Expected output(s):
-
-
 
 
 #### Valid csv-File sample content:
