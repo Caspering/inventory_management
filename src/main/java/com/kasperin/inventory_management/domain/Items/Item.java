@@ -57,6 +57,8 @@ public class Item implements Serializable {
 
 
 
+
+
     @Min(value = 0,
             groups = {OnUpdate.class,OnCreate.class},
             message = "Item must have at least {value} or more stationary inStockQuantity")
@@ -70,5 +72,6 @@ public class Item implements Serializable {
     public double getTotalPrice() {
         return (this.getInStockQuantity() * this.getPrice());
     }
+
 
 }

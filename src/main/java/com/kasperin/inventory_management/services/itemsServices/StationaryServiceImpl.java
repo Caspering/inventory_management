@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class StationaryServiceImpl implements StationaryService{
 
     private final StationaryRepository stationaryRepository;
+
     private Optional<Stationary> getStationaryById(Long id) {
         if (stationaryRepository.existsById(id)) {
             return stationaryRepository.findById(id);

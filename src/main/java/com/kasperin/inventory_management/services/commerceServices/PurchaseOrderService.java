@@ -1,8 +1,6 @@
 package com.kasperin.inventory_management.services.commerceServices;
 
-import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
-import org.springframework.scheduling.support.SimpleTriggerContext;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -19,7 +17,7 @@ public interface PurchaseOrderService {
     List<PurchaseOrder> findAllByDateCreatedBetween(LocalDate startDate,
                                                     LocalDate endDate);
 
-    Optional<PurchaseOrder> findByReceiptNumberIgnoreCase(String receiptNumber);
+    PurchaseOrder findByReceiptNumberIgnoreCase(String receiptNumber);
 
     List<PurchaseOrder> findAllByMemberNumber(String memberNumber);
 
@@ -27,7 +25,7 @@ public interface PurchaseOrderService {
 
     PurchaseOrder save(@Valid PurchaseOrder purchaseOrder);
 
-    Optional<PurchaseOrder> removePurchaseOrderItemByIdAndReceiptNumber(Long id, String receiptNumber);
+    Optional<PurchaseOrder> removePurchaseOrderItemByIdAndReceiptNumber(Long id, Object item);
 
     Optional<PurchaseOrder> addPurchaseOrderItemByIdAndReceiptNumber(Long id, String receiptNumber);
 
@@ -35,6 +33,7 @@ public interface PurchaseOrderService {
 
     void deleteById(Long id);
 
-    boolean existsById(PurchaseOrder purchaseOrder);
+    //boolean existsById(PurchaseOrder purchaseOrder);
 
+    boolean existsById(Long id);
 }

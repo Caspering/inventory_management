@@ -1,9 +1,9 @@
 package com.kasperin.inventory_management.services.commerceServices;
 
-import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
 import com.kasperin.inventory_management.repository.commerceRepository.PurchaseOrderRepository;
+import com.kasperin.inventory_management.repository.customerRepository.MemberRepository;
 import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +23,29 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final FruitAndVegeRepository fruitAndVegeRepository;
+    private final MemberRepository memberRepository;
 
     private Optional<PurchaseOrder> getPurchaseOrderById(Long id) {
         if (purchaseOrderRepository.existsById(id)) {
-            return purchaseOrderRepository.findById(id);
+            return purchaseOrderRepository.findById(id);//.orElseThrow(() -> new ResourceNotFoundException("wasnt found"));
         }else{
             throw new ResourceNotFoundException
                     ("Purchase order with the requested id: "+ id +" was not found");
+        }
+    }
+    private PurchaseOrder getPurchaseOrderByReceiptNumberIgnoreCase(String purchaseOrderRecieptNumber) {
+        if (purchaseOrderRepository.existsByReceiptNumberIgnoreCase(purchaseOrderRecieptNumber)) {
+            return purchaseOrderRepository.findByReceiptNumberIgnoreCase(purchaseOrderRecieptNumber);
+        }else{
+            throw new ResourceNotFoundException("The PurchaseOrder item with receipt number: "
+                    + purchaseOrderRecieptNumber + " does not exist");
+        }
+    }
+    private List<PurchaseOrder> getAllPurchaseOrderCreatedOn(LocalDate createdDate){
+        if (purchaseOrderRepository.existsByDateCreated(createdDate)){
+            return purchaseOrderRepository.findAllByDateCreated(createdDate);
+        }else{
+            throw new ResourceNotFoundException("No Purchase order was created on the date: " + createdDate);
         }
     }
 
@@ -41,7 +57,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     @Override
     public List<PurchaseOrder> findAllByCreatedDate(LocalDate createdDate) {
-        return purchaseOrderRepository.findAllByDateCreated(createdDate);
+        return getAllPurchaseOrderCreatedOn(createdDate);
     }
 
     @Override
@@ -50,9 +66,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public Optional<PurchaseOrder> findByReceiptNumberIgnoreCase(String receiptNumber) {
-        return purchaseOrderRepository
-                .findByReceiptNumberIgnoreCase(receiptNumber);
+    public PurchaseOrder findByReceiptNumberIgnoreCase(String receiptNumber) {
+        return getPurchaseOrderByReceiptNumberIgnoreCase(receiptNumber);
     }
 
     @Override
@@ -97,11 +112,30 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                     return purchaseOrder;
                 });*/
        //purchaseOrder.setStationaries(purchaseOrder.getStationaries());
-       return purchaseOrderRepository.save(purchaseOrder);
+        if(purchaseOrder.getMemberNumber()!=null) {
+            purchaseOrder.setMember(memberRepository.findByMemberNumberIgnoreCase(purchaseOrder.getMemberNumber()));
+            log.info("This purchase order with id: "+purchaseOrder.getId()+", has been assigned to member: "
+                    + purchaseOrder.getMember().getName());
+        }
+
+        return purchaseOrderRepository.save(purchaseOrder);
     }
 
     @Override
-    public Optional<PurchaseOrder> removePurchaseOrderItemByIdAndReceiptNumber(Long id, String receiptNumber) {
+    public void deleteById(Long id)  {
+       // purchaseOrderRepository.delete(findById(id));
+        getPurchaseOrderById(id).map(purchaseOrder -> {purchaseOrderRepository.delete(purchaseOrder);
+        return null;
+        });
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return purchaseOrderRepository.existsById(id);
+    }
+
+    @Override
+    public Optional<PurchaseOrder> removePurchaseOrderItemByIdAndReceiptNumber(Long id, Object item) {
         return Optional.empty();
     }
 
@@ -118,47 +152,35 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                     /*if(purchaseOrderPatch.getTotalPurchaseOrderPrice() >= 0) {
                         purchaseOrderInDB.ssetInStockQuantity(purchaseOrderPatch.getInStockQuantity());*/
 
-                        if (purchaseOrderPatch.getMember() != null)
-                            purchaseOrderInDB.setMember(purchaseOrderPatch.getMember());
+                    if (purchaseOrderPatch.getMember() != null)
+                        purchaseOrderInDB.setMember(purchaseOrderPatch.getMember());
 
-                        if (purchaseOrderPatch.getDateCreated() != null)
-                            purchaseOrderInDB.setDateCreated(purchaseOrderPatch.getDateCreated());
+                    if (purchaseOrderPatch.getDateCreated() != null)
+                        purchaseOrderInDB.setDateCreated(purchaseOrderPatch.getDateCreated());
 
-                        if (purchaseOrderPatch.getMember() != null)
-                            purchaseOrderInDB.setMember(purchaseOrderPatch.getMember());
+                    if (purchaseOrderPatch.getMember() != null)
+                        purchaseOrderInDB.setMember(purchaseOrderPatch.getMember());
 
-                        if (purchaseOrderPatch.getTotalNumberOfItemsInPurchaseOrder() != null)
+                    if (purchaseOrderPatch.getTotalNumberOfItemsInPurchaseOrder() != null)
                         purchaseOrderInDB.setTotalNumberOfItemsInPurchaseOrder(
                                 purchaseOrderPatch.getTotalNumberOfItemsInPurchaseOrder());
 
-                        if (purchaseOrderPatch.getReceiptNumber() != null)
+                    if (purchaseOrderPatch.getReceiptNumber() != null)
                         purchaseOrderInDB.setReceiptNumber(
                                 purchaseOrderPatch.getReceiptNumber());
 
-                        if (purchaseOrderPatch.getPaymentType() != null)
+                    if (purchaseOrderPatch.getPaymentType() != null)
                         purchaseOrderInDB.setPaymentType(purchaseOrderPatch.getPaymentType());
 
-                        log.info("The purchase order with id: "
-                                + purchaseOrderInDB.getId() + ", and receipt number: '"
-                                + purchaseOrderInDB.getReceiptNumber() + "' was updated.");
+                    log.info("The purchase order with id: "
+                            + purchaseOrderInDB.getId() + ", and receipt number: '"
+                            + purchaseOrderInDB.getReceiptNumber() + "' was updated.");
 
-                return purchaseOrderRepository.save(purchaseOrderInDB);
+                    return purchaseOrderRepository.save(purchaseOrderInDB);
 
                     //return purchaseOrderInDB;
-        });
+                });
     }
-
-    @Override
-    public void deleteById(Long id) {
-        purchaseOrderRepository.deleteById(id);
-    }
-
-    @Override
-    public boolean existsById(PurchaseOrder purchaseOrder) {
-        return existsById(purchaseOrder);
-    }
-
-
 
 
 

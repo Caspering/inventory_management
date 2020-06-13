@@ -58,12 +58,7 @@ public class PurchaseOrder implements Serializable {
     @PrePersist
     void setDateCreatedAndMemberNumber(){
         this.dateCreated = LocalDate.now();
-//        if (this.memberNumber!=null) {
-//
-// //           this.member=this.getMember(member);
-////            setMember(memberRepository.findByMemberNumberIgnoreCase(this.getMemberNumber()));
-////            this.member = memberRepository.findByMemberNumberIgnoreCase(this.getMemberNumber());
-//        }
+
         this.totalNumberOfItemsInPurchaseOrder = countItemsInPurchaseOrder();
     }
 
@@ -81,7 +76,6 @@ public class PurchaseOrder implements Serializable {
                 + this.getTotalPurchaseOrderStationaryPrice();
     }
 
-    @Transient
     @JsonIgnore
     public int getNumberOfProcessedFoods() {
         int add = 0;
@@ -92,7 +86,6 @@ public class PurchaseOrder implements Serializable {
         return add;
     }
 
-    @Transient
     @JsonIgnore
     public int getNumberOfStationarys() {
         int add = 0;
@@ -103,7 +96,6 @@ public class PurchaseOrder implements Serializable {
        return add;
     }
 
-    @Transient
     @JsonIgnore
     public int getNumberOfFruitAndVeges() {
         int add = 0;
@@ -114,7 +106,6 @@ public class PurchaseOrder implements Serializable {
         return add;
     }
 
-    @Transient
     @JsonIgnore
     public Double getTotalPurchaseOrderFruitAndVegePrice() {
         double sum = 0D;
@@ -125,7 +116,6 @@ public class PurchaseOrder implements Serializable {
         return sum;
     }
 
-    @Transient
     @JsonIgnore
     public Double getTotalPurchaseOrderStationaryPrice() {
         double sum = 0D;
@@ -136,7 +126,6 @@ public class PurchaseOrder implements Serializable {
         return sum;
     }
 
-    @Transient
     @JsonIgnore
     public Double getTotalPurchaseOrderProcessedFoodPrice() {
         double sum = 0D;

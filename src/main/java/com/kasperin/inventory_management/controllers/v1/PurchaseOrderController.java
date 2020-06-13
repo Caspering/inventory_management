@@ -1,15 +1,20 @@
 package com.kasperin.inventory_management.controllers.v1;
 
+import com.kasperin.inventory_management.controllers.PurchaseOrderResourceAssembler;
 import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
+import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import com.kasperin.inventory_management.services.commerceServices.PurchaseOrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(PurchaseOrderController.BASE_URL)
@@ -20,6 +25,8 @@ public class PurchaseOrderController {
 
     private final PurchaseOrderService purchaseOrderService;
 
+    private final PurchaseOrderResourceAssembler assembler;
+
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -27,15 +34,14 @@ public class PurchaseOrderController {
         return purchaseOrderService.findAll();
     }
 
-/*    @GetMapping({"/{id}"})
+    @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    Resource<PurchaseOrder> getById(@PathVariable Long id) {
-        Optional<PurchaseOrder> purchaseOrder = purchaseOrderService.findById(id);
+    EntityModel<PurchaseOrder> getById(@PathVariable Long id) {
+        PurchaseOrder purchaseOrder = purchaseOrderService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Purchase order with id: " + id+ " was Not Found"));;
 
-        return new Resource<>(purchaseOrder,
-                linkTo(methodOn(PurchaseOrderController.class).one(id)).withSelRel(),
-                linkTo(methodOn(PurchaseOrderController.class).all()).withRel("purchase_orders"));
-    }*/
+        return assembler.toModel(purchaseOrder);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

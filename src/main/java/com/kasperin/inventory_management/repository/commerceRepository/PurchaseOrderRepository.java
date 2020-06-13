@@ -11,7 +11,13 @@ import java.util.Optional;
 @Repository
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
 
-    Optional<PurchaseOrder> findByReceiptNumberIgnoreCase(String purchaseOrderNumber);
+    boolean existsByReceiptNumberIgnoreCase(String name);
+
+    boolean existsByDateCreated(LocalDate createdDate);
+
+Optional<PurchaseOrder> findById(Long id);
+
+    PurchaseOrder findByReceiptNumberIgnoreCase(String purchaseOrderReceiptNumber);
 
     List<PurchaseOrder> findAllByDateCreated(LocalDate dateCreated);
 
@@ -19,5 +25,6 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
                                                     LocalDate endDate);
 
     List<PurchaseOrder> findAllByMemberNumberIgnoreCase(String memberNumber);
+
 
 }
