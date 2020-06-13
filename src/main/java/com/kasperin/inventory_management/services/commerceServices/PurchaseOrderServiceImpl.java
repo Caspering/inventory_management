@@ -161,9 +161,9 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                     if (purchaseOrderPatch.getMember() != null)
                         purchaseOrderInDB.setMember(purchaseOrderPatch.getMember());
 
-                    if (purchaseOrderPatch.getTotalNumberOfItemsInPurchaseOrder() != null)
-                        purchaseOrderInDB.setTotalNumberOfItemsInPurchaseOrder(
-                                purchaseOrderPatch.getTotalNumberOfItemsInPurchaseOrder());
+                    if (purchaseOrderPatch.getTotalNumberOfItems() != null)
+                        purchaseOrderInDB.setTotalNumberOfItems(
+                                purchaseOrderPatch.getTotalNumberOfItems());
 
                     if (purchaseOrderPatch.getReceiptNumber() != null)
                         purchaseOrderInDB.setReceiptNumber(

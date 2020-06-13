@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -28,7 +29,7 @@ public class PurchaseOrder implements Serializable {
     private LocalDate dateCreated;
 
     @Column(name = "quantity")
-    private Integer totalNumberOfItemsInPurchaseOrder;
+    private Integer totalNumberOfItems;
 
     private String memberNumber;
 
@@ -37,19 +38,27 @@ public class PurchaseOrder implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private PaymentType paymentType;
 
+    @JsonIgnore
     @ManyToMany
     //@Size(min=1, message="You must have an Item in your purchase order")
     private List<FruitAndVege> fruitAndVeges = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany
     private List<Stationary> stationaries = new ArrayList<>();
 
-    @ManyToMany//(cascade = CascadeType.REFRESH, mappedBy = "purchaseOrder")
-    /*@JoinTable(name = "purchase_order_processed_food",
-            joinColumns =  @JoinColumn (name = "purchase_order_id"),
-            inverseJoinColumns = {@JoinColumn(name = "processed_food_id")}
-    )*/
+    @JsonIgnore
+    @ManyToMany
     private List<ProcessedFood> processedFoods = new ArrayList<>();
+
+    @Transient
+    public List<Object> items(){
+        List<Object> items = new ArrayList<>();
+        items.add(getFruitAndVeges());
+        items.add(getStationaries());
+        items.add(getProcessedFoods());
+        return items;
+    }
 
     @ManyToOne
     @JsonIgnore
@@ -58,56 +67,55 @@ public class PurchaseOrder implements Serializable {
     @PrePersist
     void setDateCreatedAndMemberNumber(){
         this.dateCreated = LocalDate.now();
-
-        this.totalNumberOfItemsInPurchaseOrder = countItemsInPurchaseOrder();
+        this.totalNumberOfItems = countAllItems();
     }
 
     @Transient
-    public int countItemsInPurchaseOrder() {
+    public int countAllItems() {
         return this.getNumberOfFruitAndVeges()
                 + this.getNumberOfProcessedFoods()
                 + this.getNumberOfStationarys();
     }
 
     @Transient
-    public Double getTotalPurchaseOrderPrice() {
-        return this.getTotalPurchaseOrderFruitAndVegePrice()
-                + this.getTotalPurchaseOrderProcessedFoodPrice()
-                + this.getTotalPurchaseOrderStationaryPrice();
+    public Double getTotalPrice() {
+        return this.getTotalFruitAndVegePrice()
+                + this.getTotalProcessedFoodPrice()
+                + this.getTotalStationaryPrice();
     }
 
     @JsonIgnore
     public int getNumberOfProcessedFoods() {
-        int add = 0;
+        int count = 0;
         List<ProcessedFood> processedFoods = getProcessedFoods();
         for(ProcessedFood pf : processedFoods){
-            add += pf.getInStockQuantity();
+            count += pf.getInStockQuantity();
         }
-        return add;
+        return count;
     }
 
     @JsonIgnore
     public int getNumberOfStationarys() {
-        int add = 0;
+        int count = 0;
        List<Stationary> stationaries = getStationaries();
        for(Stationary st : stationaries){
-           add += st.getInStockQuantity();
+           count += st.getInStockQuantity();
        }
-       return add;
+       return count;
     }
 
     @JsonIgnore
     public int getNumberOfFruitAndVeges() {
-        int add = 0;
+        int count = 0;
         List<FruitAndVege> fruitAndVeges = getFruitAndVeges();
         for(FruitAndVege fv : fruitAndVeges){
-            add += fv.getInStockQuantity();
+            count += fv.getInStockQuantity();
         }
-        return add;
+        return count;
     }
 
     @JsonIgnore
-    public Double getTotalPurchaseOrderFruitAndVegePrice() {
+    public Double getTotalFruitAndVegePrice() {
         double sum = 0D;
         List<FruitAndVege> fruitAndVeges = getFruitAndVeges();
         for (FruitAndVege fav : fruitAndVeges) {
@@ -117,7 +125,7 @@ public class PurchaseOrder implements Serializable {
     }
 
     @JsonIgnore
-    public Double getTotalPurchaseOrderStationaryPrice() {
+    public Double getTotalStationaryPrice() {
         double sum = 0D;
         List<Stationary> stationarys = getStationaries();
         for (Stationary st : stationarys) {
@@ -127,7 +135,7 @@ public class PurchaseOrder implements Serializable {
     }
 
     @JsonIgnore
-    public Double getTotalPurchaseOrderProcessedFoodPrice() {
+    public Double getTotalProcessedFoodPrice() {
         double sum = 0D;
         List<ProcessedFood> processedFoods = getProcessedFoods();
         for (ProcessedFood pf : processedFoods) {
@@ -158,43 +166,4 @@ public class PurchaseOrder implements Serializable {
         this.fruitAndVeges.remove(fruitAndVege);
     }
 
-
-
-
-    //      public PurchaseOrder addMember(Member member){
-//        member.setPurchaseOrders();
-//        this.fruitAndVeges.add(fruitAndVege);
-//        return this;
-//    }
-
-    /*    public PurchaseOrder(LocalDate dateCreated, int totalNumberOfItemsInPurchaseOrder,
-                         String receiptNumber,
-                         PaymentType paymentType, Set<FruitAndVege> fruitAndVeges,
-                         List<Stationary> stationaries, List<ProcessedFood> processedFoods) {
-        this.dateCreated = dateCreated;
-        this.totalNumberOfItemsInPurchaseOrder = totalNumberOfItemsInPurchaseOrder;
-       // this.memberNumber = memberNumber;
-        this.receiptNumber = receiptNumber;
-        this.paymentType = paymentType;
-        this.fruitAndVeges = fruitAndVeges;
-        this.stationaries = stationaries;
-        this.processedFoods = processedFoods;
-    }*/
-
-    /* public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-        member.setPurchaseOrders((Set<PurchaseOrder>) this);
-    }*/
-
-    /*public String getMemberNumber() {
-        return member.getMemberNumber();
-    }
-
-    public void setMemberNumber() {
-        this.memberNumber = getMemberNumber();
-    }*/
 }
