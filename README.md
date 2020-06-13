@@ -9,17 +9,6 @@
 - processed food can be vegan or non-vegan. they have manufacturing & expiring dates
 - Stationary is limited to only one item per type per purchase order.
 
-#### Expected output(s):
-- All data is to be persisted.
-- REST API to add more quantity to stock (name/barcode & quantity)
-- REST APIs for list of,
-- all items in-stock with available quantity with details
-- in-stock f&v with details
-- in-stock processed food with details
-- in-stock vegan processed food with details
-- in-stock vegan processed food with details
-- in-stock stationary with details
-
 #### Add an e-checkout counter 
 
 1.	Stationary is limited to one quantity per item type per customer purchase order.
@@ -34,18 +23,32 @@
 5.	Maintain list of memberships with membership number, name, contact email & phone number.
 
 #### Expected output(s):
+
 #### REST APIs for:
-a.	Transaction details by receipt number.
-b.	Receipt numbers by membership number.
-c.	Receipt numbers without membership number.
-d.	Total sale amount on a specific date or between two dates.
-e.	Total quantities of each item sold on a specific date or between two dates.
-f.	Log remaining quantities of items at every configurable number of minutes.
-g.	Add new member and generate membership number.
-h.	Search items by full/partial name/barcode. 
-i.	Maintain list of discounts on items. These should be applied at check-out and should be in receipt details.
-j.	List of suggested items based on previous purchases.
-k.	Unit testing.
+- All data is to be persisted.
+- REST API to add more quantity to stock (name/barcode & quantity)
+- REST APIs for list of,
+- all items in-stock with available quantity with details
+- in-stock f&v with details
+- in-stock processed food with details
+- in-stock vegan processed food with details
+- in-stock vegan processed food with details
+- in-stock stationary with details
+- Transaction details by receipt number.
+- Receipt numbers by membership number.
+- Receipt numbers without membership number.
+- Total sale amount on a specific date or between two dates.
+- Total quantities of each item sold on a specific date or between two dates.
+- Log remaining quantities of items at every configurable number of minutes.
+- Add new member and generate membership number.
+- Search items by full/partial name/barcode.
+- Maintain list of discounts on items. These should be applied at check-out and should be in receipt details.
+- List of suggested items based on previous purchases.
+- Unit testing.
+
+#### Expected output(s):
+
+
 
 
 #### Valid csv-File sample content:
