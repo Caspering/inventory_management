@@ -1,28 +1,40 @@
 package com.kasperin.inventory_management.services.commerceServices;
 
+import com.kasperin.inventory_management.domain.Items.FruitAndVege;
+import com.kasperin.inventory_management.domain.Items.ProcessedFood;
+import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoodRepo;
+import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRepository;
 import com.kasperin.inventory_management.repository.commerceRepository.PurchaseOrderRepository;
 import com.kasperin.inventory_management.repository.customerRepository.MemberRepository;
 import com.kasperin.inventory_management.services.ResourceNotFoundException;
+import com.kasperin.inventory_management.services.itemsServices.UpdateProperty;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
+//@Component
 @AllArgsConstructor
 @Transactional
-public class PurchaseOrderServiceImpl implements PurchaseOrderService {
+public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final FruitAndVegeRepository fruitAndVegeRepository;
+    private final StationaryRepository stationaryRepository;
+    private final ProcessedFoodRepo processedFoodRepo;
     private final MemberRepository memberRepository;
 
     private Optional<PurchaseOrder> getPurchaseOrderById(Long id) {
@@ -80,7 +92,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     public Optional<PurchaseOrder> findById(Long id) {
        return getPurchaseOrderById(id);
     }
-
+    @EventListener
     @Override
     public PurchaseOrder save(@Valid PurchaseOrder purchaseOrder) {
         /*return  purchaseOrder.getFruitAndVeges()
@@ -112,6 +124,43 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                     return purchaseOrder;
                 });*/
        //purchaseOrder.setStationaries(purchaseOrder.getStationaries());
+
+       /* List<Object> items = new ArrayList<>();*/
+
+//        purchaseOrder.setStationaries(purchaseOrder
+//                .addStationary()for(Stationary st : purchaseOrder.getStationaries()) {
+//                    purchaseOrder.addStationary
+//                            (stationaryRepository.findByBarcode(st.getBarcode()));
+//                            }
+    /*    PurchaseOrder purchaseOrder1 = new PurchaseOrder();
+
+
+        for(Stationary st : purchaseOrder.getStationaries()){
+            Stationary stationary = stationaryRepository.findByBarcode(st.getBarcode());
+
+            updateName(st, stationary);
+            updatePrice(st,stationary);
+            purchaseOrder1.addStationary(stationary);
+        }
+
+        for(FruitAndVege fv : purchaseOrder.getFruitAndVeges()){
+           FruitAndVege fav = fruitAndVegeRepository.findByBarcode(fv.getBarcode());
+            purchaseOrder1.addFruitAndVege(fav);
+        }
+
+        for(ProcessedFood pf : purchaseOrder.getProcessedFoods()){
+            purchaseOrder1.addProcessedFood(processedFoodRepo.findByBarcode(pf.getBarcode()));
+
+        }
+        purchaseOrder1.setStationaries(purchaseOrder1.getStationaries());
+
+        purchaseOrder.setStationaries(purchaseOrder1.getStationaries());*/
+//        for(Stationary st : purchaseOrder.getStationaries()) {
+//            stationaryRepository.findByBarcode(st.getBarcode()).setInStockQuantity();
+//
+//
+//        }
+
         if(purchaseOrder.getMemberNumber()!=null) {
             purchaseOrder.setMember(memberRepository.findByMemberNumberIgnoreCase(purchaseOrder.getMemberNumber()));
             log.info("This purchase order with id: "+purchaseOrder.getId()+", has been assigned to member: "
@@ -119,7 +168,15 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         }
 
         return purchaseOrderRepository.save(purchaseOrder);
+
+
+
     }
+
+
+    /*public void onPurchaseOrderCreated(EntityCreatedEvent<PurchaseOrder> event){
+
+    }*/
 
     @Override
     public void deleteById(Long id)  {
@@ -182,6 +239,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                 });
     }
 
+    /*public PurchaseOrder updateItems(String barcode, @Valid Object  )*/
 
 
 

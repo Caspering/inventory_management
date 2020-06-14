@@ -12,4 +12,5 @@ public interface FruitAndVegeRepository extends JpaRepository<FruitAndVege, Long
     boolean existsByBarcode(String barcode);
     List<FruitAndVege> findAllByNameIgnoreCase(String name);
 
+    FruitAndVege findByBarcode(String barcode);
 }

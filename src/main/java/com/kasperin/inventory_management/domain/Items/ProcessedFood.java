@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @Entity
+@PrimaryKeyJoinColumn(name = "item_id")
 @OnCreateDateConstraint(
                 groups =  OnCreate.class,
                 message = "Expiry Date must be ahead of Manufacturing Date")

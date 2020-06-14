@@ -10,10 +10,12 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Data
 @NoArgsConstructor
 @Entity
+@PrimaryKeyJoinColumn(name = "item_id")
 @Validated
 public class Stationary extends Item {
 

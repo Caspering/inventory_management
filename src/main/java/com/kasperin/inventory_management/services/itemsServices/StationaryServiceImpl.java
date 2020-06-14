@@ -22,6 +22,8 @@ public class StationaryServiceImpl implements StationaryService{
 
     private final StationaryRepository stationaryRepository;
 
+
+
     private Optional<Stationary> getStationaryById(Long id) {
         if (stationaryRepository.existsById(id)) {
             return stationaryRepository.findById(id);
@@ -71,26 +73,46 @@ public class StationaryServiceImpl implements StationaryService{
     public Optional<Stationary> updateById(Long id, @Valid Stationary stationaryPatch) {
         return getStationaryById(id)
                 .map(stationaryInDB -> {
-                    if (stationaryPatch.getInStockQuantity() == null)
-                        stationaryPatch.setInStockQuantity(stationaryInDB.getInStockQuantity());
+                    patchNullQty(stationaryPatch, stationaryInDB);
 
-                    if(stationaryPatch.getInStockQuantity() >= 0) {
-                        stationaryInDB.setInStockQuantity(stationaryPatch.getInStockQuantity());
+                    updateQty(stationaryPatch, stationaryInDB);
 
-                        if (stationaryPatch.getName() != null)
-                            stationaryInDB.setName(stationaryPatch.getName());
+                    updateName(stationaryPatch, stationaryInDB);
 
-                        if (stationaryPatch.getBarcode() != null)
-                            stationaryInDB.setBarcode(stationaryPatch.getBarcode());
+                    updateBarcode(stationaryPatch, stationaryInDB);
 
-                        if (stationaryPatch.getPrice() != null)
-                            stationaryInDB.setPrice(stationaryPatch.getPrice());
+                    updatePrice(stationaryPatch, stationaryInDB);
 
-                        log.info("The stationary item : " + stationaryInDB.getName() + " was updated");
-                        return stationaryRepository.save(stationaryInDB);
-                    }
-                return stationaryInDB;
+                    log.info("The stationary item : " + stationaryInDB.getName() + " was updated");
+                    return stationaryRepository.save(stationaryInDB);
+
+                //return stationaryInDB;
         });
+    }
+
+    public void updateQty(@Valid Stationary stationaryPatch, Stationary stationaryInDB) {
+        if(stationaryPatch.getInStockQuantity() >= 0)
+            stationaryInDB.setInStockQuantity(stationaryPatch.getInStockQuantity());
+    }
+
+    public void updateName(@Valid Stationary stationaryPatch, Stationary stationaryInDB) {
+        if (stationaryPatch.getName() != null)
+            stationaryInDB.setName(stationaryPatch.getName());
+    }
+
+    public void updateBarcode(@Valid Stationary stationaryPatch, Stationary stationaryInDB) {
+        if (stationaryPatch.getBarcode() != null)
+            stationaryInDB.setBarcode(stationaryPatch.getBarcode());
+    }
+
+    public void updatePrice(@Valid Stationary stationaryPatch, Stationary stationaryInDB) {
+        if (stationaryPatch.getPrice() != null)
+            stationaryInDB.setPrice(stationaryPatch.getPrice());
+    }
+
+    public void patchNullQty(@Valid Stationary stationaryPatch, Stationary stationaryInDB) {
+        if (stationaryPatch.getInStockQuantity() == null)
+            stationaryPatch.setInStockQuantity(stationaryInDB.getInStockQuantity());
     }
 
     @Override

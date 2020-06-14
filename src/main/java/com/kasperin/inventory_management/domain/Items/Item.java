@@ -3,7 +3,6 @@ package com.kasperin.inventory_management.domain.Items;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
-import com.univocity.parsers.annotations.NullString;
 import com.univocity.parsers.annotations.Parsed;
 import com.univocity.parsers.annotations.Validate;
 import lombok.Data;
@@ -17,7 +16,8 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-@MappedSuperclass
+@Entity(name = "Item")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Item implements Serializable {
 
     @Id
@@ -56,6 +56,16 @@ public class Item implements Serializable {
     private Double price;
 
 
+/*
+
+    @EventListener
+    public void handleContextStart(ContextStartedEvent cse) {
+        System.out.println("Handling context started event.");
+        this.setInStockQuantity();
+    }
+
+
+*/
 
 
 

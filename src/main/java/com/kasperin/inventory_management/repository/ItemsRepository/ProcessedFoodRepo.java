@@ -16,4 +16,5 @@ public interface ProcessedFoodRepo
     boolean existsByBarcode(String barcode);
 
 
+    ProcessedFood findByBarcode(String barcode);
 }
