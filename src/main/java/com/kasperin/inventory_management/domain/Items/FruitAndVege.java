@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@PrimaryKeyJoinColumn(name = "item_id")
+//@PrimaryKeyJoinColumn(name = "item_id")
 @NoArgsConstructor
 public class FruitAndVege extends Item {
 

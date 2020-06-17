@@ -3,23 +3,23 @@ package com.kasperin.inventory_management.domain.commerce;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import com.kasperin.inventory_management.domain.Items.Item;
-import com.kasperin.inventory_management.domain.Items.ProcessedFood;
-import com.kasperin.inventory_management.domain.Items.Stationary;
+import com.kasperin.inventory_management.domain.Items.OrderedItem;
 import com.kasperin.inventory_management.domain.customer.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Random;
+import java.util.UUID;
 
 @Entity
+//@EntityListeners(PurchaseOrderEventHandler.class)
 @Data
 @NoArgsConstructor
 public class PurchaseOrder implements Serializable {
@@ -41,8 +41,11 @@ public class PurchaseOrder implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private PaymentType paymentType;
 
-    @ManyToMany
-    private List<Item> items = new ArrayList<>();
+    /*@OneToMany//(cascade= {CascadeType.REMOVE}, fetch=FetchType.EAGER)
+    private List<Item> items = new ArrayList<>();*/
+
+    @OneToMany//(cascade= {CascadeType.REMOVE}, fetch=FetchType.EAGER)
+    private List<OrderedItem> items = new ArrayList<>();
 
 
 
@@ -54,15 +57,26 @@ public class PurchaseOrder implements Serializable {
     void setDateCreatedAndMemberNumber(){
         this.dateCreated = LocalDate.now();
         this.totalNumberOfItems = countItems();
+        /*if (receiptNumber == null) {
+
+        }*/
+
+      //  final int SHORT_ID_LENGTH = 8;
+
+// all possible unicode characters
+        //String shortId =
+        this.receiptNumber=RandomStringUtils.randomNumeric(12); ; //=  UUID.fromString("Number").toString();//randomUUID().toString();
+
+
     }
 
     @Transient
     @JsonProperty(value = "Total number of Items")
     public int countItems(){
         int count = 0;
-        List<Item> items = getItems();
-        for(Item item : items){
-            count += item.getInStockQuantity();
+        List<OrderedItem> items = getItems();
+        for(OrderedItem item : items){
+            count += item.getQuantity();
         }
         return count;
     }
@@ -71,18 +85,18 @@ public class PurchaseOrder implements Serializable {
     @Transient
     public Double getTotalPrice(){
         double sum = 0;
-        List<Item> items = getItems();
-        for (Item item : items) {
+        List<OrderedItem> items = getItems();
+        for (OrderedItem item : items) {
             sum += item.getTotalPrice();
         }
         return sum;
 
     }
 
-    public void addItem(Item item){
+    public void addItem(OrderedItem item){
         this.items.add(item);
     }
-    public void removeItem(Item item){
+    public void removeItem(OrderedItem item){
         this.items.remove(item);
     }
 

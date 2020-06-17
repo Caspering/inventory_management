@@ -6,6 +6,8 @@ import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.univocity.parsers.common.record.Record;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
@@ -14,8 +16,9 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 @Data
 @NoArgsConstructor
+//@RequiredArgsConstructor
 @Entity
-@PrimaryKeyJoinColumn(name = "item_id")
+//@PrimaryKeyJoinColumn(name = "item_id")
 @Validated
 public class Stationary extends Item {
 

@@ -115,7 +115,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         ProcessedFood proFood2 = new ProcessedFood();
         proFood2.setName("burger");
-        proFood2.setBarcode("12345");
+        proFood2.setBarcode("123450000088");
         proFood2.setPrice(1.3);
         proFood2.setFoodType(FoodType.VEGAN);
         proFood2.setInStockQuantity(13);
@@ -123,7 +123,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         ProcessedFood proFood3 = new ProcessedFood();
         proFood3.setName("fries");
-        proFood3.setBarcode("12345");
+        proFood3.setBarcode("1238989898045");
         proFood3.setPrice(1.3);
         proFood3.setFoodType(FoodType.NONVEGAN);
         proFood3.setInStockQuantity(13);
@@ -146,7 +146,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         Stationary st1 = new Stationary();
         st1.setName("Glue");
-        st1.setBarcode("12345");
+        st1.setBarcode("189999892345");
         st1.setPrice(1.3);
         st1.setInStockQuantity(13);
 
@@ -155,7 +155,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         Stationary st2 = new Stationary();
         st2.setName("Pencil");
-        st2.setBarcode("12345");
+        st2.setBarcode("1234533333");
         st2.setPrice(1.3);
         st2.setInStockQuantity(13);
 
@@ -164,7 +164,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         Stationary st3 = new Stationary();
         st3.setName("Ink");
-        st3.setBarcode("12345");
+        st3.setBarcode("12346621115");
         st3.setPrice(1.3);
         st3.setInStockQuantity(13);
 
@@ -173,7 +173,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         Stationary st4 = new Stationary();
         st4.setName("Ruler");
-        st4.setBarcode("12445");
+        st4.setBarcode("12434456245");
         st4.setPrice(1.4);
         st4.setInStockQuantity(13);
         stationaries.add(st4);
@@ -181,7 +181,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         Stationary st5 = new Stationary();
         st5.setName("Eraser");
-        st5.setBarcode("12545");
+        st5.setBarcode("1254222002335");
         st5.setPrice(1.5);
         st5.setInStockQuantity(18);
         stationaries.add(st5);
@@ -254,7 +254,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         PO2.setDateCreated(LocalDate.now());
         PO2.setPaymentType(PaymentType.CARD);
         //PO2.getTotalNumberOfItemsInPurchaseOrder();
-        PO2.setReceiptNumber("13334988393893893");
+       // PO2.setReceiptNumber("13334988393893893");
 //        PO2.getFruitAndVeges().add(fav1);
 //        PO2.getFruitAndVeges().add(fav2);
        // PO2.setMemberNumber(m1.getMemberNumber());

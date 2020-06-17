@@ -16,8 +16,8 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-@Entity(name = "Item")
-@Inheritance(strategy = InheritanceType.JOINED)
+//@Entity(name = "Item")
+@MappedSuperclass
 public class Item implements Serializable {
 
     @Id
@@ -56,19 +56,6 @@ public class Item implements Serializable {
     private Double price;
 
 
-/*
-
-    @EventListener
-    public void handleContextStart(ContextStartedEvent cse) {
-        System.out.println("Handling context started event.");
-        this.setInStockQuantity();
-    }
-
-
-*/
-
-
-
     @Min(value = 0,
             groups = {OnUpdate.class,OnCreate.class},
             message = "Item must have at least {value} or more stationary inStockQuantity")
@@ -76,6 +63,8 @@ public class Item implements Serializable {
     @Parsed(field = "qty")
     //@NullString(nulls = {"", "N/A"})
     private Integer inStockQuantity;
+
+
 
     @Transient
     @JsonIgnore

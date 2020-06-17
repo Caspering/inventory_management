@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ public class Member implements Serializable {
     private String memberNumber;
     private String firstName;
     private String lastName;
+    @Email
     private String email;
     private String phoneNumber;
 

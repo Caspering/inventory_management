@@ -1,10 +1,12 @@
 package com.kasperin.inventory_management.services.commerceServices;
 
 import com.kasperin.inventory_management.domain.Items.FruitAndVege;
+import com.kasperin.inventory_management.domain.Items.Item;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;
 import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.repository.ItemsRepository.ItemRepository;
 import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoodRepo;
 import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRepository;
 import com.kasperin.inventory_management.repository.commerceRepository.PurchaseOrderRepository;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.PrePersist;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,7 +29,6 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-//@Component
 @AllArgsConstructor
 @Transactional
 public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
@@ -36,6 +38,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     private final StationaryRepository stationaryRepository;
     private final ProcessedFoodRepo processedFoodRepo;
     private final MemberRepository memberRepository;
+    private final ItemRepository itemRepository;
 
     private Optional<PurchaseOrder> getPurchaseOrderById(Long id) {
         if (purchaseOrderRepository.existsById(id)) {
@@ -62,7 +65,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     }
 
     @Override
-   // @Transactional(readOnly = true)
     public List<PurchaseOrder> findAll() {
         return purchaseOrderRepository.findAll();
     }
@@ -92,91 +94,13 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     public Optional<PurchaseOrder> findById(Long id) {
        return getPurchaseOrderById(id);
     }
-    @EventListener
+
+
     @Override
     public PurchaseOrder save(@Valid PurchaseOrder purchaseOrder) {
-        /*return  purchaseOrder.getFruitAndVeges()
-                .stream()
-                .map(fruitAndVege -> {
-                    if (fruitAndVege.getInStockQuantity() == 0) {//make sure he is ordering more than one
-                        throw new RuntimeException("in stock quantity has to be greater than 0");
-                    }
-                    fruitAndVegeRepository.findById(fruitAndVege.getId())
-                            .map(fruitAndVegeInDB -> {
-                                if(fruitAndVegeInDB.getInStockQuantity() > 0
-                                        && fruitAndVegeInDB.getInStockQuantity() >
-                                        fruitAndVege.getInStockQuantity()) {
-                                    fruitAndVegeInDB.setInStockQuantity(fruitAndVegeInDB.getInStockQuantity()
-                                            - fruitAndVege.getInStockQuantity());
-                                    fruitAndVegeRepository.save(fruitAndVegeInDB);
-                                    purchaseOrder.setFruitAndVeges(purchaseOrder.getFruitAndVeges());
-
-                                    return purchaseOrderRepository.save(purchaseOrder);
-                                }
-                                else if(fruitAndVege.getInStockQuantity() > fruitAndVegeInDB.getInStockQuantity()){
-                                    throw new RuntimeException("you are ordering more than we have in stock");
-                                }
-                                else if (fruitAndVegeInDB.getInStockQuantity() == 0 )
-                                    throw new RuntimeException("no fruit and vege in stock");
-                                return null;
-                            });
-                    purchaseOrderRepository.save(purchaseOrder);
-                    return purchaseOrder;
-                });*/
-       //purchaseOrder.setStationaries(purchaseOrder.getStationaries());
-
-       /* List<Object> items = new ArrayList<>();*/
-
-//        purchaseOrder.setStationaries(purchaseOrder
-//                .addStationary()for(Stationary st : purchaseOrder.getStationaries()) {
-//                    purchaseOrder.addStationary
-//                            (stationaryRepository.findByBarcode(st.getBarcode()));
-//                            }
-    /*    PurchaseOrder purchaseOrder1 = new PurchaseOrder();
-
-
-        for(Stationary st : purchaseOrder.getStationaries()){
-            Stationary stationary = stationaryRepository.findByBarcode(st.getBarcode());
-
-            updateName(st, stationary);
-            updatePrice(st,stationary);
-            purchaseOrder1.addStationary(stationary);
-        }
-
-        for(FruitAndVege fv : purchaseOrder.getFruitAndVeges()){
-           FruitAndVege fav = fruitAndVegeRepository.findByBarcode(fv.getBarcode());
-            purchaseOrder1.addFruitAndVege(fav);
-        }
-
-        for(ProcessedFood pf : purchaseOrder.getProcessedFoods()){
-            purchaseOrder1.addProcessedFood(processedFoodRepo.findByBarcode(pf.getBarcode()));
-
-        }
-        purchaseOrder1.setStationaries(purchaseOrder1.getStationaries());
-
-        purchaseOrder.setStationaries(purchaseOrder1.getStationaries());*/
-//        for(Stationary st : purchaseOrder.getStationaries()) {
-//            stationaryRepository.findByBarcode(st.getBarcode()).setInStockQuantity();
-//
-//
-//        }
-
-        if(purchaseOrder.getMemberNumber()!=null) {
-            purchaseOrder.setMember(memberRepository.findByMemberNumberIgnoreCase(purchaseOrder.getMemberNumber()));
-            log.info("This purchase order with id: "+purchaseOrder.getId()+", has been assigned to member: "
-                    + purchaseOrder.getMember().getName());
-        }
-
         return purchaseOrderRepository.save(purchaseOrder);
-
-
-
     }
 
-
-    /*public void onPurchaseOrderCreated(EntityCreatedEvent<PurchaseOrder> event){
-
-    }*/
 
     @Override
     public void deleteById(Long id)  {
@@ -238,43 +162,4 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
                     //return purchaseOrderInDB;
                 });
     }
-
-    /*public PurchaseOrder updateItems(String barcode, @Valid Object  )*/
-
-
-
-    //       Set<FruitAndVege> orderedFruitAndVeges = new HashSet<>();
-//
-/*                purchaseOrder.getFruitAndVeges()
-                        .stream()
-                        .map(fruitAndVege -> fruitAndVegeRepository
-                                .findById(fruitAndVege.getId())
-                                .save(fruitAndVege.setInStockQuantity());
-                .collect(Collectors.toSet());
-
-        List<Optional<FruitAndVege>> favDb = new ArrayList<>();
-
-        for(FruitAndVege fav : purchaseOrder.getFruitAndVeges()){
-            orderedFruitAndVeges.add(fav);
-            favDb.add(fruitAndVegeRepository.findById(fav.getId()));
-        }
-
-        purchaseOrder.setFruitAndVeges(orderedFruitAndVeges);
-
-        favDb.stream()
-                .map(fruitAndVege -> fruitAndVegeRepository.save(fruitAndVege.);*/
-
-
-       /* //purchaseOrder.setFruitAndVeges(orderedFruitAndVeges);
-
-        for(FruitAndVege fav : orderedFruitAndVeges){
-            Optional<FruitAndVege> fav1 = fruitAndVegeRepository.findById(fav.getId());
-            Objects.requireNonNull(fav1, "You can not buy a non existing product");
-            fav1.stream()
-                    .filter(fav1 -> fav1.getInStockQuantity() - fav.getInStockQuantity());
-           // purchaseOrder.add
-            //fav.setInStockQuantity(fav.getInStockQuantity()-purchaseOrder.get);
-        }
-        purchaseOrder.setFruitAndVeges(orderedFruitAndVeges);*/
-    //return purchaseOrderRepository.save(purchaseOrder);
 }

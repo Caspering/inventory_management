@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.repository.ItemsRepository;
 
+import com.kasperin.inventory_management.domain.Items.ProcessedFood;
 import com.kasperin.inventory_management.domain.Items.Stationary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,5 +14,7 @@ public interface StationaryRepository extends JpaRepository<Stationary, Long> {
     List<Stationary> findAllByNameIgnoreCase(String name);
     boolean existsByBarcode(String barcode);
     Stationary findByBarcode(String barcode);
+    boolean existsByBarcodeOrNameIgnoreCase(String barcode, String name);
+    Stationary findByBarcodeOrNameIgnoreCase(String barcode, String name);
 
 }
