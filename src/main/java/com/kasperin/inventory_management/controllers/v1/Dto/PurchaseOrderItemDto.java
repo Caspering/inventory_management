@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.Dto;
+package com.kasperin.inventory_management.controllers.v1.Dto;
 
 import com.kasperin.inventory_management.domain.commerce.PaymentType;
 import lombok.Data;

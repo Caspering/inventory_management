@@ -1,6 +1,7 @@
 package com.kasperin.inventory_management.domain.Items;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
+@NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "OrderedItem_id")
 public class OrderedProcessedFoodItem extends OrderedItem{
 

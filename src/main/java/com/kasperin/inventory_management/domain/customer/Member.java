@@ -4,19 +4,20 @@ import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 public class Member implements Serializable {
 
     @Id
@@ -40,9 +41,10 @@ public class Member implements Serializable {
         this.lastName = parts[1];
     }
 
+    @PrePersist
     public void generateMemberNumber(){
-
-
+        this.memberNumber= RandomStringUtils.randomAlphanumeric(12);
+        log.info("The member with Name: "+this.getName()+" has been assigned Member Number: "+this.getMemberNumber());
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "member", orphanRemoval = true)

@@ -21,15 +21,19 @@ public interface PurchaseOrderService {
 
     List<PurchaseOrder> findAllByMemberNumber(String memberNumber);
 
+    List<PurchaseOrder> findAllWithNoMemberNumber();
+
     Optional<PurchaseOrder> findById(Long id);
 
-    PurchaseOrder save(@Valid PurchaseOrder purchaseOrder);
+    PurchaseOrder save(@Valid PurchaseOrderServiceImpl.OrderForm form);
 
     Optional<PurchaseOrder> removePurchaseOrderItemByIdAndReceiptNumber(Long id, Object item);
 
     Optional<PurchaseOrder> addPurchaseOrderItemByIdAndReceiptNumber(Long id, String receiptNumber);
 
     Optional<PurchaseOrder> updatePurchaseOrderDetailsById(Long id, @Valid PurchaseOrder purchaseOrderPatch);
+
+
 
     void deleteById(Long id);
 

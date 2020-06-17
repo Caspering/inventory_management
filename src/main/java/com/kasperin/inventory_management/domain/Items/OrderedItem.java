@@ -27,16 +27,6 @@ public class OrderedItem implements Serializable {
 
     private Integer quantity;
 
-
-
-
-
-
-
-
-
-
-
     @Transient
     @JsonIgnore
     public double getTotalPrice() {

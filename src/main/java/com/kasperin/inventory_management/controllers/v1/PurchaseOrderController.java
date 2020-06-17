@@ -1,30 +1,18 @@
 package com.kasperin.inventory_management.controllers.v1;
 
-import com.kasperin.inventory_management.Dto.PurchaseOrderItemDto;
 import com.kasperin.inventory_management.controllers.PurchaseOrderResourceAssembler;
-import com.kasperin.inventory_management.domain.Items.OrderedFruitAndVegeItem;
-import com.kasperin.inventory_management.domain.Items.OrderedItem;
-import com.kasperin.inventory_management.domain.Items.OrderedProcessedFoodItem;
-import com.kasperin.inventory_management.domain.Items.OrderedStationaryItem;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
-import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
-import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoodRepo;
-import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRepository;
-import com.kasperin.inventory_management.repository.customerRepository.MemberRepository;
 import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import com.kasperin.inventory_management.services.commerceServices.PurchaseOrderService;
-import com.kasperin.inventory_management.services.itemsServices.OrderedItemService;
-import com.kasperin.inventory_management.services.itemsServices.StationaryService;
+import com.kasperin.inventory_management.services.commerceServices.PurchaseOrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -34,14 +22,7 @@ import java.util.Optional;
 public class PurchaseOrderController {
 
     public static final String BASE_URL = "/api/v1/purchase_orders";
-
     private final PurchaseOrderService purchaseOrderService;
-    private final OrderedItemService orderedItemService;
-    private final StationaryService stationaryService;
-    private final MemberRepository memberRepository;
-    private final StationaryRepository stationaryRepository;
-    private final FruitAndVegeRepository fruitAndVegeRepository;
-    private final ProcessedFoodRepo processedFoodRepository;
     private final PurchaseOrderResourceAssembler assembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,10 +42,8 @@ public class PurchaseOrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Transactional
-    public PurchaseOrder save(@RequestBody OrderForm form) {
-
-        PurchaseOrder purchaseOrder = new PurchaseOrder();
+    public PurchaseOrder save(@RequestBody PurchaseOrderServiceImpl.OrderForm form) {
+        /*PurchaseOrder purchaseOrder = new PurchaseOrder();
         if(form.getPurchaseOrderItemDto().getPaymentType() != null)
         purchaseOrder.setPaymentType(form.getPurchaseOrderItemDto().getPaymentType());
         if(form.getPurchaseOrderItemDto().getMemberNumber() != null){
@@ -123,9 +102,9 @@ public class PurchaseOrderController {
                             +" is not available");
                 }else throw new RuntimeException("Item "+entry.getKey()+" was not found in inventory");
             }
-        }else throw new RuntimeException("Purchase order must contain an item");
-
-        return purchaseOrderService.save(purchaseOrder);
+        }else throw new RuntimeException("Purchase order must contain an item");*/
+        /*return purchaseOrderService.save(purchaseOrder);*/
+        return purchaseOrderService.save(form);
     }
 
     @PatchMapping({"/{id}"})
@@ -145,7 +124,7 @@ public class PurchaseOrderController {
 
     //Helper Methods for building a purchase order
 
-    public static class OrderForm{
+    /*public static class OrderForm{
 
         private PurchaseOrderItemDto purchaseOrderItemDto;
 
@@ -156,9 +135,9 @@ public class PurchaseOrderController {
         public PurchaseOrderItemDto getPurchaseOrderItemDto(){
             return purchaseOrderItemDto;
         }
-    }
+    }*/
 
-    public boolean itemListIsEmptyOrNull(@RequestBody OrderForm form) {
+    /*public boolean itemListIsEmptyOrNull(@RequestBody OrderForm form) {
         return org.springframework.util.ObjectUtils.isEmpty(form.purchaseOrderItemDto.getItems());
     }
 
@@ -245,6 +224,6 @@ public class PurchaseOrderController {
     }
     public String requestedProcessedFoodName(Map.Entry<String, Integer> entry) {
         return processedFoodRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getName();
-    }
+    }*/
 
 }

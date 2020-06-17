@@ -6,6 +6,8 @@ import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoo
 import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+//@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     private final ProcessedFoodRepo processedFoodRepo;
@@ -46,15 +50,10 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
     }
 
 
-
-
-    public ProcessedFoodServiceImpl(ProcessedFoodRepo processedFoodRepo) {
-        this.processedFoodRepo = processedFoodRepo;
-    }
-
     @Override
     @Validated(OnCreate.class)
     public ProcessedFood save(@Valid ProcessedFood processedFood) {
+
         return processedFoodRepo.save(processedFood);
     }
 
@@ -142,4 +141,11 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
             return null;
         });
     }
+
+
+
+
+
+
+
 }

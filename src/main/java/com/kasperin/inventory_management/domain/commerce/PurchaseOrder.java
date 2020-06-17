@@ -3,11 +3,11 @@ package com.kasperin.inventory_management.domain.commerce;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kasperin.inventory_management.domain.Items.Item;
 import com.kasperin.inventory_management.domain.Items.OrderedItem;
 import com.kasperin.inventory_management.domain.customer.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.*;
@@ -15,12 +15,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 @Entity
 //@EntityListeners(PurchaseOrderEventHandler.class)
 @Data
+@Slf4j
 @NoArgsConstructor
 public class PurchaseOrder implements Serializable {
 
@@ -48,26 +47,17 @@ public class PurchaseOrder implements Serializable {
     private List<OrderedItem> items = new ArrayList<>();
 
 
-
-    @ManyToOne
     @JsonIgnore
+    @ManyToOne
     private Member member;
 
     @PrePersist
     void setDateCreatedAndMemberNumber(){
         this.dateCreated = LocalDate.now();
         this.totalNumberOfItems = countItems();
-        /*if (receiptNumber == null) {
-
-        }*/
-
-      //  final int SHORT_ID_LENGTH = 8;
-
-// all possible unicode characters
-        //String shortId =
-        this.receiptNumber=RandomStringUtils.randomNumeric(12); ; //=  UUID.fromString("Number").toString();//randomUUID().toString();
-
-
+        this.receiptNumber=RandomStringUtils.randomNumeric(12);
+        //=  UUID.fromString("Number").toString();//randomUUID().toString();
+        log.info("This purchase order has been assigned receipt number: "+this.getReceiptNumber());
     }
 
     @Transient

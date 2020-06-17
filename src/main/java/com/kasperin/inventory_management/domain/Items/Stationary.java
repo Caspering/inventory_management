@@ -1,18 +1,11 @@
 package com.kasperin.inventory_management.domain.Items;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kasperin.inventory_management.domain.Items.Item;
-import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.univocity.parsers.common.record.Record;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 
 @Data
 @NoArgsConstructor
