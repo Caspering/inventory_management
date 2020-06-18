@@ -3,7 +3,6 @@ package com.kasperin.inventory_management.controllers.v1;
 import com.kasperin.inventory_management.controllers.v1.Dto.OrderAnalysisDto;
 import com.kasperin.inventory_management.services.itemsServices.OrderedItemService;
 import com.kasperin.inventory_management.services.itemsServices.OrderedItemServiceImpl;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +19,7 @@ public class OrderedItemController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public OrderAnalysisDto calculate(@RequestBody OrderedItemServiceImpl.OrderAnalysisForm form){
-        return orderedItemService.calculate(form);
+    public OrderAnalysisDto analyzeOrdersByDate(@RequestBody OrderedItemServiceImpl.OrderAnalysisForm form){
+        return orderedItemService.analyzeOrdersByDate(form);
     }
 }

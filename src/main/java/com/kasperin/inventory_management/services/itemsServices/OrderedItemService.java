@@ -6,5 +6,5 @@ import com.kasperin.inventory_management.domain.Items.OrderedItem;
 public interface OrderedItemService {
     OrderedItem save(OrderedItem orderedItem);
 
-    OrderAnalysisDto calculate(OrderedItemServiceImpl.OrderAnalysisForm Form);
+    OrderAnalysisDto analyzeOrdersByDate(OrderedItemServiceImpl.OrderAnalysisForm Form);
 }

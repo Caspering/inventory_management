@@ -36,7 +36,7 @@ public class OrderedItemServiceImpl implements OrderedItemService {
     }
 
     @Override
-    public OrderAnalysisDto calculate(OrderAnalysisForm form){
+    public OrderAnalysisDto analyzeOrdersByDate(OrderAnalysisForm form){
 
         OrderAnalysisDto orderAnalysisDto = new OrderAnalysisDto();
         orderAnalysisDto.setStartDate(form.getStartDate());
