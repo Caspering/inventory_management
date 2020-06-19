@@ -27,9 +27,17 @@ public class MemberServiceImpl implements MemberService{
                     ("Member with the requested id: "+ id +" was not found");
         }
     }
-    private Member getMemberByFirstName(String firstName) {
+    private List<Member> getMemberByFirstName(String firstName) {
         if (memberRepository.existsByFirstNameIgnoreCase(firstName)) {
-            return memberRepository.findByFirstName(firstName);
+            return memberRepository.findAllByFirstNameIgnoreCase(firstName);
+        }else{
+            throw new ResourceNotFoundException
+                    ("Member with the requested first name: "+ firstName +" was not found");
+        }
+    }
+    private List<Member> getMemberByFirstNameContaining(String firstName) {
+        if (memberRepository.existsByFirstNameContainingIgnoreCase(firstName)) {
+            return memberRepository.findAllByFirstNameContainingIgnoreCase(firstName);
         }else{
             throw new ResourceNotFoundException
                     ("Member with the requested first name: "+ firstName +" was not found");
@@ -58,13 +66,23 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public Optional<Member> findById(Long id) {
+        return getMemberById(id);
+    }
+
+    @Override
     public List<Member> findAll() {
         return memberRepository.findAll();
     }
 
     @Override
-    public Member findByFirstName(String firstName) {
+    public List<Member> findAllByFirstName(String firstName) {
         return getMemberByFirstName(firstName);
+    }
+
+    @Override
+    public List<Member> findAllByFirstNameContaining(String firstName) {
+        return getMemberByFirstNameContaining(firstName);
     }
 
     @Override

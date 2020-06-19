@@ -8,12 +8,16 @@ import java.util.Optional;
 
 public interface MemberService {
 
+    Optional<Member> findById(Long id);
+
     List<Member> findAll();
 
     //@Validated(OnCreate.class)
     Member save(@Valid Member member) throws Exception;
 
-    Member findByFirstName(String firstName);
+    List<Member> findAllByFirstName(String firstName);
+
+    List<Member> findAllByFirstNameContaining(String firstName);
 
     //@Validated(OnUpdate.class)
     Optional<Member> updateById(Long id, @Valid Member memberPatch);
