@@ -14,13 +14,15 @@ public interface StationaryService {
 
     List<Stationary> findAllByName(String name);
 
+    List<Stationary> findAllByNameContaining(String name);
+
     List<Stationary> findAllInStock();
 
     Stationary findByName(String name);
 
     Optional<Stationary> findById(Long id);
 
-    Stationary save(@Valid Stationary stationary);
+    Stationary save(@Valid Stationary stationary) throws Exception;
 
     Optional<Stationary> updateById(Long id, @Valid Stationary newStationary);
 

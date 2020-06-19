@@ -2,6 +2,7 @@ package com.kasperin.inventory_management.services.itemsServices;
 
 import com.kasperin.inventory_management.domain.Items.FoodType;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;
+import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoodRepo;
 import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import com.kasperin.inventory_management.validator_services.OnCreate;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     private final ProcessedFoodRepo processedFoodRepo;
+
     private Optional<ProcessedFood> getProcessedFood(Long id) {
         if (processedFoodRepo.existsById(id)) {
             return processedFoodRepo.findById(id);
@@ -48,13 +50,23 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
                     + name + " does not exist");
         }
     }
+    private List<ProcessedFood> getAllProcessedFoodByNameContainingIgnoreCase(String name) {
+        if (processedFoodRepo.existsByNameContainingIgnoreCase(name)) {
+            return processedFoodRepo.findAllByNameContainingIgnoreCase(name);
+        }else{
+            throw new ResourceNotFoundException("The processedFoodRepo item containing name: "
+                    + name + " does not exist");
+        }
+    }
 
 
     @Override
     @Validated(OnCreate.class)
-    public ProcessedFood save(@Valid ProcessedFood processedFood) {
-
-        return processedFoodRepo.save(processedFood);
+    public ProcessedFood save(@Valid ProcessedFood processedFood) throws Exception {
+        if (!(processedFoodRepo.existsByBarcode(processedFood.getBarcode()))) {
+            log.info("Processed Food: " + processedFood.getName() + ", has been saved");
+            return processedFoodRepo.save(processedFood);
+        }else throw new Exception("A Processed Food item with barcode: "+processedFood.getBarcode()+" already exists");
     }
 
     @Override
@@ -112,8 +124,12 @@ public class ProcessedFoodServiceImpl implements ProcessedFoodService {
 
     @Override
     public List<ProcessedFood> findAllByName(String name){
-
         return getAllProcessedFoodByNameIgnoreCase(name);
+    }
+
+    @Override
+    public List<ProcessedFood> findAllByNameContaining(String name){
+        return getAllProcessedFoodByNameContainingIgnoreCase(name);
     }
 
     @Override

@@ -11,11 +11,11 @@ import java.util.Optional;
 @Validated
 public interface FruitAndVegeService {
 
-    FruitAndVegeDTO createNewFruitAndVege(@Valid FruitAndVegeDTO fruitAndVegeDTO);
+    FruitAndVegeDTO createNewFruitAndVege(@Valid FruitAndVegeDTO fruitAndVegeDTO) throws Exception;
 
     Optional<FruitAndVege> updateById(Long id, @Valid FruitAndVege fruitAndVege);
 
-    FruitAndVegeDTO saveAndReturnDTO(@Valid FruitAndVege fruitAndVege);
+    FruitAndVegeDTO saveAndReturnDTO(@Valid FruitAndVege fruitAndVege) throws Exception;
 
     List<FruitAndVege> findAllInStock();
 
@@ -25,7 +25,7 @@ public interface FruitAndVegeService {
 
     List<FruitAndVege> findAll();
 
-    List<FruitAndVege> findAllByName(String name);
+    List<FruitAndVege> findAllByNameContaining(String name);
 
     void deleteById(Long id);
 

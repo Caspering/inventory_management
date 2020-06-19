@@ -31,7 +31,7 @@ public class FruitAndVegeController {
                                      @RequestParam(value = "name", defaultValue = "") String name){
             if (all.equals("all")) {
                 return fruitAndVegeService.findAll();
-            }else if (!name.isEmpty()) { return fruitAndVegeService.findAllByName(name);
+            }else if (!name.isEmpty()) { return fruitAndVegeService.findAllByNameContaining(name);
             }
         //just get what is in stock with qty >=1 if no query
         return fruitAndVegeService.findAllInStock();
@@ -62,7 +62,8 @@ public class FruitAndVegeController {
     @ApiOperation(value = "Add new vegetable to the inventory", notes = "A new fruit and vegetable MUST have a name and quantity greater or equal to 1")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FruitAndVegeDTO createNewFruitAndVege(@RequestBody FruitAndVegeDTO fruitAndVegeDTO){
+    public FruitAndVegeDTO createNewFruitAndVege(@RequestBody FruitAndVegeDTO fruitAndVegeDTO)
+            throws Exception {
         return fruitAndVegeService.createNewFruitAndVege(fruitAndVegeDTO);
     }
 

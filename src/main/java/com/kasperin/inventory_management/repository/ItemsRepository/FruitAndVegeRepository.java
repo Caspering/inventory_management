@@ -8,12 +8,18 @@ import java.util.List;
 
 public interface FruitAndVegeRepository extends JpaRepository<FruitAndVege, Long> {
 
-    FruitAndVege findByNameIgnoreCase(String name);
     boolean existsByNameIgnoreCase(String name);
+    boolean existsByNameContainingIgnoreCase(String name);
     boolean existsByBarcode(String barcode);
     boolean existsByBarcodeOrNameIgnoreCase(String barcode, String name);
-    FruitAndVege findByBarcodeOrNameIgnoreCase(String barcode, String name);
-    List<FruitAndVege> findAllByNameIgnoreCase(String name);
 
+    FruitAndVege findByBarcodeOrNameIgnoreCase(String barcode, String name);
+    FruitAndVege findByNameIgnoreCase(String name);
     FruitAndVege findByBarcode(String barcode);
+
+    List<FruitAndVege> findAllByNameIgnoreCase(String name);
+    List<FruitAndVege> findAllByNameContainingIgnoreCase(String name);
+
+
+
 }

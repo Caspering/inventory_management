@@ -98,7 +98,7 @@ class StationaryServiceImplTest {
     }
 
     @Test
-    void save() {
+    void save() throws Exception {
         //given
         Stationary savedStationary = new Stationary();
         savedStationary.setId(ID);

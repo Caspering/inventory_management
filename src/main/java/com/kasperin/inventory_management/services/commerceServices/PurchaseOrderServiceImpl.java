@@ -14,6 +14,7 @@ import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRe
 import com.kasperin.inventory_management.repository.commerceRepository.PurchaseOrderRepository;
 import com.kasperin.inventory_management.repository.customerRepository.MemberRepository;
 import com.kasperin.inventory_management.services.ResourceNotFoundException;
+import com.kasperin.inventory_management.services.customerServices.MemberService;
 import com.kasperin.inventory_management.services.itemsServices.OrderedItemService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     private final OrderedItemRepository orderedItemService;
     private final ProcessedFoodRepo processedFoodRepository;
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
     //private final OrderAnalysisDto orderAnalysisDto;
 
     private Optional<PurchaseOrder> getPurchaseOrderById(Long id) {
@@ -139,11 +141,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
             purchaseOrder.setMemberNumber(form
                     .getPurchaseOrderItemDto()
                     .getMemberNumber());
-            purchaseOrder.setMember(memberRepository
-                    .findByMemberNumberIgnoreCase(form
+            purchaseOrder.setMember(memberService
+                    .findByMemberNumber(form
                             .getPurchaseOrderItemDto()
                             .getMemberNumber()));
-
         }
 
         if(!itemListIsEmptyOrNull(form)){
@@ -191,7 +192,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
                             +" is not available");
                 }else throw new RuntimeException("Item "+entry.getKey()+" was not found in inventory");
             }
-        }else throw new RuntimeException("Purchase order must contain an item");
+        }else throw
+                new RuntimeException("Purchase order must contain an item");
         return purchaseOrderRepository.save(purchaseOrder);
     }
 

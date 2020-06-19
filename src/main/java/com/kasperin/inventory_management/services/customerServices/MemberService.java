@@ -17,6 +17,8 @@ public interface MemberService {
 
     List<Member> findAllByFirstName(String firstName);
 
+    Member findByMemberNumber(String memberNumber);
+
     List<Member> findAllByFirstNameContaining(String firstName);
 
     //@Validated(OnUpdate.class)

@@ -35,7 +35,7 @@ public class ProcessedFoodController {
         } else if (all.equals("all")){
             return processedFoodService.findAll();
         }else if (!name.isEmpty()){
-            return processedFoodService.findAllByName(name);
+            return processedFoodService.findAllByNameContaining(name);
         }//else return everything
             return processedFoodService.findAllInStock();
     }
@@ -63,7 +63,7 @@ public class ProcessedFoodController {
     @ApiOperation(value = "Add new processed food to the inventory", notes = "A new processed food MUST have a name and quantity greater or equal to 1")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProcessedFood createNewProcessedFood(@RequestBody ProcessedFood processedFood) {
+    public ProcessedFood createNewProcessedFood(@RequestBody ProcessedFood processedFood) throws Exception {
         return processedFoodService.save(processedFood);
     }
 

@@ -24,7 +24,4 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByEmailIgnoreCase(String email);
     boolean existsByPhoneNumber(String phoneNumber);
 
-
-
-
 }

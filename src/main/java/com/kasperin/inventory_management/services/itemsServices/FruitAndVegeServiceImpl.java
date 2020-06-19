@@ -3,6 +3,7 @@ package com.kasperin.inventory_management.services.itemsServices;
 import com.kasperin.inventory_management.api.v1.mapper.FruitAndVegeMapper;
 import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.domain.Items.FruitAndVege;
+import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
 import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import com.kasperin.inventory_management.validator_services.OnCreate;
@@ -49,21 +50,29 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
                     + name + " does not exist");
         }
     }
-
-    @Override
-    @Validated(OnCreate.class)
-    public FruitAndVegeDTO saveAndReturnDTO(@Valid FruitAndVege fruitAndVege) {
-        FruitAndVege savedFruitAndVege = fruitAndVegeRepository.save(fruitAndVege);
-
-        FruitAndVegeDTO returnDto = fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(savedFruitAndVege);
-
-        return returnDto;
+    private List<FruitAndVege> getAllStationaryByNameContainingIgnoreCase(String name) {
+        if (fruitAndVegeRepository.existsByNameContainingIgnoreCase(name)) {
+            return fruitAndVegeRepository.findAllByNameContainingIgnoreCase(name);
+        }else{
+            throw new ResourceNotFoundException("The Fruit or Vegetable item containing name: "
+                    + name + " does not exist");
+        }
     }
 
     @Override
     @Validated(OnCreate.class)
-    public FruitAndVegeDTO createNewFruitAndVege(@Valid FruitAndVegeDTO fruitAndVegeDTO) {
+    public FruitAndVegeDTO saveAndReturnDTO(@Valid FruitAndVege fruitAndVege) throws Exception {
+        if (!(fruitAndVegeRepository.existsByBarcode(fruitAndVege.getBarcode()))) {
+            FruitAndVege savedFruitAndVege = fruitAndVegeRepository.save(fruitAndVege);
+            FruitAndVegeDTO returnDto = fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(savedFruitAndVege);
+            return returnDto;
+        }else throw new Exception("A Fruit or Vegetable item with barcode: "
+                +fruitAndVege.getBarcode()+" already exists");
+    }
 
+    @Override
+    @Validated(OnCreate.class)
+    public FruitAndVegeDTO createNewFruitAndVege(@Valid FruitAndVegeDTO fruitAndVegeDTO) throws Exception {
         return saveAndReturnDTO(fruitAndVegeMapper.fruitAndVegeDTOtoFruitAndVege(fruitAndVegeDTO));
     }
 
@@ -120,9 +129,8 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
     }
 
     @Override
-    public List<FruitAndVege> findAllByName(String name){
-
-        return getAllFruitAndVegeByNameIgnoreCase(name);
+    public List<FruitAndVege> findAllByNameContaining(String name){
+        return getAllStationaryByNameContainingIgnoreCase(name);
     }
 
     @Override

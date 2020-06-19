@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.services.itemsServices;
 
+import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRepository;
 import com.kasperin.inventory_management.services.ResourceNotFoundException;
@@ -48,20 +49,26 @@ public class StationaryServiceImpl implements StationaryService{
                     + name + " does not exist");
         }
     }
+    private List<Stationary> getAllStationaryByNameContainingIgnoreCase(String name) {
+        if (stationaryRepository.existsByNameContainingIgnoreCase(name)) {
+            return stationaryRepository.findAllByNameContainingIgnoreCase(name);
+        }else{
+            throw new ResourceNotFoundException("The Stationary item containing name: "
+                    + name + " does not exist");
+        }
+    }
     public boolean existsById(Stationary stationary){
         return stationaryRepository.existsByBarcode(stationary.getBarcode());
     }
 
     @Override
     @Validated(OnCreate.class)
-    public Stationary save(@Valid Stationary stationary) {
+    public Stationary save(@Valid Stationary stationary) throws Exception {
 
         if (!(stationaryRepository.existsByBarcode(stationary.getBarcode()))) {
             log.info("Stationary item: " + stationary.getName() + ", has been saved");
             return stationaryRepository.save(stationary);
-        }else
-            log.error("A stationary item with barcode: " + stationary.getBarcode() +" already exists");
-        return null;
+        }else throw new Exception("A stationary item with barcode: "+stationary.getBarcode()+" already exists");
     }
 
     @Override
@@ -120,6 +127,11 @@ public class StationaryServiceImpl implements StationaryService{
     public List<Stationary> findAllByName(String name){
 
         return getAllStationaryByNameIgnoreCase(name);
+    }
+
+    @Override
+    public List<Stationary> findAllByNameContaining(String name){
+        return getAllStationaryByNameContainingIgnoreCase(name);
     }
 
     @Override

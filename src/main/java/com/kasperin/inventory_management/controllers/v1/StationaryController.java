@@ -30,7 +30,7 @@ public class StationaryController {
     public List<Stationary> getAll(@RequestParam(value = "all", defaultValue = "") String all,
                                    @RequestParam(value = "name", defaultValue = "") String name){
         if (all.equals("all")){ return stationaryService.findAll();
-        }else if (!name.isEmpty()) { return stationaryService.findAllByName(name);
+        }else if (!name.isEmpty()) { return stationaryService.findAllByNameContaining(name);
         }
         //just get what is in stock with qty >=1 if no query
         return stationaryService.findAllInStock();
@@ -59,10 +59,8 @@ public class StationaryController {
     @ApiOperation(value = "Add new stationary to the inventory", notes = "A new stationary MUST have a name, and quantity greater or equal to 1")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Stationary createNewStationary(@RequestBody Stationary stationary) {
-
+    public Stationary createNewStationary(@RequestBody Stationary stationary) throws Exception {
         return stationaryService.save(stationary);
-
         //        if(stationaryService.existsById(stationary)){
 //            return ResponseEntity.badRequest()
 //                    .body("Year cannot be in the future");

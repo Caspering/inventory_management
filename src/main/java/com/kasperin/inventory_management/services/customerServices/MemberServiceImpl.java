@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService{
             return memberRepository.findByMemberNumberIgnoreCase(memberNumber);
         }else{
             throw new ResourceNotFoundException
-                    ("Member with the requested first name: "+ memberNumber +" was not found");
+                    ("Member with the requested member-number: "+ memberNumber +" was not found");
         }
     }
 
@@ -78,6 +78,11 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public List<Member> findAllByFirstName(String firstName) {
         return getMemberByFirstName(firstName);
+    }
+
+    @Override
+    public Member findByMemberNumber(String memberNumber) {
+        return getMemberByMemberNumber(memberNumber);
     }
 
     @Override

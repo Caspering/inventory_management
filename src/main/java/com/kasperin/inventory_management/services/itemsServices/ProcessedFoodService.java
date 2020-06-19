@@ -12,7 +12,7 @@ import java.util.Optional;
 @Validated
 public interface ProcessedFoodService {
 
-    ProcessedFood save(@Valid ProcessedFood processedFood);
+    ProcessedFood save(@Valid ProcessedFood processedFood) throws Exception;
 
    /* @Validated(OnCreate.class)
     ProcessedFood save(ProcessedFood processedFood);*/
@@ -24,6 +24,8 @@ public interface ProcessedFoodService {
     ProcessedFood  findByName(String name);
 
     List<ProcessedFood> findAllByName(String name);
+
+    List<ProcessedFood> findAllByNameContaining(String name);
 
     List<ProcessedFood> findAll();
 
