@@ -57,12 +57,8 @@ public class StationaryServiceImpl implements StationaryService{
     public Stationary save(@Valid Stationary stationary) {
 
         if (!(stationaryRepository.existsByBarcode(stationary.getBarcode()))) {
-
-            Stationary savedSt = stationaryRepository.save(stationary);
-
             log.info("Stationary item: " + stationary.getName() + ", has been saved");
-
-            return savedSt;
+            return stationaryRepository.save(stationary);
         }else
             log.error("A stationary item with barcode: " + stationary.getBarcode() +" already exists");
         return null;

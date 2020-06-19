@@ -43,7 +43,7 @@ public class ItemServiceImpl implements ItemService {
         return itemsInStock;
     }
 
-
+//Log inventory count after fixed delay time
     @Scheduled(fixedDelay=300000)
     public void getTotalInStockQuantity() {
         //int totalNumberInStock=0;
@@ -72,8 +72,6 @@ public class ItemServiceImpl implements ItemService {
             totalStationaryQuantity += stationary.getInStockQuantity();
         }
         int totalNumberInStock=totalFAVQuantity+totalProcessedFoodQuantity+totalStationaryQuantity;
-
-
 
         log.info("current total in stock quantity is "+totalNumberInStock);
     }
