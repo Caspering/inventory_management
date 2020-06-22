@@ -1,6 +1,5 @@
 package com.kasperin.inventory_management.services.commerceServices;
 
-import com.kasperin.inventory_management.controllers.v1.Dto.OrderAnalysisDto;
 import com.kasperin.inventory_management.controllers.v1.Dto.PurchaseOrderItemDto;
 import com.kasperin.inventory_management.domain.Items.OrderedFruitAndVegeItem;
 import com.kasperin.inventory_management.domain.Items.OrderedItem;
@@ -15,7 +14,6 @@ import com.kasperin.inventory_management.repository.commerceRepository.PurchaseO
 import com.kasperin.inventory_management.repository.customerRepository.MemberRepository;
 import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import com.kasperin.inventory_management.services.customerServices.MemberService;
-import com.kasperin.inventory_management.services.itemsServices.OrderedItemService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -135,8 +133,24 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     @Transactional
     public PurchaseOrder save(@Valid OrderForm form) {
         PurchaseOrder purchaseOrder = new PurchaseOrder();
+
+        //(form.getPurchaseOrderItemDto().getDiscountStrategy()).getDiscountRate;
+
+        //float discountAmt =
+
+        //DiscountStrategy type = new DiscountStrategy(form.getDiscountStrategy());
+
         if(form.getPurchaseOrderItemDto().getPaymentType() != null)
             purchaseOrder.setPaymentType(form.getPurchaseOrderItemDto().getPaymentType());
+
+        /*if(form.getPurchaseOrderItemDto().getDiscountRate() != null)
+            purchaseOrder.setDiscountRate(*purchaseOrder.getTotalPrice());*/
+
+        //DiscountStrategy x = form.getPurchaseOrderItemDto().getDiscountRate();
+
+
+        //purchaseOrder.setTotalPriceAfterDiscount(purchaseOrder.getTotalPrice()*form.getPurchaseOrderItemDto().getDiscountRate());
+
         if(form.getPurchaseOrderItemDto().getMemberNumber() != null){
             purchaseOrder.setMemberNumber(form
                     .getPurchaseOrderItemDto()
@@ -194,6 +208,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
             }
         }else throw
                 new RuntimeException("Purchase order must contain an item");
+
+
+        if(form.getPurchaseOrderItemDto().getDiscountStrategy() != null) {
+            purchaseOrder.setDiscountAmount(purchaseOrder.getTotalPrice() * form.getPurchaseOrderItemDto().getDiscountStrategy().discountRate);
+        }
         return purchaseOrderRepository.save(purchaseOrder);
     }
 
@@ -266,6 +285,15 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     //Helper Methods for building a purchase order
 
     public static class OrderForm{
+
+        /*private DiscountStrategy discountStrategy;
+
+        public void setDiscountStrategy(DiscountStrategy discountStrategy){
+            this.discountStrategy = discountStrategy;
+        }
+        public DiscountStrategy getDiscountStrategy(){
+            return this.discountStrategy;
+        }*/
 
         private PurchaseOrderItemDto purchaseOrderItemDto;
 

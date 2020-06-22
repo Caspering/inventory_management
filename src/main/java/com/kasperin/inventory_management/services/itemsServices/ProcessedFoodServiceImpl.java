@@ -1,13 +1,11 @@
 package com.kasperin.inventory_management.services.itemsServices;
 
-import com.kasperin.inventory_management.domain.Items.FoodType;
+import com.kasperin.inventory_management.domain.enums.FoodType;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;
-import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoodRepo;
 import com.kasperin.inventory_management.services.ResourceNotFoundException;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

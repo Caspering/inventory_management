@@ -1,9 +1,7 @@
 package com.kasperin.inventory_management.repository.ItemsRepository;
 
-import com.kasperin.inventory_management.domain.Items.FoodType;
-import com.kasperin.inventory_management.domain.Items.FruitAndVege;
+import com.kasperin.inventory_management.domain.enums.FoodType;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;
-import com.kasperin.inventory_management.domain.Items.Stationary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

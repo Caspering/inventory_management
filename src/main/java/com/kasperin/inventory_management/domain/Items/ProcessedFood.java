@@ -1,8 +1,10 @@
 package com.kasperin.inventory_management.domain.Items;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kasperin.inventory_management.CSV.conversions.LocalDateFormatter;
-import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
+import com.kasperin.inventory_management.domain.Discount;
+import com.kasperin.inventory_management.domain.enums.FoodType;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnCreateDateConstraint;
 import com.univocity.parsers.annotations.Convert;
@@ -24,6 +26,10 @@ import java.time.LocalDate;
                 groups =  OnCreate.class,
                 message = "Expiry Date must be ahead of Manufacturing Date")
 public class ProcessedFood extends Item {
+
+    @ManyToOne//(mappedBy = "fruitAndVeges")
+    @JsonIgnore
+    private Discount discount;
 
     /*@ManyToOne
     private PurchaseOrder purchaseOrder;*/

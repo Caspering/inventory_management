@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.domain.Items;
 
+import com.kasperin.inventory_management.domain.enums.FoodType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

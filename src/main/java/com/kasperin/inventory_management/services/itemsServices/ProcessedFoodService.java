@@ -1,8 +1,7 @@
 package com.kasperin.inventory_management.services.itemsServices;
 
-import com.kasperin.inventory_management.domain.Items.FoodType;
+import com.kasperin.inventory_management.domain.enums.FoodType;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;
-import com.kasperin.inventory_management.validator_services.OnCreate;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;

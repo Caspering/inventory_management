@@ -2,7 +2,7 @@
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.kasperin.inventory_management.controllers.RestResponseEntityExceptionHandler;
-//import com.kasperin.inventory_management.domain.Items.FoodType;
+//import com.kasperin.inventory_management.domain.enums.FoodType;
 //import com.kasperin.inventory_management.domain.Items.ProcessedFood;
 //import com.kasperin.inventory_management.services.itemsServices.ProcessedFoodService;
 //import org.junit.jupiter.api.BeforeEach;

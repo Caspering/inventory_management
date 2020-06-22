@@ -1,65 +1,58 @@
-package com.kasperin.inventory_management.controllers.v1;
+/*
+package com.kasperin.inventory_management.services.commerceServices;
 
-import com.kasperin.inventory_management.controllers.PurchaseOrderResourceAssembler;
+import com.kasperin.inventory_management.controllers.v1.Dto.PurchaseOrderItemDto;
+import com.kasperin.inventory_management.domain.Items.OrderedFruitAndVegeItem;
+import com.kasperin.inventory_management.domain.Items.OrderedItem;
+import com.kasperin.inventory_management.domain.Items.OrderedProcessedFoodItem;
+import com.kasperin.inventory_management.domain.Items.OrderedStationaryItem;
+import com.kasperin.inventory_management.domain.enums.DiscountStrategy;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
-import com.kasperin.inventory_management.services.ResourceNotFoundException;
-import com.kasperin.inventory_management.services.commerceServices.PurchaseOrderService;
-import com.kasperin.inventory_management.services.commerceServices.PurchaseOrderServiceImpl;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
+import com.kasperin.inventory_management.repository.ItemsRepository.OrderedItemRepository;
+import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoodRepo;
+import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRepository;
+import com.kasperin.inventory_management.repository.commerceRepository.PurchaseOrderRepository;
+import com.kasperin.inventory_management.repository.customerRepository.MemberRepository;
+import com.kasperin.inventory_management.services.customerServices.MemberService;
+import lombok.Data;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
-@Slf4j
-@RestController
-@RequestMapping(PurchaseOrderController.BASE_URL)
-@RequiredArgsConstructor
-public class PurchaseOrderController {
+@Data
+public class PurchaseOrderDiscountProcessorImpl implements PurchaseOrderDiscountProcessor {
 
-    public static final String BASE_URL = "/api/v1/purchase_orders";
-    private final PurchaseOrderService purchaseOrderService;
-   // private final PurchaseOrderDiscountProcessor purchaseOrderDiscountProcessor;
-    private final PurchaseOrderResourceAssembler assembler;
+//private final PurchaseOrderService purchaseOrderService;
+    private final PurchaseOrderRepository purchaseOrderRepository;
+    private final FruitAndVegeRepository fruitAndVegeRepository;
+    private final StationaryRepository stationaryRepository;
+    private final OrderedItemRepository orderedItemService;
+    private final ProcessedFoodRepo processedFoodRepository;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<PurchaseOrder> getAll(){
-        return purchaseOrderService.findAll();
-    }
+    @Override
+    public PurchaseOrder save(PurchaseOrderServiceImpl.OrderForm form, DiscountStrategy discountStrategy) throws Exception {
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
 
-    @GetMapping({"/{id}"})
-    @ResponseStatus(HttpStatus.OK)
-    EntityModel<PurchaseOrder> getById(@PathVariable Long id) {
-        PurchaseOrder purchaseOrder = purchaseOrderService.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Purchase order with id: " + id+ " was Not Found"));;
+        //float discountAmt =
 
-        return assembler.toModel(purchaseOrder);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public PurchaseOrder save(@RequestBody PurchaseOrderServiceImpl.OrderForm form){
-        /*PurchaseOrder purchaseOrder = new PurchaseOrder();
         if(form.getPurchaseOrderItemDto().getPaymentType() != null)
-        purchaseOrder.setPaymentType(form.getPurchaseOrderItemDto().getPaymentType());
+            purchaseOrder.setPaymentType(form.getPurchaseOrderItemDto().getPaymentType());
+
         if(form.getPurchaseOrderItemDto().getMemberNumber() != null){
             purchaseOrder.setMemberNumber(form
-                                          .getPurchaseOrderItemDto()
-                                          .getMemberNumber());
-            purchaseOrder.setMember(memberRepository
-                                    .findByMemberNumberIgnoreCase(form
-                                    .getPurchaseOrderItemDto()
-                                    .getMemberNumber()));
-
+                    .getPurchaseOrderItemDto()
+                    .getMemberNumber());
+            purchaseOrder.setMember(memberService
+                    .findByMemberNumber(form
+                            .getPurchaseOrderItemDto()
+                            .getMemberNumber()));
         }
 
         if(!itemListIsEmptyOrNull(form)){
-            for(Map.Entry<String, Integer> entry: form.purchaseOrderItemDto.getItems().entrySet()){
+            for(Map.Entry<String, Integer> entry: form.getPurchaseOrderItemDto().getItems().entrySet()){
                 if (orderedItemExistsInStationaryRepository(entry)){
                     if(requestedStationaryAmountIsAvailable(entry)) {
                         if (requestedStationaryAmountIsGreaterThanZero(entry)) {
@@ -103,37 +96,16 @@ public class PurchaseOrderController {
                             +" is not available");
                 }else throw new RuntimeException("Item "+entry.getKey()+" was not found in inventory");
             }
-        }else throw new RuntimeException("Purchase order must contain an item");*/
-        /*return purchaseOrderService.save(purchaseOrder);*/
+        }else throw
+                new RuntimeException("Purchase order must contain an item");
 
-
-        /*if (discountStrategy != null){
-            *//*PurchaseOrderDiscountProcessor orderDiscountProcessor =
-                    (PurchaseOrderDiscountProcessor) save(form, discountStrategy);
-            return (PurchaseOrder) orderDiscountProcessor;*//*
-            return purchaseOrderDiscountProcessor.save(form, discountStrategy);
-        }*/
-        return purchaseOrderService.save(form);
-    }
-
-    @PatchMapping({"/{id}"})
-    public Optional<PurchaseOrder> updatePurchaseOrderDetailsById(@PathVariable Long id,
-                                                                  @RequestBody PurchaseOrder purchaseOrder){
-        return purchaseOrderService.updatePurchaseOrderDetailsById(id,purchaseOrder);
-    }
-
-    @DeleteMapping({"{id}"})
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteById(@PathVariable Long id) {
-        purchaseOrderService.deleteById(id);
+       // purchaseOrder.setDiscountRate(purchaseOrder.getTotalPrice()*form.getPurchaseOrderItemDto().getgetDiscountRate());
+        return purchaseOrderRepository.save(purchaseOrder);
     }
 
 
 
-
-    //Helper Methods for building a purchase order
-
-   /* public static class OrderForm{
+    public static class OrderForm{
 
         private PurchaseOrderItemDto purchaseOrderItemDto;
 
@@ -144,10 +116,12 @@ public class PurchaseOrderController {
         public PurchaseOrderItemDto getPurchaseOrderItemDto(){
             return purchaseOrderItemDto;
         }
-    }*/
+    }
 
-    /*public boolean itemListIsEmptyOrNull(@RequestBody OrderForm form) {
-        return org.springframework.util.ObjectUtils.isEmpty(form.purchaseOrderItemDto.getItems());
+
+
+    public boolean itemListIsEmptyOrNull(@RequestBody PurchaseOrderServiceImpl.OrderForm form) {
+        return org.springframework.util.ObjectUtils.isEmpty(form.getPurchaseOrderItemDto().getItems());
     }
 
     public boolean requestedStationaryAmountIsGreaterThanZero(Map.Entry<String, Integer> entry) {
@@ -233,6 +207,6 @@ public class PurchaseOrderController {
     }
     public String requestedProcessedFoodName(Map.Entry<String, Integer> entry) {
         return processedFoodRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getName();
-    }*/
-
+    }
 }
+*/

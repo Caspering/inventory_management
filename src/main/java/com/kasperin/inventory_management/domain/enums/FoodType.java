@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.domain.Items;
+package com.kasperin.inventory_management.domain.enums;
 
 
 public enum FoodType {

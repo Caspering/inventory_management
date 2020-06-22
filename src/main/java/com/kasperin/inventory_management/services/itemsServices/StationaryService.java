@@ -26,6 +26,8 @@ public interface StationaryService {
 
     Optional<Stationary> updateById(Long id, @Valid Stationary newStationary);
 
+    // findByBarcodeOrNameIgnoreCase
+
     void deleteById(Long id);
 
     boolean existsById(Stationary stationary);

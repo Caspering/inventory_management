@@ -27,7 +27,6 @@ public class Item implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotNull(groups = OnCreate.class,
              message = "The item must be given a name")
     @Size(min=1,
@@ -38,8 +37,6 @@ public class Item implements Serializable {
     @Validate
     private String name;
 
-
-
     @NotNull(groups = OnCreate.class,
             message = "The item must be given a unique barcode")//TODO check and constrain empty string
     @Size(min=1,
@@ -49,15 +46,12 @@ public class Item implements Serializable {
     @Validate
     private String barcode;
 
-
-
     @Min(value = 0,
             groups = {OnUpdate.class,OnCreate.class},
             message = "Item must have at least {value} or more price")
     @Column
     @Parsed
     private Double price;
-
 
     @Min(value = 0,
             groups = {OnUpdate.class,OnCreate.class},

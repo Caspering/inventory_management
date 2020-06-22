@@ -1,6 +1,7 @@
 package com.kasperin.inventory_management.controllers.v1.Dto;
 
-import com.kasperin.inventory_management.domain.commerce.PaymentType;
+import com.kasperin.inventory_management.domain.enums.DiscountStrategy;
+import com.kasperin.inventory_management.domain.enums.PaymentType;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -13,5 +14,8 @@ public class PurchaseOrderItemDto {
 
     private PaymentType paymentType;
 
+    private DiscountStrategy discountStrategy;
+
     Map<String, Integer> items = new HashMap<>();
+
 }

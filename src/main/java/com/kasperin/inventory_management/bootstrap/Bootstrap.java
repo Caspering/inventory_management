@@ -1,10 +1,10 @@
 package com.kasperin.inventory_management.bootstrap;
 
-import com.kasperin.inventory_management.domain.Items.FoodType;
+import com.kasperin.inventory_management.domain.enums.FoodType;
 import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;
 import com.kasperin.inventory_management.domain.Items.Stationary;
-import com.kasperin.inventory_management.domain.commerce.PaymentType;
+import com.kasperin.inventory_management.domain.enums.PaymentType;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.kasperin.inventory_management.domain.customer.Member;
 import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
@@ -15,7 +15,6 @@ import com.kasperin.inventory_management.repository.customerRepository.MemberRep
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 

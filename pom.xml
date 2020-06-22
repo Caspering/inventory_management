@@ -145,6 +145,11 @@
             <version>3.9</version>
         </dependency>
         <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>-->
+
+        <!--<dependency>
             <groupId>javassit</groupId>
             <artifactId>javassist</artifactId>
             <version>3.12.1.GA</version>

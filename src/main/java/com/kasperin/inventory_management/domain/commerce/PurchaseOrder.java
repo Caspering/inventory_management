@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kasperin.inventory_management.domain.Items.OrderedItem;
+import com.kasperin.inventory_management.domain.enums.PaymentType;
 import com.kasperin.inventory_management.domain.customer.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,13 @@ public class PurchaseOrder implements Serializable {
 
     private String receiptNumber;
 
+    private Double totalPrice;
+
+    private Double discountAmount;
+
+    @Column(name = "discountedPrice")
+    private Double totalPriceAfterDiscount;
+
     @Enumerated(value = EnumType.STRING)
     private PaymentType paymentType;
 
@@ -56,6 +64,13 @@ public class PurchaseOrder implements Serializable {
         this.dateCreated = LocalDate.now();
         this.totalNumberOfItems = countItems();
         this.receiptNumber=RandomStringUtils.randomNumeric(12);
+        this.totalPriceAfterDiscount = getTotalPriceAfterDiscount();
+        this.totalPrice = getTotalPrice();
+
+       // this.setTotalPrice(this.getTotalPrice());
+        //this.setTotalPriceAfterDiscount(getTotalPrice()-getDiscountAmount());
+        //this.setDiscountAmount(this.getDiscountAmt());
+
         //=  UUID.fromString("Number").toString();//randomUUID().toString();
         log.info("This purchase order has been assigned receipt number: "+this.getReceiptNumber());
     }
@@ -72,7 +87,7 @@ public class PurchaseOrder implements Serializable {
     }
 
     //@JsonIgnore
-    @Transient
+    //@Transient
     public Double getTotalPrice(){
         double sum = 0;
         List<OrderedItem> items = getItems();
@@ -80,8 +95,20 @@ public class PurchaseOrder implements Serializable {
             sum += item.getTotalPrice();
         }
         return sum;
-
     }
+
+    //@Transient
+    public Double getTotalPriceAfterDiscount(){
+        if (getDiscountAmount() != null)
+        return getTotalPrice()-getDiscountAmount();
+        else return null;
+    }
+
+   /* @Transient
+    public Double getDiscountAmt(){
+        PurchaseOrderServiceImpl.OrderForm.g form = null;
+        double discountAmount = getTotalPrice() * form.discountAmount;
+    }*/
 
     public void addItem(OrderedItem item){
         this.items.add(item);
