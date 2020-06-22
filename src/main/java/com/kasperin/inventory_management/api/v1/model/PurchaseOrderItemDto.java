@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.controllers.v1.Dto;
+package com.kasperin.inventory_management.api.v1.model;
 
 import com.kasperin.inventory_management.domain.enums.DiscountStrategy;
 import com.kasperin.inventory_management.domain.enums.PaymentType;

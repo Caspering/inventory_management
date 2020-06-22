@@ -1,6 +1,6 @@
 package com.kasperin.inventory_management.services.commerceServices;
 
-import com.kasperin.inventory_management.controllers.v1.Dto.PurchaseOrderItemDto;
+import com.kasperin.inventory_management.api.v1.model.PurchaseOrderItemDto;
 import com.kasperin.inventory_management.domain.Items.OrderedFruitAndVegeItem;
 import com.kasperin.inventory_management.domain.Items.OrderedItem;
 import com.kasperin.inventory_management.domain.Items.OrderedProcessedFoodItem;
@@ -285,15 +285,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     //Helper Methods for building a purchase order
 
     public static class OrderForm{
-
-        /*private DiscountStrategy discountStrategy;
-
-        public void setDiscountStrategy(DiscountStrategy discountStrategy){
-            this.discountStrategy = discountStrategy;
-        }
-        public DiscountStrategy getDiscountStrategy(){
-            return this.discountStrategy;
-        }*/
 
         private PurchaseOrderItemDto purchaseOrderItemDto;
 

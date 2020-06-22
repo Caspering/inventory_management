@@ -1,7 +1,7 @@
 /*
 package com.kasperin.inventory_management.services.commerceServices;
 
-import com.kasperin.inventory_management.controllers.v1.Dto.PurchaseOrderItemDto;
+import com.kasperin.inventory_management.api.v1.model.PurchaseOrderItemDto;
 import com.kasperin.inventory_management.domain.Items.OrderedFruitAndVegeItem;
 import com.kasperin.inventory_management.domain.Items.OrderedItem;
 import com.kasperin.inventory_management.domain.Items.OrderedProcessedFoodItem;

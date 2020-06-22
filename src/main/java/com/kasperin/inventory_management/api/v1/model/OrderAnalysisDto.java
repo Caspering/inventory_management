@@ -1,4 +1,4 @@
-package com.kasperin.inventory_management.controllers.v1.Dto;
+package com.kasperin.inventory_management.api.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

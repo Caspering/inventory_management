@@ -23,7 +23,6 @@ public class PurchaseOrderController {
 
     public static final String BASE_URL = "/api/v1/purchase_orders";
     private final PurchaseOrderService purchaseOrderService;
-   // private final PurchaseOrderDiscountProcessor purchaseOrderDiscountProcessor;
     private final PurchaseOrderResourceAssembler assembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -121,118 +120,9 @@ public class PurchaseOrderController {
                                                                   @RequestBody PurchaseOrder purchaseOrder){
         return purchaseOrderService.updatePurchaseOrderDetailsById(id,purchaseOrder);
     }
-
     @DeleteMapping({"{id}"})
     @ResponseStatus(HttpStatus.OK)
     public void deleteById(@PathVariable Long id) {
         purchaseOrderService.deleteById(id);
     }
-
-
-
-
-    //Helper Methods for building a purchase order
-
-   /* public static class OrderForm{
-
-        private PurchaseOrderItemDto purchaseOrderItemDto;
-
-        public void setPurchaseOrderItemDto(PurchaseOrderItemDto p){
-            this.purchaseOrderItemDto = p;
-        }
-
-        public PurchaseOrderItemDto getPurchaseOrderItemDto(){
-            return purchaseOrderItemDto;
-        }
-    }*/
-
-    /*public boolean itemListIsEmptyOrNull(@RequestBody OrderForm form) {
-        return org.springframework.util.ObjectUtils.isEmpty(form.purchaseOrderItemDto.getItems());
-    }
-
-    public boolean requestedStationaryAmountIsGreaterThanZero(Map.Entry<String, Integer> entry) {
-        return OrderedItemAmountRequested(entry)>0;
-    }
-    public boolean requestedStationaryAmountIsAvailable(Map.Entry<String, Integer> entry) {
-        return getInventoryStationaryItemInStockQuantity(entry) >= OrderedItemAmountRequested(entry);
-    }
-
-    public boolean requestedFruitAndVegeAmountIsGreaterThanZero(Map.Entry<String, Integer> entry) {
-        return OrderedItemAmountRequested(entry)>0;
-    }
-    public boolean requestedFruitAndVegeAmountIsAvailable(Map.Entry<String, Integer> entry) {
-        return getInventoryFruitAndVegeItemInStockQuantity(entry) >= OrderedItemAmountRequested(entry);
-    }
-
-    public boolean requestedProcessedFoodAmountIsGreaterThanZero(Map.Entry<String, Integer> entry) {
-        return OrderedItemAmountRequested(entry)>0;
-    }
-    public boolean requestedProcessedFoodAmountIsAvailable(Map.Entry<String, Integer> entry) {
-        return getInventoryProcessedFoodItemInStockQuantity(entry) >= OrderedItemAmountRequested(entry);
-    }
-
-    public Integer OrderedItemAmountRequested(Map.Entry<String, Integer> entry) {
-        return entry.getValue();
-    }
-    public void setOrderedItemAmount(Map.Entry<String, Integer> entry, OrderedItem orderedItem) {
-        orderedItem.setQuantity(OrderedItemAmountRequested(entry));
-    }
-
-    public Integer getInventoryStationaryItemInStockQuantity(Map.Entry<String, Integer> entry) {
-        return stationaryRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getInStockQuantity();
-    }
-    public void updateInventoryStationaryItemInStockQty(Map.Entry<String, Integer> entry) {
-        stationaryRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())
-                .setInStockQuantity(getInventoryStationaryItemInStockQuantity(entry) - OrderedItemAmountRequested(entry));
-    }
-    public OrderedItem createOrderedStationaryItem(Map.Entry<String, Integer> entry) {
-        return orderedItemService
-                .save(new OrderedStationaryItem(stationaryRepository
-                        .findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())));
-    }
-    public boolean orderedItemExistsInStationaryRepository(Map.Entry<String, Integer> entry) {
-        return stationaryRepository.existsByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey());
-    }
-    public String requestedStationaryName(Map.Entry<String, Integer> entry) {
-        return stationaryRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getName();
-    }
-
-    public Integer getInventoryFruitAndVegeItemInStockQuantity(Map.Entry<String, Integer> entry) {
-        return fruitAndVegeRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getInStockQuantity();
-    }
-    public void updateInventoryFruitAndVegeItemInStockQty(Map.Entry<String, Integer> entry) {
-        fruitAndVegeRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())
-                .setInStockQuantity(getInventoryFruitAndVegeItemInStockQuantity(entry) - OrderedItemAmountRequested(entry));
-    }
-    public OrderedItem createOrderedFruitAndVegeItem(Map.Entry<String, Integer> entry) {
-        return orderedItemService
-                .save(new OrderedFruitAndVegeItem(fruitAndVegeRepository
-                        .findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())));
-    }
-    public boolean orderedItemExistsInFruitAndVegeRepository(Map.Entry<String, Integer> entry) {
-        return fruitAndVegeRepository.existsByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey());
-    }
-    public String requestedFruitAndVegeName(Map.Entry<String, Integer> entry) {
-        return fruitAndVegeRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getName();
-    }
-
-    public Integer getInventoryProcessedFoodItemInStockQuantity(Map.Entry<String, Integer> entry) {
-        return processedFoodRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getInStockQuantity();
-    }
-    public void updateInventoryProcessedFoodItemInStockQty(Map.Entry<String, Integer> entry) {
-        processedFoodRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())
-                .setInStockQuantity(getInventoryProcessedFoodItemInStockQuantity(entry) - OrderedItemAmountRequested(entry));
-    }
-    public OrderedItem createOrderedProcessedFoodItem(Map.Entry<String, Integer> entry) {
-        return orderedItemService
-                .save(new OrderedProcessedFoodItem(processedFoodRepository
-                        .findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())));
-    }
-    public boolean orderedItemExistsInProcessedFoodRepository(Map.Entry<String, Integer> entry) {
-        return processedFoodRepository.existsByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey());
-    }
-    public String requestedProcessedFoodName(Map.Entry<String, Integer> entry) {
-        return processedFoodRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getName();
-    }*/
-
 }

@@ -1,7 +1,7 @@
 package com.kasperin.inventory_management.services.itemsServices;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.kasperin.inventory_management.controllers.v1.Dto.OrderAnalysisDto;
+import com.kasperin.inventory_management.api.v1.model.OrderAnalysisDto;
 import com.kasperin.inventory_management.domain.Items.OrderedItem;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.kasperin.inventory_management.repository.ItemsRepository.OrderedItemRepository;
@@ -12,7 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Service

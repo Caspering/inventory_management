@@ -8,7 +8,6 @@ import com.univocity.parsers.annotations.Validate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
