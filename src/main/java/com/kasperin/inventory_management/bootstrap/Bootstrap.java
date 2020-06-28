@@ -1,18 +1,20 @@
+/*
 package com.kasperin.inventory_management.bootstrap;
 
-import com.kasperin.inventory_management.domain.enums.FoodType;
 import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import com.kasperin.inventory_management.domain.Items.ProcessedFood;
 import com.kasperin.inventory_management.domain.Items.Stationary;
-import com.kasperin.inventory_management.domain.enums.PaymentType;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 import com.kasperin.inventory_management.domain.customer.Member;
+import com.kasperin.inventory_management.domain.enums.FoodType;
+import com.kasperin.inventory_management.domain.enums.PaymentType;
 import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
 import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoodRepo;
 import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRepository;
 import com.kasperin.inventory_management.repository.commerceRepository.PurchaseOrderRepository;
 import com.kasperin.inventory_management.repository.customerRepository.MemberRepository;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -28,6 +30,7 @@ import java.util.Set;
 @Component
 @AllArgsConstructor
 //@Profile("default")
+@Data
 public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private final FruitAndVegeRepository fruitAndVegeRepository;
@@ -39,6 +42,8 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private final PurchaseOrderRepository purchaseOrderRepository;
 
     private final MemberRepository memberRepository;
+
+    //private DataModel model;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -57,18 +62,150 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         List<Member> savedMember= memberRepository.saveAll(getMembers());
         log.info("Member saved: {}", savedMember);
+
+//loadInMemory();
+//        log.info("Preferences: {}", this.loadInMemory().toString());
+
+    }
+//    //@Bean
+//public DataModel loadInMemory(){
+//
+//        FastByIDMap<PreferenceArray> preferences = new FastByIDMap<PreferenceArray>();
+//        PreferenceArray prefsForJohn = new GenericItemPreferenceArray(10);
+//        prefsForJohn.setUserID(0, 1);
+//        prefsForJohn.setItemID(0, 1L);
+//        prefsForJohn.setValue(0, 3.0f);
+//
+//        prefsForJohn.setItemID(1, 2L);
+//        prefsForJohn.setValue(1, 4.5f);
+//
+//        prefsForJohn.setItemID(1, 3L);
+//        prefsForJohn.setValue(2, 4.5f);
+//
+//        prefsForJohn.setItemID(1, 4L);
+//        prefsForJohn.setValue(1, 4.5f);
+//
+//        prefsForJohn.setItemID(1, 3L);
+//        prefsForJohn.setValue(2, 4.5f);
+//
+//        prefsForJohn.setItemID(1, 2L);
+//        prefsForJohn.setValue(1, 4.5f);
+//
+//        prefsForJohn.setItemID(1, 3L);
+//        prefsForJohn.setValue(2, 4.5f);
+//
+//        prefsForJohn.setItemID(7, 2L);
+//        prefsForJohn.setValue(1, 4.5f);
+//
+//        prefsForJohn.setItemID(1, 3L);
+//        prefsForJohn.setValue(2, 4.5f);
+//
+//        prefsForJohn.setItemID(1, 2L);
+//        prefsForJohn.setValue(1, 4.5f);
+//
+//        preferences.put(1L, prefsForJohn);
+//
+//
+//        PreferenceArray prefsForMike = new GenericItemPreferenceArray(10);
+//        prefsForMike.setUserID(0, 2);
+//        prefsForMike.setItemID(0, 1L);
+//        prefsForMike.setValue(0, 3.0f);
+//
+//        prefsForMike.setItemID(1, 2L);
+//        prefsForMike.setValue(1, 4.5f);
+//
+//        prefsForMike.setItemID(1, 3L);
+//        prefsForMike.setValue(2, 4.5f);
+//
+//        prefsForMike.setItemID(1, 4L);
+//        prefsForMike.setValue(1, 4.5f);
+//
+//        prefsForMike.setItemID(1, 3L);
+//        prefsForMike.setValue(2, 4.5f);
+//
+//        prefsForMike.setItemID(1, 2L);
+//        prefsForMike.setValue(1, 4.5f);
+//
+//        prefsForMike.setItemID(1, 3L);
+//        prefsForMike.setValue(2, 4.5f);
+//
+//        prefsForMike.setItemID(7, 2L);
+//        prefsForMike.setValue(1, 4.5f);
+//
+//        prefsForMike.setItemID(1, 3L);
+//        prefsForMike.setValue(2, 4.5f);
+//
+//        prefsForMike.setItemID(1, 2L);
+//        prefsForMike.setValue(1, 4.5f);
+//
+//        preferences.put(2L, prefsForMike);
+//
+//
+//
+//        DataModel model = new GenericDataModel(preferences);
+//
+//        return model;
+//
+//    }
+
+
+    private List<Member> getMembers(){
+        List<Member> members = new ArrayList<>();
+
+        Member m1 = new Member();
+        m1.setEmail("johndoe@gmail.com");
+        m1.setFirstName("John");
+        m1.setLastName("Doe");
+        m1.setPhoneNumber("234-234-2222");
+//        m1.addPurchaseOrder(new PurchaseOrder(LocalDate.now(),34,"004453333893",PaymentType.CASH,
+//                getFruitAndVeges(), getStationary(),getProcessedFood()));
+//        m1.addPurchaseOrder(new PurchaseOrder(LocalDate.now(),14,"177004453333893",PaymentType.CASH,
+//                getFruitAndVeges(), getStationary(),getProcessedFood()));
+
+        members.add(m1);
+
+
+        Member m2 = new Member();
+        m2.setEmail("mlo1@gmail.com");
+        m2.setFirstName("Mike");
+        m2.setLastName("Long");
+        m2.setPhoneNumber("334-234-2222");
+
+        //m2.setPurchaseOrders(getPurchaseOrderSet());
+
+        members.add(m2);
+
+
+        Member m3 = new Member();
+        m3.setEmail("bens@gmail.com");
+        m3.setFirstName("Ben");
+        m3.setLastName("Skye");
+        m3.setPhoneNumber("253-234-2222");
+        //m3.setPurchaseOrders(getPurchaseOrderSet());
+
+        members.add(m3);
+
+        Member m4 = new Member();
+        m4.setEmail("awest@gmail.com");
+        m4.setMemberNumber("bs11223");
+        m4.setFirstName("Asia");
+        m4.setLastName("West");
+        m4.setPhoneNumber("206-204-1002");
+        //m3.setPurchaseOrders(getPurchaseOrderSet());
+
+        members.add(m4);
+        return members;
     }
 
-
-    private List<FruitAndVege> getFruitAndVeges(){
+    public List<FruitAndVege> getFruitAndVeges(){
 
         List<FruitAndVege> fruitAndVeges = new ArrayList<>();
+
         FruitAndVege fav1 = new FruitAndVege();
         fav1.setName("Banana");
         fav1.setBarcode("12335663");
         fav1.setInStockQuantity(5);
         fav1.setPrice(2.99);
-
 
         fruitAndVeges.add(fav1);
 
@@ -87,6 +224,46 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         fruitAndVege3.setPrice(3.8);
 
         fruitAndVeges.add(fruitAndVege3);
+
+        FruitAndVege fruitAndVege4 = new FruitAndVege();
+        fruitAndVege4.setName("Watermelon");
+        fruitAndVege4.setBarcode("1333234006");
+        fruitAndVege4.setInStockQuantity(18);
+        fruitAndVege4.setPrice(1.8);
+
+        fruitAndVeges.add(fruitAndVege4);
+
+        FruitAndVege fruitAndVege5 = new FruitAndVege();
+        fruitAndVege5.setName("Jack Fruit");
+        fruitAndVege5.setBarcode("189930033006");
+        fruitAndVege5.setInStockQuantity(28);
+        fruitAndVege5.setPrice(1.8);
+
+        fruitAndVeges.add(fruitAndVege5);
+
+        FruitAndVege fruitAndVege6 = new FruitAndVege();
+        fruitAndVege6.setName("Apple");
+        fruitAndVege6.setBarcode("1320294093006");
+        fruitAndVege6.setInStockQuantity(8);
+        fruitAndVege6.setPrice(3.18);
+
+        fruitAndVeges.add(fruitAndVege6);
+
+        FruitAndVege fruitAndVege7 = new FruitAndVege();
+        fruitAndVege7.setName("Mango");
+        fruitAndVege7.setBarcode("13304257706");
+        fruitAndVege7.setInStockQuantity(8);
+        fruitAndVege7.setPrice(3.89);
+
+        fruitAndVeges.add(fruitAndVege7);
+
+        FruitAndVege fruitAndVege8 = new FruitAndVege();
+        fruitAndVege8.setName("Carrot");
+        fruitAndVege8.setBarcode("1377773333006");
+        fruitAndVege8.setInStockQuantity(8);
+        fruitAndVege8.setPrice(3.8);
+
+        fruitAndVeges.add(fruitAndVege8);
 
         return fruitAndVeges;
     }
@@ -107,7 +284,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         savedProcessedFood.setBarcode("12345");
         savedProcessedFood.setPrice(1.3);
         savedProcessedFood.setFoodType(FoodType.VEGAN);
-        savedProcessedFood.setInStockQuantity(13);
+        savedProcessedFood.setInStockQuantity(30);
 //        savedProcessedFood.setPurchaseOrder();
         proFood.add(savedProcessedFood);
 
@@ -117,7 +294,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         proFood2.setBarcode("123450000088");
         proFood2.setPrice(1.3);
         proFood2.setFoodType(FoodType.VEGAN);
-        proFood2.setInStockQuantity(13);
+        proFood2.setInStockQuantity(23);
         proFood.add(proFood2);
 
         ProcessedFood proFood3 = new ProcessedFood();
@@ -125,7 +302,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         proFood3.setBarcode("1238989898045");
         proFood3.setPrice(1.3);
         proFood3.setFoodType(FoodType.NONVEGAN);
-        proFood3.setInStockQuantity(13);
+        proFood3.setInStockQuantity(33);
 
         proFood.add(proFood3);
 
@@ -288,48 +465,8 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         return purchaseOrders;
     }
 
-    private List<Member> getMembers(){
-        List<Member> members = new ArrayList<>();
 
-        Member m1 = new Member();
-        m1.setEmail("jd@gmail.com");
-        m1.setMemberNumber("jb11223");
-        m1.setFirstName("John");
-        m1.setLastName("Doe");
-        m1.setPhoneNumber("234-234-2222");
-//        m1.addPurchaseOrder(new PurchaseOrder(LocalDate.now(),34,"004453333893",PaymentType.CASH,
-//                getFruitAndVeges(), getStationary(),getProcessedFood()));
-//        m1.addPurchaseOrder(new PurchaseOrder(LocalDate.now(),14,"177004453333893",PaymentType.CASH,
-//                getFruitAndVeges(), getStationary(),getProcessedFood()));
-
-        members.add(m1);
-
-
-        Member m2 = new Member();
-        m2.setEmail("ml@gmail.com");
-        m2.setMemberNumber("ml11223");
-        m2.setFirstName("Mike");
-        m2.setLastName("Long");
-        m2.setPhoneNumber("334-234-2222");
-
-        //m2.setPurchaseOrders(getPurchaseOrderSet());
-
-        members.add(m2);
-
-
-        Member m3 = new Member();
-        m3.setEmail("bs@gmail.com");
-        m3.setMemberNumber("bs11223");
-        m3.setFirstName("Ben");
-        m3.setLastName("Skye");
-        m3.setPhoneNumber("800-234-2222");
-        //m3.setPurchaseOrders(getPurchaseOrderSet());
-
-        members.add(m3);
-
-
-        return members;
-    }
 
 
 }
+*/

@@ -2,7 +2,7 @@ package com.kasperin.inventory_management.services.customerServices;
 
 import com.kasperin.inventory_management.domain.customer.Member;
 import com.kasperin.inventory_management.repository.customerRepository.MemberRepository;
-import com.kasperin.inventory_management.services.ResourceNotFoundException;
+import com.kasperin.inventory_management.controllers.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

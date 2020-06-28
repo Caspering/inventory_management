@@ -3,24 +3,21 @@ package com.kasperin.inventory_management.api.v1.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kasperin.inventory_management.domain.Items.OrderedItem;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.stereotype.Service;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-//@Service
-//@Bean
-//@RequiredArgsConstructor
-//@NoArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderAnalysisDto {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate startDate;
-
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate endDate;

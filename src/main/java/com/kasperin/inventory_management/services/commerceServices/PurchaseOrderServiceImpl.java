@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.services.commerceServices;
 
+import com.kasperin.inventory_management.api.v1.model.AssociationDto;
 import com.kasperin.inventory_management.api.v1.model.PurchaseOrderItemDto;
 import com.kasperin.inventory_management.domain.Items.OrderedFruitAndVegeItem;
 import com.kasperin.inventory_management.domain.Items.OrderedItem;
@@ -11,10 +12,12 @@ import com.kasperin.inventory_management.repository.ItemsRepository.OrderedItemR
 import com.kasperin.inventory_management.repository.ItemsRepository.ProcessedFoodRepo;
 import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRepository;
 import com.kasperin.inventory_management.repository.commerceRepository.PurchaseOrderRepository;
-import com.kasperin.inventory_management.repository.customerRepository.MemberRepository;
-import com.kasperin.inventory_management.services.ResourceNotFoundException;
+import com.kasperin.inventory_management.services.RecommendationService;
+import com.kasperin.inventory_management.controllers.exceptions.ResourceNotFoundException;
 import com.kasperin.inventory_management.services.customerServices.MemberService;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,17 +40,15 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     private final StationaryRepository stationaryRepository;
     private final OrderedItemRepository orderedItemService;
     private final ProcessedFoodRepo processedFoodRepository;
-    private final MemberRepository memberRepository;
+    private final RecommendationService recommendationService;
     private final MemberService memberService;
-    //private final OrderAnalysisDto orderAnalysisDto;
+
 
     private Optional<PurchaseOrder> getPurchaseOrderById(Long id) {
         if (purchaseOrderRepository.existsById(id)) {
             return purchaseOrderRepository.findById(id);//.orElseThrow(() -> new ResourceNotFoundException("wasnt found"));
-        }else{
-            throw new ResourceNotFoundException
-                    ("Purchase order with the requested id: "+ id +" was not found");
-        }
+        }else throw new ResourceNotFoundException
+                ("Purchase order with the requested id: " + id + " was not found");
     }
     private PurchaseOrder getPurchaseOrderByReceiptNumberIgnoreCase(String purchaseOrderRecieptNumber) {
         if (purchaseOrderRepository.existsByReceiptNumberIgnoreCase(purchaseOrderRecieptNumber)) {
@@ -165,14 +166,14 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
             for(Map.Entry<String, Integer> entry: form.purchaseOrderItemDto.getItems().entrySet()){
                 if (orderedItemExistsInStationaryRepository(entry)){
                     if(requestedStationaryAmountIsAvailable(entry)) {
-                        if (requestedStationaryAmountIsGreaterThanZero(entry)) {
+                        if (requestedStationaryAmountIsEqualToOne(entry)) {
                             OrderedItem orderedItem = createOrderedStationaryItem(entry);
                             setOrderedItemAmount(entry, orderedItem);
                             updateInventoryStationaryItemInStockQty(entry);
                             purchaseOrder.addItem(orderedItem);
-                        }else throw new RuntimeException("Requested Stationary amount for: "
+                        }else throw new RuntimeException("Restriction: Requested Stationary amount for "
                                 + requestedStationaryName(entry)
-                                +" have to be greater than zero");
+                                +" is restricted to one. Stationary is limited to one quantity per item type per customer purchase order");
                     }else throw new RuntimeException("Requested Stationary item amount for: "
                             + requestedStationaryName(entry)
                             +" is not available");
@@ -184,6 +185,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
                             setOrderedItemAmount(entry, orderedItem);
                             updateInventoryFruitAndVegeItemInStockQty(entry);
                             purchaseOrder.addItem(orderedItem);
+                            recommendationService.createAssociation(new AssociationDto(orderedItem.getBarcode(),orderedItem.getBarcode()));
                         }else throw new RuntimeException("Requested FruitAndVege amount for: "
                                 + requestedFruitAndVegeName(entry)
                                 +" have to be greater than zero");
@@ -206,9 +208,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
                             +" is not available");
                 }else throw new RuntimeException("Item "+entry.getKey()+" was not found in inventory");
             }
-        }else throw
-                new RuntimeException("Purchase order must contain an item");
-
+        }else throw new RuntimeException("Purchase order must contain an item");
 
         if(form.getPurchaseOrderItemDto().getDiscountStrategy() != null) {
             purchaseOrder.setDiscountAmount(purchaseOrder.getTotalPrice() * form.getPurchaseOrderItemDto().getDiscountStrategy().discountRate);
@@ -284,25 +284,27 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
 
     //Helper Methods for building a purchase order
 
+    @Getter
+    @Setter
     public static class OrderForm{
 
         private PurchaseOrderItemDto purchaseOrderItemDto;
 
-        public void setPurchaseOrderItemDto(PurchaseOrderItemDto p){
+        /*public void setPurchaseOrderItemDto(PurchaseOrderItemDto p){
             this.purchaseOrderItemDto = p;
         }
 
         public PurchaseOrderItemDto getPurchaseOrderItemDto(){
             return purchaseOrderItemDto;
-        }
+        }*/
     }
 
     public boolean itemListIsEmptyOrNull(@RequestBody OrderForm form) {
         return org.springframework.util.ObjectUtils.isEmpty(form.purchaseOrderItemDto.getItems());
     }
 
-    public boolean requestedStationaryAmountIsGreaterThanZero(Map.Entry<String, Integer> entry) {
-        return OrderedItemAmountRequested(entry)>0;
+    public boolean requestedStationaryAmountIsEqualToOne(Map.Entry<String, Integer> entry) {
+        return OrderedItemAmountRequested(entry)==1;
     }
     public boolean requestedStationaryAmountIsAvailable(Map.Entry<String, Integer> entry) {
         return getInventoryStationaryItemInStockQuantity(entry) >= OrderedItemAmountRequested(entry);

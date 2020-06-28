@@ -33,16 +33,17 @@ public class OnCreateDateValidator implements ConstraintValidator<OnCreateDateCo
             return true;
         } else if (diff > 0) {
             return true;
-        } else if (diff < 0) {
+        }  else if (diff < 0) {
             return false;
         }
 
-        if ( !isValid ) {
+    if ( !isValid ) {
             constraintValidatorContext.disableDefaultConstraintViolation();
             constraintValidatorContext
                     .buildConstraintViolationWithTemplate( "{my.custom.template}" )
                     .addPropertyNode( "expDate" ).addConstraintViolation();
         }
+
 
         return false;
     }

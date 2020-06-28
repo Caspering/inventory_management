@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 public class LocalDateFormatter implements Conversion<String, LocalDate> {
 
-    private DateTimeFormatter formatter;
+    private final DateTimeFormatter formatter;
 
     public LocalDateFormatter(String... args) {
         String pattern = "dd MM yyyy";

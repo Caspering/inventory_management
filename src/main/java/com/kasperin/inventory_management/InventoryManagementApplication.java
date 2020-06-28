@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
-@SpringBootApplication
+@SpringBootApplication//(scanBasePackages = "com.kasperin.inventory_management.recommender")
 public class InventoryManagementApplication {
 
     public static void main(String[] args) {

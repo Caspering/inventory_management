@@ -38,22 +38,18 @@ public class PurchaseOrder implements Serializable {
 
     private String receiptNumber;
 
-    private Double totalPrice;
+    private Float totalPrice;
 
-    private Double discountAmount;
+    private Float discountAmount;
 
-    @Column(name = "discountedPrice")
-    private Double totalPriceAfterDiscount;
+    @Column(name = "priceAfterDiscount")
+    private Float totalPriceAfterDiscount;
 
     @Enumerated(value = EnumType.STRING)
     private PaymentType paymentType;
 
-    /*@OneToMany//(cascade= {CascadeType.REMOVE}, fetch=FetchType.EAGER)
-    private List<Item> items = new ArrayList<>();*/
-
     @OneToMany//(cascade= {CascadeType.REMOVE}, fetch=FetchType.EAGER)
     private List<OrderedItem> items = new ArrayList<>();
-
 
     @JsonIgnore
     @ManyToOne
@@ -66,12 +62,6 @@ public class PurchaseOrder implements Serializable {
         this.receiptNumber=RandomStringUtils.randomNumeric(12);
         this.totalPriceAfterDiscount = getTotalPriceAfterDiscount();
         this.totalPrice = getTotalPrice();
-
-       // this.setTotalPrice(this.getTotalPrice());
-        //this.setTotalPriceAfterDiscount(getTotalPrice()-getDiscountAmount());
-        //this.setDiscountAmount(this.getDiscountAmt());
-
-        //=  UUID.fromString("Number").toString();//randomUUID().toString();
         log.info("This purchase order has been assigned receipt number: "+this.getReceiptNumber());
     }
 
@@ -85,11 +75,12 @@ public class PurchaseOrder implements Serializable {
         }
         return count;
     }
+//    DecimalFormat df = new DecimalFormat("##.##");
 
     //@JsonIgnore
     //@Transient
-    public Double getTotalPrice(){
-        double sum = 0;
+    public Float getTotalPrice(){
+        float sum = 0;
         List<OrderedItem> items = getItems();
         for (OrderedItem item : items) {
             sum += item.getTotalPrice();
@@ -98,17 +89,14 @@ public class PurchaseOrder implements Serializable {
     }
 
     //@Transient
-    public Double getTotalPriceAfterDiscount(){
+    //@JsonProperty(value = "")
+    public Float getTotalPriceAfterDiscount(){
         if (getDiscountAmount() != null)
         return getTotalPrice()-getDiscountAmount();
-        else return null;
+        else return getTotalPrice();
     }
 
-   /* @Transient
-    public Double getDiscountAmt(){
-        PurchaseOrderServiceImpl.OrderForm.g form = null;
-        double discountAmount = getTotalPrice() * form.discountAmount;
-    }*/
+
 
     public void addItem(OrderedItem item){
         this.items.add(item);
@@ -117,6 +105,13 @@ public class PurchaseOrder implements Serializable {
         this.items.remove(item);
     }
 
+    /*@OneToMany//(cascade= {CascadeType.REMOVE}, fetch=FetchType.EAGER)
+    private List<Item> items = new ArrayList<>();*/
+    /* @Transient
+    public Double getDiscountAmt(){
+        PurchaseOrderServiceImpl.OrderForm.g form = null;
+        double discountAmount = getTotalPrice() * form.discountAmount;
+    }*/
     /*    @ManyToMany
     //@Size(min=1, message="You must have an Item in your purchase order")
     private List<FruitAndVege> fruitAndVeges = new ArrayList<>();

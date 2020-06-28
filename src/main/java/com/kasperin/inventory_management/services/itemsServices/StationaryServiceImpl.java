@@ -1,9 +1,8 @@
 package com.kasperin.inventory_management.services.itemsServices;
 
-import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.repository.ItemsRepository.StationaryRepository;
-import com.kasperin.inventory_management.services.ResourceNotFoundException;
+import com.kasperin.inventory_management.controllers.exceptions.ResourceNotFoundException;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
 import lombok.AllArgsConstructor;

@@ -40,7 +40,7 @@ public class FruitAndVegeController {
     @ApiOperation(value = "Get fruit or vegetable by Id")
     @GetMapping("/{id}")
     public ResponseEntity<FruitAndVegeDTO> getById( @PathVariable Long id){
-        return new ResponseEntity<FruitAndVegeDTO>(
+        return new ResponseEntity<>(
                 fruitAndVegeService.findById(id), HttpStatus.OK
         );
     }
@@ -48,7 +48,7 @@ public class FruitAndVegeController {
     @ApiOperation(value = "Get fruit or vegetable by name")
     @GetMapping("/name/{name}")
     public ResponseEntity<FruitAndVegeDTO> getByName( @PathVariable String name){
-        return new ResponseEntity<FruitAndVegeDTO>(
+        return new ResponseEntity<>(
                 fruitAndVegeService.findByName(name), HttpStatus.OK
         );
     }

@@ -3,9 +3,8 @@ package com.kasperin.inventory_management.services.itemsServices;
 import com.kasperin.inventory_management.api.v1.mapper.FruitAndVegeMapper;
 import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
 import com.kasperin.inventory_management.domain.Items.FruitAndVege;
-import com.kasperin.inventory_management.domain.Items.Stationary;
 import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
-import com.kasperin.inventory_management.services.ResourceNotFoundException;
+import com.kasperin.inventory_management.controllers.exceptions.ResourceNotFoundException;
 import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
 import lombok.AllArgsConstructor;
@@ -29,10 +28,8 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
     private FruitAndVegeDTO getFruitAndVegeDTOByNameIgnoreCase(String name) {
         if (fruitAndVegeRepository.existsByNameIgnoreCase(name)) {
             return fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(fruitAndVegeRepository.findByNameIgnoreCase(name));
-        }else{
-            throw new ResourceNotFoundException("The fruit or vegetable with name: "
-                    + name + " does not exist");
-        }
+        }else throw new ResourceNotFoundException("The fruit or vegetable with name: "
+                + name + " does not exist");
     }
     private Optional<FruitAndVege> getFruitAndVegeById(Long id){
         if (fruitAndVegeRepository.existsById(id)) {
@@ -64,8 +61,7 @@ public class FruitAndVegeServiceImpl implements FruitAndVegeService {
     public FruitAndVegeDTO saveAndReturnDTO(@Valid FruitAndVege fruitAndVege) throws Exception {
         if (!(fruitAndVegeRepository.existsByBarcode(fruitAndVege.getBarcode()))) {
             FruitAndVege savedFruitAndVege = fruitAndVegeRepository.save(fruitAndVege);
-            FruitAndVegeDTO returnDto = fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(savedFruitAndVege);
-            return returnDto;
+            return fruitAndVegeMapper.fruitAndVegeToFruitAndVegeDTO(savedFruitAndVege);
         }else throw new Exception("A Fruit or Vegetable item with barcode: "
                 +fruitAndVege.getBarcode()+" already exists");
     }

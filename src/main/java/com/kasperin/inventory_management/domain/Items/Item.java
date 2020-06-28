@@ -5,6 +5,7 @@ import com.kasperin.inventory_management.validator_services.OnCreate;
 import com.kasperin.inventory_management.validator_services.OnUpdate;
 import com.univocity.parsers.annotations.Parsed;
 import com.univocity.parsers.annotations.Validate;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 //@Entity(name = "Item")
 @MappedSuperclass
 @Slf4j
+@AllArgsConstructor
 public class Item implements Serializable {
 
     @Id
@@ -60,7 +62,22 @@ public class Item implements Serializable {
     //@NullString(nulls = {"", "N/A"})
     private Integer inStockQuantity;
 
+    /*public Item(String name, String barcode, Double price, Integer inStockQuantity) {
+        this.name = name;
+        this.barcode = barcode;
+        this.price= price;
+        this.inStockQuantity = inStockQuantity;
+    }
 
+    public Item(String name, String barcode, Double price, Integer inStockQuantity,
+                FoodType foodType, LocalDate mfgDate, LocalDate expDate) {
+        this.name = name;
+        this.barcode = barcode;
+        this.price= price;
+        this.inStockQuantity = inStockQuantity;
+
+
+    }*/
 
     @Transient
     @JsonIgnore
@@ -68,5 +85,16 @@ public class Item implements Serializable {
         return (this.getInStockQuantity() * this.getPrice());
     }
 
+
+    /*public static Item fruitAndVege(String name, String barcode, Double price,
+                                     Integer inStockQuantity){
+        return new Item(name,barcode, price, inStockQuantity);
+    }
+
+    public static Item processedFood(String name, String barcode, Double price,
+                                    Integer inStockQuantity,FoodType foodType,
+                                     LocalDate mfgDate, LocalDate expDate){
+        return new Item(name,barcode, price, inStockQuantity, foodType, mfgDate, expDate);
+    }*/
 
 }

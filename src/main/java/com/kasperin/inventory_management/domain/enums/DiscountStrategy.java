@@ -5,17 +5,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public enum DiscountStrategy {
 
     @JsonProperty("no")
-    NO(0.0),
+    NO(0.0F),
 
     @JsonProperty("half off entire")
-    HALF_OFF_ENTIRE(0.5),
+    HALF_OFF_ENTIRE(0.5F),
 
     @JsonProperty("quarter off entire")
-    QUARTER_OFF_ENTIRE(0.25);
+    QUARTER_OFF_ENTIRE(0.25F);
 
-    public Double discountRate;
+    public final Float discountRate;
 
-    DiscountStrategy(Double rate) {
+    DiscountStrategy(Float rate) {
         discountRate = rate;
     }
 

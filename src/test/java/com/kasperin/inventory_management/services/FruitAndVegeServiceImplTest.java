@@ -1,13 +1,24 @@
 package com.kasperin.inventory_management.services;
 
 import com.kasperin.inventory_management.api.v1.mapper.FruitAndVegeMapper;
+import com.kasperin.inventory_management.api.v1.model.FruitAndVegeDTO;
+import com.kasperin.inventory_management.domain.Items.FruitAndVege;
 import com.kasperin.inventory_management.repository.ItemsRepository.FruitAndVegeRepository;
 import com.kasperin.inventory_management.services.itemsServices.FruitAndVegeService;
 import com.kasperin.inventory_management.services.itemsServices.FruitAndVegeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@Disabled
 class FruitAndVegeServiceImplTest {
 
     public static final Long ID = 1L;
@@ -19,6 +30,7 @@ class FruitAndVegeServiceImplTest {
     public static final double PRICE = 1.9;
     public static final double PRICE2 = 1.9;
 
+    @InjectMocks
     FruitAndVegeService fruitAndVegeService;
 
     FruitAndVegeMapper fruitAndVegeMapper;
@@ -31,28 +43,28 @@ class FruitAndVegeServiceImplTest {
         MockitoAnnotations.initMocks(this);
 
         fruitAndVegeMapper = FruitAndVegeMapper.INSTANCE;
-        fruitAndVegeService = new FruitAndVegeServiceImpl(fruitAndVegeMapper, fruitAndVegeRepository);
+
     }
 
-//    @Test
-//    void createNewFruitAndVege() {
-//        //given
-//        FruitAndVege savedFruitAndVege = new FruitAndVege();
-//        savedFruitAndVege.setId(ID);
-//        savedFruitAndVege.setName(NAME);
-//        savedFruitAndVege.setBarcode(BARCODE);
-//        savedFruitAndVege.setPrice(PRICE);
-//
-//        when(fruitAndVegeRepository.save(any()))
-//                .thenReturn(savedFruitAndVege);
-//
-//        FruitAndVege result = fruitAndVegeService.save(savedFruitAndVege);
-//
-//        verify(fruitAndVegeRepository).save(any());
-//
-//        assertEquals(savedFruitAndVege, result);
-//
-//    }
+    @Test
+    void createNewFruitAndVege() throws Exception {
+        //given
+        FruitAndVege savedFruitAndVege = new FruitAndVege();
+        savedFruitAndVege.setId(ID);
+        savedFruitAndVege.setName(NAME);
+        savedFruitAndVege.setBarcode(BARCODE);
+        savedFruitAndVege.setPrice(PRICE);
+
+        when(fruitAndVegeRepository.save(any()))
+                .thenReturn(savedFruitAndVege);
+
+        FruitAndVegeDTO result = fruitAndVegeService.saveAndReturnDTO(savedFruitAndVege);
+
+        verify(fruitAndVegeRepository).save(any());
+
+        assertEquals(savedFruitAndVege, result);
+
+    }
 
 //    @Test
 //    void findAll() {

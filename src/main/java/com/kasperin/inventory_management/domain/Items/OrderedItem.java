@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 
 @Entity(name="OrderedItem")
 @Data
@@ -32,6 +31,4 @@ public class OrderedItem implements Serializable {
     public double getTotalPrice() {
         return (this.getQuantity() * this.getPrice());
     }
-
-
 }
