@@ -38,12 +38,6 @@ public class PurchaseOrderController {
       return purchaseOrderService.findAll();
     }
 
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<PurchaseOrder> getAll() {
-//            return purchaseOrderService.findAll();
-//
-//    }
 
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
@@ -55,11 +49,7 @@ public class PurchaseOrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PurchaseOrder save(@RequestBody PurchaseOrderItemDto form, BindingResult result, Model model){
-        if (result.hasErrors()) {
-           result.getFieldErrors();
-            model.addAttribute("message", "The information is invalid!");
-        }
+    public PurchaseOrder save(@RequestBody PurchaseOrderItemDto form){
 
         return purchaseOrderService.save(form);
     }
