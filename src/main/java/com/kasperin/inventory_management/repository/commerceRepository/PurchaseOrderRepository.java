@@ -20,7 +20,13 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
 
     PurchaseOrder findByReceiptNumberIgnoreCase(String purchaseOrderReceiptNumber);
 
-   // List<PurchaseOrder> findAllPurchaseOrderByMemberNumberIgnoreCase(String memberNumber);
+    List<PurchaseOrder> findAllPurchaseOrderByMemberNumberContaining(String memberNumber);
+
+    List<PurchaseOrder> findAllByReceiptNumberContaining(String recieptNumber);
+
+
+
+
 
     List<PurchaseOrder> findAllByDateCreated(LocalDate dateCreated);
 

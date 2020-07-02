@@ -67,7 +67,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
         }
     }
     private List<PurchaseOrder> getAllPurchaseOrderCreatedBetween(LocalDate startDate, LocalDate endDate){
-        if (purchaseOrderRepository.existsByDateCreated(startDate)&&purchaseOrderRepository.existsByDateCreated(endDate)){
+        if (purchaseOrderRepository.existsByDateCreated(startDate)||purchaseOrderRepository.existsByDateCreated(endDate)){
             return purchaseOrderRepository.findAllByDateCreatedBetween(startDate,endDate);
         }else{
             throw new ResourceNotFoundException
@@ -104,9 +104,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
         return getAllPurchaseOrderCreatedOn(createdDate);
     }
 
-    /*@Override
-    public */
-
     @Override
     public List<PurchaseOrder> findAllByDateCreatedBetween(LocalDate startDate, LocalDate endDate) {
         return getAllPurchaseOrderCreatedBetween(startDate, endDate);
@@ -118,6 +115,17 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     }
 
     @Override
+    public List<PurchaseOrder> findAllByReceiptNumberContaining(String recieptNumber) {
+        return purchaseOrderRepository.findAllByReceiptNumberContaining(recieptNumber);
+    }
+
+    @Override
+    public List<PurchaseOrder> findAllPurchaseOrderByMemberNumberContaining(String memberNumber) {
+        return findAllPurchaseOrderByMemberNumberContaining(memberNumber);
+    }
+
+
+    @Override
     public List<PurchaseOrder> findAllByMemberNumber(String memberNumber) {
         return getAllPurchaseOrderByMemberNumbers(memberNumber);
     }
@@ -127,102 +135,47 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
         return getAllPurchaseOrderWithNullMemberNumber();
     }
 
-
-
-
     @Override
     @Transactional
-    public PurchaseOrder save(@Valid OrderForm form) {
+    public PurchaseOrder save(PurchaseOrderItemDto form) {
         PurchaseOrder purchaseOrder = new PurchaseOrder();
 
-        //(form.getPurchaseOrderItemDto().getDiscountStrategy()).getDiscountRate;
+        if(form.getPaymentType() != null)
+            purchaseOrder.setPaymentType(form.getPaymentType());
 
-        //float discountAmt =
-
-        //DiscountStrategy type = new DiscountStrategy(form.getDiscountStrategy());
-
-        if(form.getPurchaseOrderItemDto().getPaymentType() != null)
-            purchaseOrder.setPaymentType(form.getPurchaseOrderItemDto().getPaymentType());
-
-        /*if(form.getPurchaseOrderItemDto().getDiscountRate() != null)
-            purchaseOrder.setDiscountRate(*purchaseOrder.getTotalPrice());*/
-
-        //DiscountStrategy x = form.getPurchaseOrderItemDto().getDiscountRate();
-
-
-        //purchaseOrder.setTotalPriceAfterDiscount(purchaseOrder.getTotalPrice()*form.getPurchaseOrderItemDto().getDiscountRate());
-
-        if(form.getPurchaseOrderItemDto().getMemberNumber() != null){
+        if(form.getMemberNumber() != null){
             purchaseOrder.setMemberNumber(form
-                    .getPurchaseOrderItemDto()
+
                     .getMemberNumber());
             purchaseOrder.setMember(memberService
                     .findByMemberNumber(form
-                            .getPurchaseOrderItemDto()
+
                             .getMemberNumber()));
         }
 
         if(!itemListIsEmptyOrNull(form)){
-            for(Map.Entry<String, Integer> entry: form.purchaseOrderItemDto.getItems().entrySet()){
-                if (orderedItemExistsInStationaryRepository(entry)){
-                    if(requestedStationaryAmountIsAvailable(entry)) {
-                        if (requestedStationaryAmountIsEqualToOne(entry)) {
-                            OrderedItem orderedItem = createOrderedStationaryItem(entry);
-                            setOrderedItemAmount(entry, orderedItem);
-                            updateInventoryStationaryItemInStockQty(entry);
-                            purchaseOrder.addItem(orderedItem);
-                        }else throw new RuntimeException("Restriction: Requested Stationary amount for "
-                                + requestedStationaryName(entry)
-                                +" is restricted to one. Stationary is limited to one quantity per item type per customer purchase order");
-                    }else throw new RuntimeException("Requested Stationary item amount for: "
-                            + requestedStationaryName(entry)
-                            +" is not available");
-                }
-                else if (orderedItemExistsInFruitAndVegeRepository(entry)){
-                    if(requestedFruitAndVegeAmountIsAvailable(entry)) {
-                        if (requestedFruitAndVegeAmountIsGreaterThanZero(entry)) {
-                            OrderedItem orderedItem = createOrderedFruitAndVegeItem(entry);
-                            setOrderedItemAmount(entry, orderedItem);
-                            updateInventoryFruitAndVegeItemInStockQty(entry);
-                            purchaseOrder.addItem(orderedItem);
-                            recommendationService.createAssociation(new AssociationDto(orderedItem.getBarcode(),orderedItem.getBarcode()));
-                        }else throw new RuntimeException("Requested FruitAndVege amount for: "
-                                + requestedFruitAndVegeName(entry)
-                                +" have to be greater than zero");
-                    }else throw new RuntimeException("Requested FruitAndVege item amount for: "
-                            + requestedFruitAndVegeName(entry)
-                            +" is not available");
-                }
-                else if (orderedItemExistsInProcessedFoodRepository(entry)){
-                    if(requestedProcessedFoodAmountIsAvailable(entry)) {
-                        if (requestedProcessedFoodAmountIsGreaterThanZero(entry)) {
-                            OrderedItem orderedItem = createOrderedProcessedFoodItem(entry);
-                            setOrderedItemAmount(entry, orderedItem);
-                            updateInventoryProcessedFoodItemInStockQty(entry);
-                            purchaseOrder.addItem(orderedItem);
-                        }else throw new RuntimeException("Requested ProcessedFood amount for: "
-                                + requestedProcessedFoodName(entry)
-                                +" have to be greater than zero");
-                    }else throw new RuntimeException("Requested ProcessedFood item amount for: "
-                            + requestedProcessedFoodName(entry)
-                            +" is not available");
-                }else throw new RuntimeException("Item "+entry.getKey()+" was not found in inventory");
+            for(Map.Entry<String, Integer> entry: form.getItems().entrySet()){
+                saveOrderedItem(purchaseOrder, entry);
             }
         }else throw new RuntimeException("Purchase order must contain an item");
 
-        if(form.getPurchaseOrderItemDto().getDiscountStrategy() != null) {
-            purchaseOrder.setDiscountAmount(purchaseOrder.getTotalPrice() * form.getPurchaseOrderItemDto().getDiscountStrategy().discountRate);
+        if(form.getDiscountStrategy() != null) {
+            purchaseOrder.setDiscountAmount(purchaseOrder.getTotalPrice() * form.getDiscountStrategy().discountRate);
         }
         return purchaseOrderRepository.save(purchaseOrder);
     }
 
-
     @Override
     public void deleteById(Long id)  {
-       // purchaseOrderRepository.delete(findById(id));
+//       // purchaseOrderRepository.delete(findById(id));
         getPurchaseOrderById(id).map(purchaseOrder -> {purchaseOrderRepository.delete(purchaseOrder);
         return null;
         });
+
+//        if(purchaseOrderRepository.findById(id).isEmpty()){
+//            throw new ResourceNotFoundException("Purchase order with the requested id: " + id + " was not found");
+//        }
+//        purchaseOrderRepository.deleteById(id);
     }
 
     @Override
@@ -284,107 +237,151 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
 
     //Helper Methods for building a purchase order
 
-    @Getter
-    @Setter
-    public static class OrderForm{
+    private boolean itemListIsEmptyOrNull(@RequestBody PurchaseOrderItemDto form) {
+        return org.springframework.util.ObjectUtils.isEmpty(form.getItems());
+    }
 
-        private PurchaseOrderItemDto purchaseOrderItemDto;
-
-        /*public void setPurchaseOrderItemDto(PurchaseOrderItemDto p){
-            this.purchaseOrderItemDto = p;
+    private void saveOrderedItem(PurchaseOrder purchaseOrder, Map.Entry<String, Integer> entry) {
+        if (orderedItemExistsInStationaryRepository(entry)){
+            saveStationaryOrderedIten(purchaseOrder, entry);
         }
-
-        public PurchaseOrderItemDto getPurchaseOrderItemDto(){
-            return purchaseOrderItemDto;
-        }*/
+        else if (orderedItemExistsInFruitAndVegeRepository(entry)){
+            saveFruitAndVegeOrderedItem(purchaseOrder, entry);
+        }
+        else if (orderedItemExistsInProcessedFoodRepository(entry)){
+            saveProcessedFoodOrderedItem(purchaseOrder, entry);
+        }else throw new RuntimeException("Item "+entry.getKey()+" was not found in inventory");
+    }
+    private void saveStationaryOrderedIten(PurchaseOrder purchaseOrder, Map.Entry<String, Integer> entry) {
+        if(requestedStationaryAmountIsAvailable(entry)) {
+            if (requestedStationaryAmountIsEqualToOne(entry)) {
+                OrderedItem orderedItem = createOrderedStationaryItem(entry);
+                setOrderedItemAmount(entry, orderedItem);
+                updateInventoryStationaryItemInStockQty(entry);
+                purchaseOrder.addItem(orderedItem);
+            }else throw new RuntimeException("Restriction: Requested Stationary amount for "
+                    + requestedStationaryName(entry)
+                    +" is restricted to one. Stationary is limited to one quantity per item type per customer purchase order");
+        }else throw new RuntimeException("Requested Stationary item amount for: "
+                + requestedStationaryName(entry)
+                +" is not available. Available amount is "
+                +getInventoryStationaryItemInStockQuantity(entry)+".");
+    }
+    private void saveFruitAndVegeOrderedItem(PurchaseOrder purchaseOrder, Map.Entry<String, Integer> entry) {
+        if(requestedFruitAndVegeAmountIsAvailable(entry)) {
+            if (requestedFruitAndVegeAmountIsGreaterThanZero(entry)) {
+                OrderedItem orderedItem = createOrderedFruitAndVegeItem(entry);
+                setOrderedItemAmount(entry, orderedItem);
+                updateInventoryFruitAndVegeItemInStockQty(entry);
+                purchaseOrder.addItem(orderedItem);
+                recommendationService.createAssociation(new AssociationDto(orderedItem.getBarcode(),
+                        orderedItem.getBarcode()));
+            }else throw new RuntimeException("Requested FruitAndVege amount for: "
+                    + requestedFruitAndVegeName(entry)
+                    +" have to be greater than zero");
+        }else throw new RuntimeException("Requested FruitAndVege item amount for: "
+                + requestedFruitAndVegeName(entry)
+                +" is not available. Available amount is "
+                +getInventoryFruitAndVegeItemInStockQuantity(entry)+".");
+    }
+    private void saveProcessedFoodOrderedItem(PurchaseOrder purchaseOrder, Map.Entry<String, Integer> entry) {
+        if(requestedProcessedFoodAmountIsAvailable(entry)) {
+            if (requestedProcessedFoodAmountIsGreaterThanZero(entry)) {
+                OrderedItem orderedItem = createOrderedProcessedFoodItem(entry);
+                setOrderedItemAmount(entry, orderedItem);
+                updateInventoryProcessedFoodItemInStockQty(entry);
+                purchaseOrder.addItem(orderedItem);
+            }else throw new RuntimeException("Requested ProcessedFood amount for: "
+                    + requestedProcessedFoodName(entry)
+                    +" have to be greater than zero.");
+        }else throw new RuntimeException("Requested ProcessedFood item amount for "
+                + requestedProcessedFoodName(entry)
+                +" is not available. Available amount is "
+                +getInventoryProcessedFoodItemInStockQuantity(entry)+".");
     }
 
-    public boolean itemListIsEmptyOrNull(@RequestBody OrderForm form) {
-        return org.springframework.util.ObjectUtils.isEmpty(form.purchaseOrderItemDto.getItems());
-    }
-
-    public boolean requestedStationaryAmountIsEqualToOne(Map.Entry<String, Integer> entry) {
+    private boolean requestedStationaryAmountIsEqualToOne(Map.Entry<String, Integer> entry) {
         return OrderedItemAmountRequested(entry)==1;
     }
-    public boolean requestedStationaryAmountIsAvailable(Map.Entry<String, Integer> entry) {
+    private boolean requestedStationaryAmountIsAvailable(Map.Entry<String, Integer> entry) {
         return getInventoryStationaryItemInStockQuantity(entry) >= OrderedItemAmountRequested(entry);
     }
 
-    public boolean requestedFruitAndVegeAmountIsGreaterThanZero(Map.Entry<String, Integer> entry) {
+    private boolean requestedFruitAndVegeAmountIsGreaterThanZero(Map.Entry<String, Integer> entry) {
         return OrderedItemAmountRequested(entry)>0;
     }
-    public boolean requestedFruitAndVegeAmountIsAvailable(Map.Entry<String, Integer> entry) {
+    private boolean requestedFruitAndVegeAmountIsAvailable(Map.Entry<String, Integer> entry) {
         return getInventoryFruitAndVegeItemInStockQuantity(entry) >= OrderedItemAmountRequested(entry);
     }
 
-    public boolean requestedProcessedFoodAmountIsGreaterThanZero(Map.Entry<String, Integer> entry) {
+    private boolean requestedProcessedFoodAmountIsGreaterThanZero(Map.Entry<String, Integer> entry) {
         return OrderedItemAmountRequested(entry)>0;
     }
-    public boolean requestedProcessedFoodAmountIsAvailable(Map.Entry<String, Integer> entry) {
+    private boolean requestedProcessedFoodAmountIsAvailable(Map.Entry<String, Integer> entry) {
         return getInventoryProcessedFoodItemInStockQuantity(entry) >= OrderedItemAmountRequested(entry);
     }
 
-    public Integer OrderedItemAmountRequested(Map.Entry<String, Integer> entry) {
+    private Integer OrderedItemAmountRequested(Map.Entry<String, Integer> entry) {
         return entry.getValue();
     }
-    public void setOrderedItemAmount(Map.Entry<String, Integer> entry, OrderedItem orderedItem) {
+    private void setOrderedItemAmount(Map.Entry<String, Integer> entry, OrderedItem orderedItem) {
         orderedItem.setQuantity(OrderedItemAmountRequested(entry));
     }
 
-    public Integer getInventoryStationaryItemInStockQuantity(Map.Entry<String, Integer> entry) {
+    private Integer getInventoryStationaryItemInStockQuantity(Map.Entry<String, Integer> entry) {
         return stationaryRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getInStockQuantity();
     }
-    public void updateInventoryStationaryItemInStockQty(Map.Entry<String, Integer> entry) {
+    private void updateInventoryStationaryItemInStockQty(Map.Entry<String, Integer> entry) {
         stationaryRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())
                 .setInStockQuantity(getInventoryStationaryItemInStockQuantity(entry) - OrderedItemAmountRequested(entry));
     }
-    public OrderedItem createOrderedStationaryItem(Map.Entry<String, Integer> entry) {
+    private OrderedItem createOrderedStationaryItem(Map.Entry<String, Integer> entry) {
         return orderedItemService
                 .save(new OrderedStationaryItem(stationaryRepository
                         .findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())));
     }
-    public boolean orderedItemExistsInStationaryRepository(Map.Entry<String, Integer> entry) {
+    private boolean orderedItemExistsInStationaryRepository(Map.Entry<String, Integer> entry) {
         return stationaryRepository.existsByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey());
     }
-    public String requestedStationaryName(Map.Entry<String, Integer> entry) {
+    private String requestedStationaryName(Map.Entry<String, Integer> entry) {
         return stationaryRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getName();
     }
 
-    public Integer getInventoryFruitAndVegeItemInStockQuantity(Map.Entry<String, Integer> entry) {
+    private Integer getInventoryFruitAndVegeItemInStockQuantity(Map.Entry<String, Integer> entry) {
         return fruitAndVegeRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getInStockQuantity();
     }
-    public void updateInventoryFruitAndVegeItemInStockQty(Map.Entry<String, Integer> entry) {
+    private void updateInventoryFruitAndVegeItemInStockQty(Map.Entry<String, Integer> entry) {
         fruitAndVegeRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())
                 .setInStockQuantity(getInventoryFruitAndVegeItemInStockQuantity(entry) - OrderedItemAmountRequested(entry));
     }
-    public OrderedItem createOrderedFruitAndVegeItem(Map.Entry<String, Integer> entry) {
+    private OrderedItem createOrderedFruitAndVegeItem(Map.Entry<String, Integer> entry) {
         return orderedItemService
                 .save(new OrderedFruitAndVegeItem(fruitAndVegeRepository
                         .findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())));
     }
-    public boolean orderedItemExistsInFruitAndVegeRepository(Map.Entry<String, Integer> entry) {
+    private boolean orderedItemExistsInFruitAndVegeRepository(Map.Entry<String, Integer> entry) {
         return fruitAndVegeRepository.existsByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey());
     }
-    public String requestedFruitAndVegeName(Map.Entry<String, Integer> entry) {
+    private String requestedFruitAndVegeName(Map.Entry<String, Integer> entry) {
         return fruitAndVegeRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getName();
     }
 
-    public Integer getInventoryProcessedFoodItemInStockQuantity(Map.Entry<String, Integer> entry) {
+    private Integer getInventoryProcessedFoodItemInStockQuantity(Map.Entry<String, Integer> entry) {
         return processedFoodRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getInStockQuantity();
     }
-    public void updateInventoryProcessedFoodItemInStockQty(Map.Entry<String, Integer> entry) {
+    private void updateInventoryProcessedFoodItemInStockQty(Map.Entry<String, Integer> entry) {
         processedFoodRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())
                 .setInStockQuantity(getInventoryProcessedFoodItemInStockQuantity(entry) - OrderedItemAmountRequested(entry));
     }
-    public OrderedItem createOrderedProcessedFoodItem(Map.Entry<String, Integer> entry) {
+    private OrderedItem createOrderedProcessedFoodItem(Map.Entry<String, Integer> entry) {
         return orderedItemService
                 .save(new OrderedProcessedFoodItem(processedFoodRepository
                         .findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey())));
     }
-    public boolean orderedItemExistsInProcessedFoodRepository(Map.Entry<String, Integer> entry) {
+    private boolean orderedItemExistsInProcessedFoodRepository(Map.Entry<String, Integer> entry) {
         return processedFoodRepository.existsByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey());
     }
-    public String requestedProcessedFoodName(Map.Entry<String, Integer> entry) {
+    private String requestedProcessedFoodName(Map.Entry<String, Integer> entry) {
         return processedFoodRepository.findByBarcodeOrNameIgnoreCase(entry.getKey(), entry.getKey()).getName();
     }
 }

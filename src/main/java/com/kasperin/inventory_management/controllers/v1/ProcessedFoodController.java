@@ -30,14 +30,11 @@ public class ProcessedFoodController {
     public List<ProcessedFood> getAll(@RequestParam(value = "type", defaultValue = "") Optional<FoodType> foodType,
                                       @RequestParam(value = "all", defaultValue = "") String all,
                                       @RequestParam(value = "name", defaultValue = "") String name) {
-        if (foodType.isPresent()) {
-            return processedFoodService.findByType(foodType.get());
-        } else if (all.equals("all")){
-            return processedFoodService.findAll();
-        }else if (!name.isEmpty()){
-            return processedFoodService.findAllByNameContaining(name);
-        }//else return everything
-            return processedFoodService.findAllInStock();
+        if (foodType.isPresent()) return processedFoodService.findByType(foodType.get());
+        if (all.equals("all"))    return processedFoodService.findAll();
+        if (!name.isEmpty())      return processedFoodService.findAllByNameContaining(name);
+        //else return everything
+                                  return processedFoodService.findAllInStock();
     }
 
     @ApiOperation(value = "Get a processed food in inventory by name")

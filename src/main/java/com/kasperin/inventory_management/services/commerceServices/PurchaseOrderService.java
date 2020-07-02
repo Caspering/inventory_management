@@ -1,5 +1,6 @@
 package com.kasperin.inventory_management.services.commerceServices;
 
+import com.kasperin.inventory_management.api.v1.model.PurchaseOrderItemDto;
 import com.kasperin.inventory_management.domain.commerce.PurchaseOrder;
 
 import javax.validation.Valid;
@@ -19,13 +20,17 @@ public interface PurchaseOrderService {
 
     PurchaseOrder findByReceiptNumberIgnoreCase(String receiptNumber);
 
+    List<PurchaseOrder> findAllByReceiptNumberContaining(String recieptNumber);
+
+    List<PurchaseOrder> findAllPurchaseOrderByMemberNumberContaining(String memberNumber);
+
     List<PurchaseOrder> findAllByMemberNumber(String memberNumber);
 
     List<PurchaseOrder> findAllWithNoMemberNumber();
 
     Optional<PurchaseOrder> findById(Long id);
 
-    PurchaseOrder save(@Valid PurchaseOrderServiceImpl.OrderForm form);
+    PurchaseOrder save(PurchaseOrderItemDto form);
 
     Optional<PurchaseOrder> removePurchaseOrderItemByIdAndReceiptNumber(Long id, Object item);
 

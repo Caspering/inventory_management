@@ -61,8 +61,10 @@ public class MemberServiceImpl implements MemberService{
             if(!(memberRepository.existsByPhoneNumber(member.getPhoneNumber()))){
                 log.info("Member item: " + member.getName() + ", has been saved");
                 return memberRepository.save(member);
-            }else throw new Exception("A member with phone number: " + member.getPhoneNumber() +" already exists");
-        }else throw new Exception("A member with email address: " + member.getEmail() +" already exists");
+            }else throw new Exception("A member with phone number: "
+                    + member.getPhoneNumber() +" already exists");
+        }else throw new Exception("A member with email address: "
+                + member.getEmail() +" already exists");
     }
 
     @Override
