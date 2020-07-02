@@ -67,12 +67,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
         }
     }
     private List<PurchaseOrder> getAllPurchaseOrderCreatedBetween(LocalDate startDate, LocalDate endDate){
-        if (purchaseOrderRepository.existsByDateCreated(startDate)||purchaseOrderRepository.existsByDateCreated(endDate)){
+        if (purchaseOrderRepository.existsByDateCreated(startDate)||purchaseOrderRepository.existsByDateCreated(endDate))
             return purchaseOrderRepository.findAllByDateCreatedBetween(startDate,endDate);
-        }else{
             throw new ResourceNotFoundException
                     ("No Purchase order was created between the date: " +startDate+" and "+endDate);
-        }
     }
     private List<PurchaseOrder> getAllPurchaseOrderByMemberNumbers(String memberNumber){
         if(purchaseOrderRepository.existsByMemberNumber(memberNumber)){

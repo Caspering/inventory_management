@@ -33,16 +33,17 @@ public class PurchaseOrderController {
     //@GetMapping({"/{id}"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    List<PurchaseOrder> getByReceiptNumber(@RequestParam(value = "any", defaultValue = "") String input) {
-        return purchaseOrderService.findAllByReceiptNumberContaining(input);
+    List<PurchaseOrder> getAll(@RequestParam(value = "any", defaultValue = "") String input) {
+      if (!input.isEmpty())  return purchaseOrderService.findAllByReceiptNumberContaining(input);
+      return purchaseOrderService.findAll();
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<PurchaseOrder> getAll() {
-            return purchaseOrderService.findAll();
-
-    }
+//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<PurchaseOrder> getAll() {
+//            return purchaseOrderService.findAll();
+//
+//    }
 
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
