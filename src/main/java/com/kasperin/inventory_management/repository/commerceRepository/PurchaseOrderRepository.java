@@ -17,24 +17,14 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
     boolean existsByMemberNumberNull();
 
     Optional<PurchaseOrder> findById(Long id);
-
     PurchaseOrder findByReceiptNumberIgnoreCase(String purchaseOrderReceiptNumber);
 
     List<PurchaseOrder> findAllPurchaseOrderByMemberNumberContaining(String memberNumber);
-
     List<PurchaseOrder> findAllByReceiptNumberContaining(String recieptNumber);
-
-
-
-
-
     List<PurchaseOrder> findAllByDateCreated(LocalDate dateCreated);
-
     List<PurchaseOrder> findAllByDateCreatedBetween(LocalDate startDate,
                                                     LocalDate endDate);
-
     List<PurchaseOrder> findAllByMemberNumberIgnoreCase(String memberNumber);
-
     List<PurchaseOrder> findAllByMemberNumberIsNull();
 
 

@@ -30,14 +30,12 @@ public class PurchaseOrderController {
     private final PurchaseOrderService purchaseOrderService;
     private final PurchaseOrderResourceAssembler assembler;
 
-    //@GetMapping({"/{id}"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     List<PurchaseOrder> getAll(@RequestParam(value = "any", defaultValue = "") String input) {
       if (!input.isEmpty())  return purchaseOrderService.findAllByReceiptNumberContaining(input);
       return purchaseOrderService.findAll();
     }
-
 
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)

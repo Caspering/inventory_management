@@ -28,6 +28,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -142,24 +144,16 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
             purchaseOrder.setPaymentType(form.getPaymentType());
 
         if(form.getMemberNumber() != null){
-            purchaseOrder.setMemberNumber(form
-
-                    .getMemberNumber());
-            purchaseOrder.setMember(memberService
-                    .findByMemberNumber(form
-
-                            .getMemberNumber()));
+            purchaseOrder.setMemberNumber(form.getMemberNumber());
+            purchaseOrder.setMember(memberService.findByMemberNumber(form.getMemberNumber()));
         }
 
-        if(!itemListIsEmptyOrNull(form)){
-            for(Map.Entry<String, Integer> entry: form.getItems().entrySet()){
-                saveOrderedItem(purchaseOrder, entry);
-            }
-        }else throw new RuntimeException("Purchase order must contain an item");
+        if (itemListIsEmptyOrNull(form)) throw new RuntimeException("Purchase order must contain an item");
+        form.getItems().entrySet().forEach(entry -> saveOrderedItem(purchaseOrder, entry));
 
-        if(form.getDiscountStrategy() != null) {
+        if(form.getDiscountStrategy() != null)
             purchaseOrder.setDiscountAmount(purchaseOrder.getTotalPrice() * form.getDiscountStrategy().discountRate);
-        }
+
         return purchaseOrderRepository.save(purchaseOrder);
     }
 
@@ -195,9 +189,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     public Optional<PurchaseOrder> updatePurchaseOrderDetailsById(Long id, @Valid PurchaseOrder purchaseOrderPatch) {
         return getPurchaseOrderById(id)
                 .map(purchaseOrderInDB -> {
-
-                    /*if(purchaseOrderPatch.getTotalPurchaseOrderPrice() >= 0) {
-                        purchaseOrderInDB.ssetInStockQuantity(purchaseOrderPatch.getInStockQuantity());*/
 
                     if (purchaseOrderPatch.getMember() != null)
                         purchaseOrderInDB.setMember(purchaseOrderPatch.getMember());
@@ -240,15 +231,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
     }
 
     private void saveOrderedItem(PurchaseOrder purchaseOrder, Map.Entry<String, Integer> entry) {
-        if (orderedItemExistsInStationaryRepository(entry)){
-            saveStationaryOrderedIten(purchaseOrder, entry);
-        }
-        else if (orderedItemExistsInFruitAndVegeRepository(entry)){
-            saveFruitAndVegeOrderedItem(purchaseOrder, entry);
-        }
-        else if (orderedItemExistsInProcessedFoodRepository(entry)){
-            saveProcessedFoodOrderedItem(purchaseOrder, entry);
-        }else throw new RuntimeException("Item "+entry.getKey()+" was not found in inventory");
+        if (orderedItemExistsInStationaryRepository(entry)) saveStationaryOrderedIten(purchaseOrder, entry);
+        if (orderedItemExistsInFruitAndVegeRepository(entry)) saveFruitAndVegeOrderedItem(purchaseOrder, entry);
+        if (orderedItemExistsInProcessedFoodRepository(entry)) saveProcessedFoodOrderedItem(purchaseOrder, entry);
+        throw new RuntimeException("Item "+entry.getKey()+" was not found in inventory");
     }
     private void saveStationaryOrderedIten(PurchaseOrder purchaseOrder, Map.Entry<String, Integer> entry) {
         if(requestedStationaryAmountIsAvailable(entry)) {
@@ -257,16 +243,23 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
                 setOrderedItemAmount(entry, orderedItem);
                 updateInventoryStationaryItemInStockQty(entry);
                 purchaseOrder.addItem(orderedItem);
-            }else throw new RuntimeException("Restriction: Requested Stationary amount for "
+            }
+            throw new RuntimeException("Restriction: Requested Stationary amount for "
                     + requestedStationaryName(entry)
                     +" is restricted to one. Stationary is limited to one quantity per item type per customer purchase order");
-        }else throw new RuntimeException("Requested Stationary item amount for: "
+        }
+        throw new RuntimeException("Requested Stationary item amount for: "
                 + requestedStationaryName(entry)
                 +" is not available. Available amount is "
                 +getInventoryStationaryItemInStockQuantity(entry)+".");
     }
     private void saveFruitAndVegeOrderedItem(PurchaseOrder purchaseOrder, Map.Entry<String, Integer> entry) {
-        if(requestedFruitAndVegeAmountIsAvailable(entry)) {
+        if (!requestedFruitAndVegeAmountIsAvailable(entry))
+            throw new RuntimeException("Requested FruitAndVege item amount for: "
+                    + requestedFruitAndVegeName(entry)
+                    + " is not available. Available amount is "
+                    + getInventoryFruitAndVegeItemInStockQuantity(entry) + ".");
+        else {
             if (requestedFruitAndVegeAmountIsGreaterThanZero(entry)) {
                 OrderedItem orderedItem = createOrderedFruitAndVegeItem(entry);
                 setOrderedItemAmount(entry, orderedItem);
@@ -274,13 +267,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService  {
                 purchaseOrder.addItem(orderedItem);
                 recommendationService.createAssociation(new AssociationDto(orderedItem.getBarcode(),
                         orderedItem.getBarcode()));
-            }else throw new RuntimeException("Requested FruitAndVege amount for: "
+            }
+            throw new RuntimeException("Requested FruitAndVege amount for: "
                     + requestedFruitAndVegeName(entry)
-                    +" have to be greater than zero");
-        }else throw new RuntimeException("Requested FruitAndVege item amount for: "
-                + requestedFruitAndVegeName(entry)
-                +" is not available. Available amount is "
-                +getInventoryFruitAndVegeItemInStockQuantity(entry)+".");
+                    + " have to be greater than zero");
+        }
     }
     private void saveProcessedFoodOrderedItem(PurchaseOrder purchaseOrder, Map.Entry<String, Integer> entry) {
         if(requestedProcessedFoodAmountIsAvailable(entry)) {

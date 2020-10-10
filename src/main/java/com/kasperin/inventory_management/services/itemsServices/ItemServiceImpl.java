@@ -43,10 +43,12 @@ public class ItemServiceImpl implements ItemService {
         return itemsInStock;
     }
 
+
+
 //Log inventory count after fixed delay time
     @Scheduled(fixedDelay=300000)
     public void getTotalInStockQuantity() {
-        //int totalNumberInStock=0;
+
         int totalFAVQuantity=0;
         int totalProcessedFoodQuantity=0;
         int totalStationaryQuantity=0;
@@ -61,16 +63,19 @@ public class ItemServiceImpl implements ItemService {
                     +fruitAndVege.getInStockQuantity());
             totalFAVQuantity += fruitAndVege.getInStockQuantity();
         }
+
         for(ProcessedFood processedFood : processedFoodService.findAllInStock()){
             log.info("Current in stock quantity for " +processedFood.getName()+" is "
                     +processedFood.getInStockQuantity());
             totalProcessedFoodQuantity += processedFood.getInStockQuantity();
         }
+
         for(Stationary stationary : stationaryService.findAllInStock()){
             log.info("Current in stock quantity for " +stationary.getName()+" is "
                     +stationary.getInStockQuantity());
             totalStationaryQuantity += stationary.getInStockQuantity();
         }
+
         int totalNumberInStock=totalFAVQuantity+totalProcessedFoodQuantity+totalStationaryQuantity;
 
         log.info("current total in stock quantity is "+totalNumberInStock);

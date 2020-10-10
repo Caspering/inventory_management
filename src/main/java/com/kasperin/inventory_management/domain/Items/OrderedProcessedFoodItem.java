@@ -22,7 +22,6 @@ public class OrderedProcessedFoodItem extends OrderedItem{
     FoodType foodType;
 
     private LocalDate mfgDate;
-
     private LocalDate expDate;
 
     public OrderedProcessedFoodItem(ProcessedFood processedFood){

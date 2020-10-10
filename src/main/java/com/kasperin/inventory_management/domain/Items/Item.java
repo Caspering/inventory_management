@@ -62,22 +62,6 @@ public class Item implements Serializable {
     //@NullString(nulls = {"", "N/A"})
     private Integer inStockQuantity;
 
-    /*public Item(String name, String barcode, Double price, Integer inStockQuantity) {
-        this.name = name;
-        this.barcode = barcode;
-        this.price= price;
-        this.inStockQuantity = inStockQuantity;
-    }
-
-    public Item(String name, String barcode, Double price, Integer inStockQuantity,
-                FoodType foodType, LocalDate mfgDate, LocalDate expDate) {
-        this.name = name;
-        this.barcode = barcode;
-        this.price= price;
-        this.inStockQuantity = inStockQuantity;
-
-
-    }*/
 
     @Transient
     @JsonIgnore
@@ -86,15 +70,6 @@ public class Item implements Serializable {
     }
 
 
-    /*public static Item fruitAndVege(String name, String barcode, Double price,
-                                     Integer inStockQuantity){
-        return new Item(name,barcode, price, inStockQuantity);
-    }
 
-    public static Item processedFood(String name, String barcode, Double price,
-                                    Integer inStockQuantity,FoodType foodType,
-                                     LocalDate mfgDate, LocalDate expDate){
-        return new Item(name,barcode, price, inStockQuantity, foodType, mfgDate, expDate);
-    }*/
 
 }

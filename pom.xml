@@ -213,7 +213,7 @@
                         <!--                        This will make MapStruct mappers available as Spring beans -->
                         <compilerArg>
                             -Amapstruct.defaultComponentModel=spring
-                        </compilerArg>
+                        </compilerArg>7
                     </compilerArgs>
                 </configuration>
             </plugin>

@@ -10,6 +10,5 @@ import java.util.List;
 public class RecommendItemDto {
 
     private Long memberId;
-
     private List<String> itemBarcodes;
 }

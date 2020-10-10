@@ -56,14 +56,15 @@ public class MemberServiceImpl implements MemberService{
     @Override
     //@Validated(OnCreate.class)
     public Member save(@Valid Member member) throws Exception {
-
         if (!(memberRepository.existsByEmailIgnoreCase(member.getEmail()))){
             if(!(memberRepository.existsByPhoneNumber(member.getPhoneNumber()))){
                 log.info("Member item: " + member.getName() + ", has been saved");
                 return memberRepository.save(member);
-            }else throw new Exception("A member with phone number: "
+            }
+            throw new Exception("A member with phone number: "
                     + member.getPhoneNumber() +" already exists");
-        }else throw new Exception("A member with email address: "
+        }
+        throw new Exception("A member with email address: "
                 + member.getEmail() +" already exists");
     }
 
@@ -120,22 +121,22 @@ public class MemberServiceImpl implements MemberService{
 
 
 
-    public void updateFirstName(@Valid Member memberPatch, Member memberInDB) {
+    private void updateFirstName(@Valid Member memberPatch, Member memberInDB) {
         if (memberPatch.getFirstName() != null)
             memberInDB.setFirstName(memberPatch.getLastName());
     }
 
-    public void updateLastName(@Valid Member memberPatch, Member memberInDB) {
+    private void updateLastName(@Valid Member memberPatch, Member memberInDB) {
         if (memberPatch.getLastName() != null)
             memberInDB.setLastName(memberPatch.getLastName());
     }
 
-    public void updateEmail(@Valid Member memberPatch, Member memberInDB) {
+    private void updateEmail(@Valid Member memberPatch, Member memberInDB) {
         if (memberPatch.getEmail() != null)
             memberInDB.setEmail(memberPatch.getEmail());
     }
 
-    public void updatePhoneNumber(@Valid Member memberPatch, Member memberInDB) {
+    private void updatePhoneNumber(@Valid Member memberPatch, Member memberInDB) {
         if (memberPatch.getPhoneNumber() != null)
             memberInDB.setPhoneNumber(memberPatch.getPhoneNumber());
     }

@@ -31,25 +31,6 @@ public class OrderAnalysisDto {
     @JsonProperty(value = "Items Purchased")
     List<OrderedItem> items = new ArrayList<>();
 
-    /*public int countItems(){
-        int count = 0;
-        List<OrderedItem> items = getItems();
-        for(OrderedItem item : items){
-            count += item.getQuantity();
-        }
-        return count;
-    }
-
-    public Double getTotalPrice(){
-        double sum = 0;
-        List<OrderedItem> items = getItems();
-        for (OrderedItem item : items) {
-            sum += item.getTotalPrice();
-        }
-        return sum;
-
-    }*/
-
     public void addItem(OrderedItem item){
         this.items.add(item);
     }

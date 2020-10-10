@@ -1,0 +1,42 @@
+type Query {
+  itemById(id: ID): Item
+}
+
+scalar Date
+
+enum FoodType {
+  VEGAN
+  NONVEGAN
+}
+
+interface Item {
+  id: ID
+  name: String
+  barcode: String
+  price : Float
+}
+
+type FruitAndVege implements Item{
+  id: ID
+  name: String
+  barcode: String
+  price : Float
+}
+
+type Stationary implements Item{
+  id: ID
+  name: String
+  barcode: String
+  price : Float
+}
+
+type ProcessedFood implements Item{
+  id: ID
+  name: String
+  barcode: String
+  price : Float
+  foodType : FoodType
+  mfgDate : Date
+  expDate : Date
+}
+
