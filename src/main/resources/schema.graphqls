@@ -1,5 +1,14 @@
 type Query {
   itemById(id: ID): Item
+  orderedItemById(id : ID) : OrderedItem
+  purchaseOrderById(id : ID) : PurchaseOrder
+  member(id : ID) : Member
+
+  items : [Item]
+  orderedItems : [OrderedItem]
+  purchaseOrder : [PurchaseOrder]
+  members : [Member]
+
 }
 
 scalar Date
@@ -10,6 +19,56 @@ enum FoodType {
 }
 
 interface Item {
+  id : ID
+  name : String
+  barcode : String
+  price : Float
+}
+
+interface OrderedItem {
+  id : ID
+  name : String
+  barcode : String
+  price : Float
+}
+
+type Member {
+  id : ID
+  memberNumber : String
+  firstName : String
+  lastName : String
+  emailphoneNumber  : String
+  purchaseOrder : PurchaseOrder
+}
+
+type PurchaseOrder {
+  id: ID
+  totalNumberOfItems : Int
+  memberNumber : String
+  receiptNumber : String
+  totalPrice  : Float
+  discountAmount : Float
+  totalPriceAfterDiscount  : Float
+  paymentType : Float
+  item : [OrderedItem!]!
+  member : Member
+}
+
+type OrderedItemFruitAndVege implements OrderedItem{
+  id: ID
+  name: String
+  barcode: String
+  price : Float
+}
+
+type OrderedItemStationary implements OrderedItem{
+  id: ID
+  name: String
+  barcode: String
+  price : Float
+}
+
+type OrderedItemProcessedFood implements OrderedItem{
   id: ID
   name: String
   barcode: String
